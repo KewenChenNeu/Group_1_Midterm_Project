@@ -5,6 +5,7 @@
  */
 package Business.Profiles;
 
+import Business.Business;
 import Business.Person.Person;
 
 import java.util.ArrayList;
@@ -13,32 +14,34 @@ import java.util.ArrayList;
  *
  * @author kal bugrara
  */
-public class StudentDirectory {
+public class EmployeeDirectory {
 
+    Business business;
+    ArrayList<EmployeeProfile> employeelist;
 
-    ArrayList<StudentProfile> studentlist;
+    public EmployeeDirectory(Business d) {
 
-    public StudentDirectory() {
-
-     studentlist = new ArrayList();
+        business = d;
+        employeelist = new ArrayList();
 
     }
 
-    public StudentProfile newStudentProfile(Person p) {
+    public EmployeeProfile newEmployeeProfile(Person p) {
 
-        StudentProfile sp = new StudentProfile(p);
-        studentlist.add(sp);
+        EmployeeProfile sp = new EmployeeProfile(p);
+        employeelist.add(sp);
         return sp;
     }
 
-    public StudentProfile findStudent(String id) {
+    public EmployeeProfile findEmployee(String id) {
 
-        for (StudentProfile sp : studentlist) {
+        for (EmployeeProfile sp : employeelist) {
+
             if (sp.isMatch(id)) {
                 return sp;
             }
         }
             return null; //not found after going through the whole list
-    }
+         }
     
 }

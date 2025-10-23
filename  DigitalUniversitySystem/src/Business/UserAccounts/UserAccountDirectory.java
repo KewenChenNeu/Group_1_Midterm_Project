@@ -25,7 +25,7 @@ public class UserAccountDirectory {
 
     public UserAccount newUserAccount(Profile p, String un, String pw) {
 
-            UserAccount ua = new UserAccount (p,  un,  pw);
+        UserAccount ua = new UserAccount (p,  un,  pw);
         useraccountlist.add(ua);
         return ua;
     }
@@ -33,7 +33,7 @@ public class UserAccountDirectory {
     public UserAccount findUserAccount(String id) {
 
         for (UserAccount ua : useraccountlist) {
-            System.out.println("Checking: " + ua.username);
+
             if (ua.isMatch(id)) {
                 return ua;
             }

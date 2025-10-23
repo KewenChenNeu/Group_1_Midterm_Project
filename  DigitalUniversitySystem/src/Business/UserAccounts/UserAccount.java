@@ -33,7 +33,7 @@ public class UserAccount {
         return username;
     }
 
-    public boolean isMatch(String id){
+        public boolean isMatch(String id){
         if(getPersonId().equals(id)) return true;
         return false;
     }
