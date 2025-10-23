@@ -26,6 +26,22 @@ public class Transcript {
         courseloadlist = new HashMap();
 
     }
+    
+    // NEW: get current semester gpa
+    public float getCurrentGPA() {
+        if(currentcourseload == null) return 0;
+        
+        float totalPoints = 0;
+        int totalCredits = 0;
+        
+        for(SeatAssignment sa : currentcourseload.getSeatAssignments()) {
+            totalPoints += sa.getGradePoint() * sa.getCreditHours();
+            totalCredits += sa.getCreditHours();
+        }
+        
+        return totalCredits > 0 ? totalPoints/totalCredits : 0;
+    }
+    
 
     public int getStudentSatisfactionIndex() {
         //for each courseload 

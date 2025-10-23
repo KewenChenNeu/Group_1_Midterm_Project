@@ -12,6 +12,10 @@ package info5100.university.example.Persona;
 public class Person {
     
     String id;
+    private String email;
+    private String phone;
+    
+    
     public Person (String id){
         
         this.id = id;
@@ -19,6 +23,11 @@ public class Person {
     public String getPersonId(){
         return id;
     }
+    
+    public void setEmail(String email) { this.email = email; }
+    public String getEmail() { return email; }
+    public void setPhone(String phone) { this.phone = phone; }
+    public String getPhone() { return phone; }
 
         public boolean isMatch(String id){
         if(getPersonId().equals(id)) return true;

@@ -19,6 +19,16 @@ public class CourseLoad {
         seatassignments = new ArrayList();
         semester = s;
     }
+    
+    // Check the student could add the course or not
+    public boolean canRegister(int newCredits) {
+        int current = 0;
+        for(SeatAssignment sa : seatassignments) {
+            current += sa.getCreditHours();
+        }
+        return (current + newCredits) <= 8;
+    }
+    
     public SeatAssignment newSeatAssignment(CourseOffer co){
         
         Seat seat = co.getEmptySeat(); // seat linked to courseoffer

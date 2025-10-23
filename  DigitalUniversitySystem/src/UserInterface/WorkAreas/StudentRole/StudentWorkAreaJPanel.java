@@ -10,8 +10,8 @@
  */
 package UserInterface.WorkAreas.StudentRole;
 
-import Business.Business;
-import Business.Profiles.StudentProfile;
+import info5100.university.example.Department.Department;
+import info5100.university.example.Persona.StudentProfile;
 import javax.swing.JPanel;
 
 /**
@@ -21,23 +21,14 @@ import javax.swing.JPanel;
 public class StudentWorkAreaJPanel extends javax.swing.JPanel {
 
     javax.swing.JPanel CardSequencePanel;
-    Business business;
+    Department department;
     StudentProfile student;
-
-    /**
-     * Creates new form UnitRiskWorkArea
-     * @param b
-     * @param spp
-     * @param clp
-     */
-
-    public StudentWorkAreaJPanel(Business b, StudentProfile spp, JPanel clp) {
-
-        business = b;
+    
+    public StudentWorkAreaJPanel(Department d, StudentProfile sp, JPanel clp) {
+        department = d;
         this.CardSequencePanel = clp;
-        student = spp;
+        student = sp;
         initComponents();
-
     }
 
     /**

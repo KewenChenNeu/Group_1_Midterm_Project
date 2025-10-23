@@ -19,12 +19,20 @@ public class StudentProfile {
     Person person;
     Transcript transcript;
     EmploymentHistroy employmenthistory;
+    
+    private TuitionAccount tuitionAccount; // NEW
+    
 
     public StudentProfile(Person p) {
 
         person = p;
         transcript = new Transcript(this);
         employmenthistory = new EmploymentHistroy();
+        tuitionAccount = new TuitionAccount();
+    }
+    
+    public TuitionAccount getTuitionAccount() { 
+        return tuitionAccount; 
     }
 
     public boolean isMatch(String id) {

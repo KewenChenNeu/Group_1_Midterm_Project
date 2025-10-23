@@ -10,9 +10,9 @@
  */
 package UserInterface.WorkAreas.FacultyRole;
 
-import Business.Business;
-import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.ManagePersonsJPanel;
+import info5100.university.example.Department.Department;
 import javax.swing.JPanel;
+
 
 /**
  *
@@ -21,18 +21,12 @@ import javax.swing.JPanel;
 public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
 
     javax.swing.JPanel CardSequencePanel;
-    Business business;
-
-    /**
-     * Creates new form UnitRiskWorkArea
-     */
-
-    public FacultyWorkAreaJPanel(Business b, JPanel clp) {
-
-        business = b;
+    Department department;
+    
+    public FacultyWorkAreaJPanel(Department d, JPanel clp) {
+        department = d;
         this.CardSequencePanel = clp;
         initComponents();
-
     }
 
     /**
@@ -151,9 +145,9 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         CardSequencePanel.removeAll();
 
-        ManagePersonsJPanel aos = new ManagePersonsJPanel(business, CardSequencePanel);
+        //ManagePersonsJPanel aos = new ManagePersonsJPanel(business, CardSequencePanel);
 
-        CardSequencePanel.add("Manage Persons", aos);
+        //CardSequencePanel.add("Manage Persons", aos);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 
     }//GEN-LAST:event_jButton4IdentifyResourceAssetsActionPerformed

@@ -3,19 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Business;
 
-import Business.Profiles.EmployeeProfile;
-import Business.Profiles.Profile;
-import Business.Profiles.StudentProfile;
+package info5100.university.example;  
 
-import Business.UserAccounts.UserAccount;
-import Business.UserAccounts.UserAccountDirectory;
+import info5100.university.example.Department.Department;
+import info5100.university.example.Persona.UserAccount;           
+import info5100.university.example.Persona.UserAccountDirectory;  
+import info5100.university.example.Persona.Person;
+import info5100.university.example.Persona.StudentProfile;
+import info5100.university.example.Persona.StudentDirectory;
 
 import UserInterface.WorkAreas.AdminRole.AdminRoleWorkAreaJPanel;
 import UserInterface.WorkAreas.FacultyRole.FacultyWorkAreaJPanel;
 import UserInterface.WorkAreas.StudentRole.StudentWorkAreaJPanel;
-import javax.swing.JPanel;
+
+import javax.swing.*;
 
 /**
  *
@@ -23,17 +25,11 @@ import javax.swing.JPanel;
  */
 public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
 
-    Business business;
-
-    /**
-     * Creates new form PricingMainFrame
-     */
-
+    Department department; 
+    
     public ProfileWorkAreaMainFrame() {
         initComponents();
-        business = ConfigureABusiness.initialize();
-        
-
+        department = ConfigureAUniversity.setupTestData(); 
     }
 
     public void insert(JPanel jpanel) {
@@ -134,37 +130,51 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
 
         String un = UserNameTextField.getText();
         String pw = PasswordTextField.getText();
+        
+        // 使用department的UserAccountDirectory
+        info5100.university.example.Persona.UserAccountDirectory uad = (info5100.university.example.Persona.UserAccountDirectory) department.getUserAccountDirectory();
+        info5100.university.example.Persona.UserAccount useraccount = uad.authenticate(un, pw);
 
-        UserAccountDirectory uad = business.getUserAccountDirectory();
-        UserAccount useraccount = uad.AuthenticateUser(un, pw);
         if (useraccount == null) {
+            JOptionPane.showMessageDialog(this, "Invalid credentials!");
             return;
         }
-        StudentWorkAreaJPanel studentworkareajpanel;
-        FacultyWorkAreaJPanel facultyworkarea;
-        AdminRoleWorkAreaJPanel adminworkarea;
-        String r = useraccount.getRole();
-        Profile profile = useraccount.getAssociatedPersonProfile();
-
-
-        if (profile instanceof EmployeeProfile) {
-
-            adminworkarea = new AdminRoleWorkAreaJPanel(business, CardSequencePanel);
-            CardSequencePanel.removeAll();
-            CardSequencePanel.add("Admin", adminworkarea);
-            ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
-
+        
+        if (useraccount == null) {
+            JOptionPane.showMessageDialog(this, "Invalid credentials!");
+            return;
         }
         
-        if (profile instanceof StudentProfile) {
-
-            StudentProfile spp = (StudentProfile) profile;
-            studentworkareajpanel = new StudentWorkAreaJPanel(business, spp, CardSequencePanel);
+        String role = useraccount.getRole();
+        
+        if ("Admin".equals(role)) {
+            AdminRoleWorkAreaJPanel adminPanel = new AdminRoleWorkAreaJPanel(department, CardSequencePanel);
             CardSequencePanel.removeAll();
-            CardSequencePanel.add("student", studentworkareajpanel);
+            CardSequencePanel.add("Admin", adminPanel);
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
-
         }
+        else if ("Student".equals(role)) {
+            Person person = useraccount.getPerson();
+            StudentProfile sp = department.getStudentDirectory().findStudent(person.getPersonId());
+            if (sp == null) {
+                JOptionPane.showMessageDialog(this, "Student profile not found!");
+                return;
+            }
+            StudentWorkAreaJPanel studentPanel = new StudentWorkAreaJPanel(department, sp, CardSequencePanel);
+            CardSequencePanel.removeAll();
+            CardSequencePanel.add("Student", studentPanel);
+            ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+        }
+        else if ("Faculty".equals(role)) {
+            Person person = useraccount.getPerson();
+            // FacultyProfile fp = department.getFacultyDirectory().findFaculty(person.getPersonId());
+            
+            FacultyWorkAreaJPanel facultyPanel = new FacultyWorkAreaJPanel(department, CardSequencePanel);
+            CardSequencePanel.removeAll();
+            CardSequencePanel.add("Faculty", facultyPanel);
+            ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+        }
+        // Add the Register Roll
 
  /*      if (profile instanceof FacultyProfile) {
             facultyworkarea = new FacultyWorkAreaJPanel(business, CardSequencePanel);

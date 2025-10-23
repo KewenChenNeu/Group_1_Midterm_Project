@@ -16,6 +16,7 @@ import info5100.university.example.Persona.Faculty.FacultyDirectory;
 import info5100.university.example.Persona.PersonDirectory;
 import info5100.university.example.Persona.StudentDirectory;
 import info5100.university.example.Persona.StudentProfile;
+import info5100.university.example.Persona.UserAccountDirectory;
 import java.util.HashMap;
 
 /**
@@ -30,24 +31,40 @@ public class Department {
     StudentDirectory studentdirectory;
     FacultyDirectory facultydirectory;
     EmployerDirectory employerdirectory;
+    UserAccountDirectory useraccountdirectory;
     Degree degree;
-
     HashMap<String, CourseSchedule> mastercoursecatalog;
 
     public Department(String n) {
         name = n;
         mastercoursecatalog = new HashMap<>();
         coursecatalog = new CourseCatalog(this);
-        studentdirectory = new StudentDirectory(this); //pass the department object so it stays linked to it
+        studentdirectory = new StudentDirectory(this);
         persondirectory = new PersonDirectory();
+        facultydirectory = new FacultyDirectory(this);  
+        employerdirectory = new EmployerDirectory(this);
+        useraccountdirectory = new UserAccountDirectory();
         degree = new Degree("MSIS");
-        
     }
+    
+    public FacultyDirectory getFacultyDirectory() {
+        return facultydirectory;
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public UserAccountDirectory getUserAccountDirectory() {
+        return useraccountdirectory;
+    }
+
+    
     public void addCoreCourse(Course c){
         degree.addCoreCourse(c);
         
     }
-public void addElectiveCourse(Course c){
+    public void addElectiveCourse(Course c){
         degree.addElectiveCourse(c);
         
     }

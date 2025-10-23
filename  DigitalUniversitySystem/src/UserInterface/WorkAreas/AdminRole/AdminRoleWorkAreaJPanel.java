@@ -10,9 +10,9 @@
  */
 package UserInterface.WorkAreas.AdminRole;
 
-import Business.Business;
-import UserInterface.WorkAreas.AdminRole.AdministerUserAccountsWorkResp.ManageUserAccountsJPanel;
-import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.ManagePersonsJPanel;
+import info5100.university.example.Department.Department; // 导入Department
+import javax.swing.JPanel;
+
 
 import javax.swing.JPanel;
 
@@ -23,18 +23,12 @@ import javax.swing.JPanel;
 public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
 
     javax.swing.JPanel CardSequencePanel;
-    Business business;
-
-    /**
-     * Creates new form UnitRiskWorkArea
-     */
-
-    public AdminRoleWorkAreaJPanel(Business b, JPanel clp) {
-
-        business = b;
+    Department department; 
+    
+    public AdminRoleWorkAreaJPanel(Department d, JPanel clp) {
+        department = d;
         this.CardSequencePanel = clp;
         initComponents();
-
     }
 
     /**
@@ -162,20 +156,20 @@ public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
     private void jButton4IdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4IdentifyResourceAssetsActionPerformed
         // TODO add your handling code here:
 
-        ManageUserAccountsJPanel aos = new ManageUserAccountsJPanel(business, CardSequencePanel);
+//        ManageUserAccountsJPanel aos = new ManageUserAccountsJPanel(business, CardSequencePanel);
 
-        CardSequencePanel.add("ManageVulns", aos);
-        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+//        CardSequencePanel.add("ManageVulns", aos);
+//        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 
     }//GEN-LAST:event_jButton4IdentifyResourceAssetsActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
 
-        ManagePersonsJPanel aos = new ManagePersonsJPanel(business, CardSequencePanel);
+//        ManagePersonsJPanel aos = new ManagePersonsJPanel(business, CardSequencePanel);
 
-        CardSequencePanel.add("Manage Persons", aos);
-        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+//        CardSequencePanel.add("Manage Persons", aos);
+//        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 
     }//GEN-LAST:event_jButton10ActionPerformed
 
