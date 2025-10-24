@@ -10,7 +10,7 @@
  */
 package UserInterface.WorkAreas.AdminRole;
 
-import info5100.university.example.Department.Department; // 导入Department
+import info5100.university.example.Department.Department; 
 import javax.swing.JPanel;
 
 

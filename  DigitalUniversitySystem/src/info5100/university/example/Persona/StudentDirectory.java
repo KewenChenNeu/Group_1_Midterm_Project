@@ -13,15 +13,17 @@ import java.util.ArrayList;
  * @author kal bugrara
  */
 public class StudentDirectory {
+    private Department department;
+    private ArrayList<StudentProfile> studentlist;
 
-    Department department;
-    ArrayList<StudentProfile> studentlist;
+    
+    public StudentDirectory() {
+        studentlist = new ArrayList<>();
+    }
 
-    public StudentDirectory(Department d) {
-
-        department = d;
-        studentlist = new ArrayList();
-
+    public StudentDirectory(Department department) {
+        this.department = department;
+        studentlist = new ArrayList<>();
     }
 
     public StudentProfile newStudentProfile(Person p) {
