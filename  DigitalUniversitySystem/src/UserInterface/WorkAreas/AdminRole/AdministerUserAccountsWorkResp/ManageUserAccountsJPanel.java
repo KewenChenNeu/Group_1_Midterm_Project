@@ -4,10 +4,9 @@
  * and open the template in the editor.
  */
 package UserInterface.WorkAreas.AdminRole.AdministerUserAccountsWorkResp;
-
-import Business.Business;
-import Business.UserAccounts.UserAccount;
-import Business.UserAccounts.UserAccountDirectory;
+import info5100.university.example.UniversitySystem;
+import info5100.university.example.Persona.UserAccount;
+import info5100.university.example.Persona.UserAccountDirectory;
 
 
 import javax.swing.JPanel;
@@ -23,13 +22,13 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
      * Creates new form ManageSuppliersJPanel
      */
     JPanel CardSequencePanel;
-    Business business;
+    UniversitySystem universitySystem;
     UserAccount selecteduseraccount;
 
 
-    public ManageUserAccountsJPanel(Business bz, JPanel jp) {
+    public ManageUserAccountsJPanel(UniversitySystem us, JPanel jp) {
         CardSequencePanel = jp;
-        this.business = bz;
+        this.universitySystem = us;
         initComponents();
         refreshTable();
 
@@ -46,7 +45,7 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
 
 
 
-        UserAccountDirectory uad = business.getUserAccountDirectory();
+        UserAccountDirectory uad = this.universitySystem.getUserAccountDirectory();
 
        
 

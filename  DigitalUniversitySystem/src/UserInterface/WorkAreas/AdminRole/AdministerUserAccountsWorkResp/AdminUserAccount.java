@@ -6,6 +6,7 @@
 package UserInterface.WorkAreas.AdminRole.AdministerUserAccountsWorkResp;
 
 
+import info5100.university.example.Persona.UserAccount;
 import javax.swing.JPanel;
 
 /**
@@ -28,7 +29,7 @@ public class AdminUserAccount extends javax.swing.JPanel {
         selecteduseraccount= sua;
         initComponents();
         //display user details here
-
+        
     }
 
     /**

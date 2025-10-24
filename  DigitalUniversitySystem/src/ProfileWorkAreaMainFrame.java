@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package info5100.university.example;  
+  
 
 import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.UserAccount;           
