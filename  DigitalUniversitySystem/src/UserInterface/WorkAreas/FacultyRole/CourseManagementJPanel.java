@@ -203,7 +203,6 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
                         Course course = co.getSubjectCourse();
                         Object[] row = {
                             course.getCOurseNumber(),
-                            course.getCourseName(),
                             course.getCredits(),
                             "MWF 10:00-11:00",
                             co.getSeatList().size(),

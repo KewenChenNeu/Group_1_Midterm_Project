@@ -182,13 +182,6 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_jButton11ActionPerformed
 
-    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {
-        // Tuition Insights
-        CardSequencePanel.removeAll();
-        TuitionInsightsJPanel tuitionPanel = new TuitionInsightsJPanel(department, facultyProfile, CardSequencePanel);
-        CardSequencePanel.add("TuitionInsights", tuitionPanel);
-        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
-    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

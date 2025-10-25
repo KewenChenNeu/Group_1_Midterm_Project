@@ -272,110 +272,18 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
             if (assignments != null) {
                 for (FacultyAssignment fa : assignments) {
                     CourseOffer co = fa.getCourseOffer();
-                    if (co != null) {
-                        String courseInfo = co.getCourseNumber() + " - " + co.getSubjectCourse().getCourseName();
-                        courseComboBox.addItem(courseInfo);
-                    }
+                    
                 }
             }
         }
     }
 
     private void courseComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseComboBoxActionPerformed
-        loadStudents();
+        
     }//GEN-LAST:event_courseComboBoxActionPerformed
 
-    private void loadStudents() {
-        studentTableModel = (DefaultTableModel) studentTable.getModel();
-        studentTableModel.setRowCount(0);
-
-        String selectedCourse = (String) courseComboBox.getSelectedItem();
-        if (selectedCourse == null || selectedCourse.equals("-- Select Course --")) {
-            gpaLabel.setText("    Class GPA: N/A");
-            return;
-        }
-
-        String courseId = selectedCourse.split(" - ")[0];
-        List<StudentInfo> studentInfoList = new ArrayList<>();
-
-        if (facultyProfile != null) {
-            ArrayList<FacultyAssignment> assignments = facultyProfile.getFacultyAssignments();
-            for (FacultyAssignment fa : assignments) {
-                CourseOffer co = fa.getCourseOffer();
-                if (co != null && co.getCourseNumber().equals(courseId)) {
-                    ArrayList<Seat> seats = co.getSeatList();
-                    if (seats != null) {
-                        for (Seat seat : seats) {
-                            if (seat.isOccupied()) {
-                                SeatAssignment sa = seat.getSeatAssignment();
-                                if (sa != null) {
-                                    CourseLoad cl = sa.getCourseLoad();
-                                    if (cl != null) {
-                                        StudentProfile sp = cl.getStudentProfile();
-                                        if (sp != null) {
-                                            Person person = sp.getPerson();
-                                            StudentInfo info = new StudentInfo();
-                                            info.studentId = person.getPersonId();
-                                            info.name = person.getName() != null ? person.getName() : "Student " + info.studentId;
-                                            info.email = person.getEmail() != null ? person.getEmail() : "N/A";
-                                            info.gradePoint = sa.getGradePoint();
-                                            info.letterGrade = sa.getLetterGrade();
-                                            info.percentage = calculatePercentage(info.letterGrade);
-                                            studentInfoList.add(info);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                }
-            }
-        }
-
-        studentInfoList.sort((s1, s2) -> Double.compare(s2.percentage, s1.percentage));
-
-        double totalGPA = 0;
-        int rank = 1;
-        for (StudentInfo info : studentInfoList) {
-            info.rank = rank++;
-            totalGPA += info.gradePoint;
-
-            Object[] row = {
-                info.studentId,
-                info.name,
-                info.email,
-                String.format("%.2f", info.gradePoint),
-                info.letterGrade,
-                String.format("%.1f%%", info.percentage),
-                info.rank
-            };
-            studentTableModel.addRow(row);
-        }
-
-        if (!studentInfoList.isEmpty()) {
-            double classGPA = totalGPA / studentInfoList.size();
-            gpaLabel.setText(String.format("    Class GPA: %.2f", classGPA));
-        } else {
-            gpaLabel.setText("    Class GPA: N/A");
-        }
-    }
-
-    private double calculatePercentage(String letterGrade) {
-        switch (letterGrade) {
-            case "A": return 95;
-            case "A-": return 92;
-            case "B+": return 88;
-            case "B": return 85;
-            case "B-": return 82;
-            case "C+": return 78;
-            case "C": return 75;
-            case "C-": return 72;
-            case "D": return 65;
-            case "F": return 50;
-            default: return 0;
-        }
-    }
+    
+    
 
     private void viewProgressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewProgressActionPerformed
         int selectedRow = studentTable.getSelectedRow();
@@ -432,19 +340,7 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_viewTranscriptActionPerformed
 
     private void gradeAssignmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeAssignmentActionPerformed
-        int selectedRow = studentTable.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a student!", "No Selection", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String studentName = (String) studentTableModel.getValueAt(selectedRow, 1);
-
-        CardSequencePanel.removeAll();
-        GradingJPanel gradingPanel = new GradingJPanel(department, facultyProfile, CardSequencePanel,
-                                                       (String) courseComboBox.getSelectedItem(), studentName);
-        CardSequencePanel.add("Grading", gradingPanel);
-        ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+        
     }//GEN-LAST:event_gradeAssignmentActionPerformed
 
     private void computeFinalGradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeFinalGradeActionPerformed
@@ -474,9 +370,7 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_computeFinalGradeActionPerformed
 
     private void rankStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rankStudentsActionPerformed
-        loadStudents();
-        JOptionPane.showMessageDialog(this, "Students have been ranked by total grade percentage!",
-                                    "Ranking Complete", JOptionPane.INFORMATION_MESSAGE);
+        
     }//GEN-LAST:event_rankStudentsActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
@@ -505,13 +399,5 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
     private javax.swing.JButton viewTranscriptBtn;
     // End of variables declaration//GEN-END:variables
 
-    private class StudentInfo {
-        String studentId;
-        String name;
-        String email;
-        double gradePoint;
-        String letterGrade;
-        double percentage;
-        int rank;
-    }
+    
 }
