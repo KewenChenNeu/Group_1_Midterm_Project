@@ -4,6 +4,11 @@
  */
 package UserInterface.WorkAreas.StudentRole;
 
+import info5100.university.example.Department.Department;
+import info5100.university.example.Persona.StudentProfile;
+import java.awt.CardLayout;
+import javax.swing.JPanel;
+
 /**
  *
  * @author zhaojinkun
@@ -13,8 +18,14 @@ public class TranscriptJPanel extends javax.swing.JPanel {
     /**
      * Creates new form TranscriptJPanel
      */
-    public TranscriptJPanel() {
+    Department department;
+    StudentProfile student;
+    JPanel CardSequencePanel;
+    public TranscriptJPanel(Department department, StudentProfile student, JPanel CardSequencePanel) {
         initComponents();
+        this.department = department;
+        this.student = student;
+        this.CardSequencePanel = CardSequencePanel;
     }
 
     /**
@@ -49,7 +60,7 @@ public class TranscriptJPanel extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel2.setText(" Transcript Review     ");
 
-        btnBack.setText("Back");
+        btnBack.setText("<<< Back");
         btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBackActionPerformed(evt);
@@ -146,6 +157,9 @@ public class TranscriptJPanel extends javax.swing.JPanel {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
+        CardSequencePanel.remove(this);
+        CardLayout layout = (CardLayout) CardSequencePanel.getLayout();
+        layout.previous(CardSequencePanel);
     }//GEN-LAST:event_btnBackActionPerformed
 
 
