@@ -54,7 +54,6 @@ public class StudentProfile {
     }
 
     public CourseLoad newCourseLoad(String s) {
-
         return transcript.newCourseLoad(s);
     }
 

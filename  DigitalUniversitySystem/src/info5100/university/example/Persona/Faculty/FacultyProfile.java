@@ -58,4 +58,23 @@ public class FacultyProfile {
         return false;
     }
 
+    // New methods for Faculty Use Case
+    public ArrayList<FacultyAssignment> getFacultyAssignments() {
+        return facultyassignments;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public ArrayList<CourseOffer> getAssignedCourses() {
+        ArrayList<CourseOffer> courses = new ArrayList<>();
+        for (FacultyAssignment fa : facultyassignments) {
+            if (fa.getCourseOffer() != null) {
+                courses.add(fa.getCourseOffer());
+            }
+        }
+        return courses;
+    }
+
 }
