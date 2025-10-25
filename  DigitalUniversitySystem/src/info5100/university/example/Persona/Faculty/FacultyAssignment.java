@@ -31,5 +31,10 @@ public class FacultyAssignment {
     public FacultyProfile getFacultyProfile(){
         return facultyprofile;
     }
-    
+
+    // New method for Faculty Use Case
+    public CourseOffer getCourseOffer() {
+        return courseoffer;
+    }
+
 }
