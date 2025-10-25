@@ -120,10 +120,10 @@ public class ConfigureAUniversity {
             if(co5100 != null) {
                 SeatAssignment sa1 = courseLoad.newSeatAssignment(co5100);
                 if(sa1 != null) {
-                    sa1.setGrade(grades[i-1]);  // 设置成绩
+                    sa1.setGrade(grades[i-1]);  
                     
                     if(studentProfile.getTuitionAccount() != null) {
-                        studentProfile.getTuitionAccount().charge(4);  // 4学分的费用
+                        studentProfile.getTuitionAccount().charge(4);  
                     }
                 }
             }
