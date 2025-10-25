@@ -188,134 +188,134 @@ public class CourseRegistrationPanel extends javax.swing.JPanel {
 
     private void btnSearchIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchIdActionPerformed
         // TODO add your handling code here:
-        if (!fieldCourseID.getText().isBlank()) {
-            String customerID = fieldCourseID.getText();
-            Customer foundCustomer = orderDirectory.searchCustomerByID(customerID);
-            if (foundCustomer != null) {
-                DefaultTableModel customerModel = (DefaultTableModel) tbCourse.getModel();
-                customerModel.setRowCount(0);
-
-                Object[] customerRow = new Object[]{
-                    foundCustomer,
-                    foundCustomer.getFirstName(),
-                    foundCustomer.getLastName(),
-                    foundCustomer.getContact()
-                };
-                customerModel.addRow(customerRow);
-
-                // Refresh and add tbOrders
-                ArrayList<Customer> customerList = new ArrayList<Customer>();
-                customerList.add(foundCustomer);
-                ArrayList<Order> orderList = orderDirectory.searchOrderByCustomer(customerList);
-                DefaultTableModel orderModel = (DefaultTableModel) tbOrders.getModel();
-                orderModel.setRowCount(0);
-                for (Order o : orderList) {
-                    Product p = o.getProduct();
-                    int number = o.getNumber();
-                    double price = p.getPrice();
-                    double total = number * price;
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-                    Object[] orderRow = new Object []{
-                        o,
-                        o.getOrderDateTime().format(formatter),
-                        o.getOrderStatus(),
-                        String.valueOf(number),
-                        String.valueOf(total),
-                    };
-                    orderModel.addRow(orderRow);
-                }
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "Customer not found. Please check the customer ID and try again.","Warning",JOptionPane.WARNING_MESSAGE);
-            }
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "please type the customer ID to view", "Warning", JOptionPane.WARNING_MESSAGE);
-        }
+//        if (!fieldCourseID.getText().isBlank()) {
+//            String customerID = fieldCourseID.getText();
+//            Customer foundCustomer = orderDirectory.searchCustomerByID(customerID);
+//            if (foundCustomer != null) {
+//                DefaultTableModel customerModel = (DefaultTableModel) tbCourse.getModel();
+//                customerModel.setRowCount(0);
+//
+//                Object[] customerRow = new Object[]{
+//                    foundCustomer,
+//                    foundCustomer.getFirstName(),
+//                    foundCustomer.getLastName(),
+//                    foundCustomer.getContact()
+//                };
+//                customerModel.addRow(customerRow);
+//
+//                // Refresh and add tbOrders
+//                ArrayList<Customer> customerList = new ArrayList<Customer>();
+//                customerList.add(foundCustomer);
+//                ArrayList<Order> orderList = orderDirectory.searchOrderByCustomer(customerList);
+//                DefaultTableModel orderModel = (DefaultTableModel) tbOrders.getModel();
+//                orderModel.setRowCount(0);
+//                for (Order o : orderList) {
+//                    Product p = o.getProduct();
+//                    int number = o.getNumber();
+//                    double price = p.getPrice();
+//                    double total = number * price;
+//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//
+//                    Object[] orderRow = new Object []{
+//                        o,
+//                        o.getOrderDateTime().format(formatter),
+//                        o.getOrderStatus(),
+//                        String.valueOf(number),
+//                        String.valueOf(total),
+//                    };
+//                    orderModel.addRow(orderRow);
+//                }
+//            }
+//            else{
+//                JOptionPane.showMessageDialog(null, "Customer not found. Please check the customer ID and try again.","Warning",JOptionPane.WARNING_MESSAGE);
+//            }
+//        }
+//        else{
+//            JOptionPane.showMessageDialog(null, "please type the customer ID to view", "Warning", JOptionPane.WARNING_MESSAGE);
+//        }
 
     }//GEN-LAST:event_btnSearchIdActionPerformed
 
     private void btnSearchCourseNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchCourseNameActionPerformed
         // TODO add your handling code here:
-        if (!fieldCouseName.getText().isBlank()) {
-            String customerName = fieldCouseName.getText();
-            ArrayList<Customer> foundCustomerList = orderDirectory.searchCustomerByName(customerName);
-            if (!foundCustomerList.isEmpty()) {
-                DefaultTableModel customerModel = (DefaultTableModel) tbCourse.getModel();
-                customerModel.setRowCount(0);
-                for (Customer foundCustomer : foundCustomerList) {
-                    Object[] customerRow = new Object[]{
-                        foundCustomer,
-                        foundCustomer.getFirstName(),
-                        foundCustomer.getLastName(),
-                        foundCustomer.getContact()
-                    };
-                    customerModel.addRow(customerRow);
-                }
-                // Refresh and add tbOrders
-
-                ArrayList<Order> orderList = orderDirectory.searchOrderByCustomer(foundCustomerList);
-                DefaultTableModel orderModel = (DefaultTableModel) tbOrders.getModel();
-                orderModel.setRowCount(0);
-                for (Order o : orderList) {
-                    Product p = o.getProduct();
-                    int number = o.getNumber();
-                    double price = p.getPrice();
-                    double total = number * price;
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-                    Object[] orderRow = new Object []{
-                        o,
-                        o.getOrderDateTime().format(formatter),
-                        o.getOrderStatus(),
-                        String.valueOf(number),
-                        String.valueOf(total),
-                    };
-                    orderModel.addRow(orderRow);
-                }
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "Customer not found. Please check the customer Name and try again.","Warning",JOptionPane.WARNING_MESSAGE);
-            }
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "please type the customer Name to view", "Warning", JOptionPane.WARNING_MESSAGE);
-        }
+//        if (!fieldCouseName.getText().isBlank()) {
+//            String customerName = fieldCouseName.getText();
+//            ArrayList<Customer> foundCustomerList = orderDirectory.searchCustomerByName(customerName);
+//            if (!foundCustomerList.isEmpty()) {
+//                DefaultTableModel customerModel = (DefaultTableModel) tbCourse.getModel();
+//                customerModel.setRowCount(0);
+//                for (Customer foundCustomer : foundCustomerList) {
+//                    Object[] customerRow = new Object[]{
+//                        foundCustomer,
+//                        foundCustomer.getFirstName(),
+//                        foundCustomer.getLastName(),
+//                        foundCustomer.getContact()
+//                    };
+//                    customerModel.addRow(customerRow);
+//                }
+//                // Refresh and add tbOrders
+//
+//                ArrayList<Order> orderList = orderDirectory.searchOrderByCustomer(foundCustomerList);
+//                DefaultTableModel orderModel = (DefaultTableModel) tbOrders.getModel();
+//                orderModel.setRowCount(0);
+//                for (Order o : orderList) {
+//                    Product p = o.getProduct();
+//                    int number = o.getNumber();
+//                    double price = p.getPrice();
+//                    double total = number * price;
+//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//
+//                    Object[] orderRow = new Object []{
+//                        o,
+//                        o.getOrderDateTime().format(formatter),
+//                        o.getOrderStatus(),
+//                        String.valueOf(number),
+//                        String.valueOf(total),
+//                    };
+//                    orderModel.addRow(orderRow);
+//                }
+//            }
+//            else{
+//                JOptionPane.showMessageDialog(null, "Customer not found. Please check the customer Name and try again.","Warning",JOptionPane.WARNING_MESSAGE);
+//            }
+//        }
+//        else{
+//            JOptionPane.showMessageDialog(null, "please type the customer Name to view", "Warning", JOptionPane.WARNING_MESSAGE);
+//        }
     }//GEN-LAST:event_btnSearchCourseNameActionPerformed
 
     private void btnEnrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnrollActionPerformed
         // TODO add your handling code here:
-        int selectedRow = tbCourse.getSelectedRow();
-        if (selectedRow >= 0) {
-            Customer selectedCustomer = (Customer) tbCourse.getValueAt(selectedRow, 0);
-            ViewCustomerDetailJPanel panel = new ViewCustomerDetailJPanel(workJPanel, selectedCustomer);
-            workJPanel.add("ViewCustomerDetailJPanel", panel);
-            CardLayout layout = (CardLayout) workJPanel.getLayout();
-            layout.next(workJPanel);
-
-            // We want to open ViewJPanel here for the selected account
-        } else {
-            JOptionPane.showMessageDialog(null, "Please select a order from the list to view.", "Warning", JOptionPane.WARNING_MESSAGE);
-        }
+//        int selectedRow = tbCourse.getSelectedRow();
+//        if (selectedRow >= 0) {
+//            Customer selectedCustomer = (Customer) tbCourse.getValueAt(selectedRow, 0);
+//            ViewCustomerDetailJPanel panel = new ViewCustomerDetailJPanel(workJPanel, selectedCustomer);
+//            workJPanel.add("ViewCustomerDetailJPanel", panel);
+//            CardLayout layout = (CardLayout) workJPanel.getLayout();
+//            layout.next(workJPanel);
+//
+//            // We want to open ViewJPanel here for the selected account
+//        } else {
+//            JOptionPane.showMessageDialog(null, "Please select a order from the list to view.", "Warning", JOptionPane.WARNING_MESSAGE);
+//        }
 
     }//GEN-LAST:event_btnEnrollActionPerformed
 
     private void btnDropActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDropActionPerformed
         // TODO add your handling code here:
-        int selectedRow = tbCourse.getSelectedRow();
-        if (selectedRow >= 0) {
-            int dialogButton = JOptionPane.YES_NO_OPTION;
-            int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the selected customer?", "Warning", dialogButton);
-            if (dialogResult == JOptionPane.YES_OPTION) {
-                Customer selectedCustomer = (Customer) tbCourse.getValueAt(selectedRow, 0);
-                orderDirectory.deleteCustomer(selectedCustomer);
-                clearSearchTables();
-            }
-            // We want to open ViewJPanel here for the selected account
-        } else {
-            JOptionPane.showMessageDialog(null, "Please select an customer from the list to view.", "Warning", JOptionPane.WARNING_MESSAGE);
-        }
+//        int selectedRow = tbCourse.getSelectedRow();
+//        if (selectedRow >= 0) {
+//            int dialogButton = JOptionPane.YES_NO_OPTION;
+//            int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the selected customer?", "Warning", dialogButton);
+//            if (dialogResult == JOptionPane.YES_OPTION) {
+//                Customer selectedCustomer = (Customer) tbCourse.getValueAt(selectedRow, 0);
+//                orderDirectory.deleteCustomer(selectedCustomer);
+//                clearSearchTables();
+//            }
+//            // We want to open ViewJPanel here for the selected account
+//        } else {
+//            JOptionPane.showMessageDialog(null, "Please select an customer from the list to view.", "Warning", JOptionPane.WARNING_MESSAGE);
+//        }
 
     }//GEN-LAST:event_btnDropActionPerformed
 
