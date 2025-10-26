@@ -174,7 +174,7 @@ public class Department {
     
     // NEW
 
-    public RegistrarDirectory getRegistrardirectory() {
+    public RegistrarDirectory getRegistrarDirectory() {
         return registrardirectory;
     }
 
@@ -220,5 +220,11 @@ public class Department {
         GPADistributionReport report = new GPADistributionReport(program);
         // Implementation to populate report
         return report;
-}
+    }
+    
+    public void initializeFinancialAccount() {
+        if (financialAccount == null) {
+            financialAccount = new FinancialAccount();
+        }
+    }
 }
