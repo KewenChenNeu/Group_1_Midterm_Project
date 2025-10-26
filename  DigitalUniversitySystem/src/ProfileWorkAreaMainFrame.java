@@ -15,6 +15,7 @@ import info5100.university.example.Persona.StudentDirectory;
 
 import UserInterface.WorkAreas.AdminRole.AdminRoleWorkAreaJPanel;
 import UserInterface.WorkAreas.FacultyRole.FacultyWorkAreaJPanel;
+import UserInterface.WorkAreas.RegistrarRole.RegistrarWorkAreaJPanel;
 import UserInterface.WorkAreas.StudentRole.StudentWorkAreaJPanel;
 
 import javax.swing.*;
@@ -131,7 +132,6 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
         String un = UserNameTextField.getText();
         String pw = PasswordTextField.getText();
         
-        // 使用department的UserAccountDirectory
         info5100.university.example.Persona.UserAccountDirectory uad = (info5100.university.example.Persona.UserAccountDirectory) department.getUserAccountDirectory();
         info5100.university.example.Persona.UserAccount useraccount = uad.authenticate(un, pw);
 
@@ -175,16 +175,17 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
             CardSequencePanel.add("Faculty", facultyPanel);
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
         }
-        // Add the Register Roll
-
- /*      if (profile instanceof FacultyProfile) {
-            facultyworkarea = new FacultyWorkAreaJPanel(business, CardSequencePanel);
+        else if ("Registrar".equals(role)) {
+            Person person = useraccount.getPerson();
+            // FacultyProfile fp = department.getFacultyDirectory().findFaculty(person.getPersonId());
+            
+            RegistrarWorkAreaJPanel registrarPanel = new RegistrarWorkAreaJPanel(department, CardSequencePanel);
             CardSequencePanel.removeAll();
-            CardSequencePanel.add("faculty", facultyworkarea);
+            CardSequencePanel.add("Faculty", registrarPanel);
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
-
         }
-*/
+        
+
 
     }//GEN-LAST:event_LoginButtonActionPerformed
 
