@@ -20,11 +20,11 @@ public class ConfigureAUniversity {
         System.out.println("Creating courses...");
         
 
-        Course info5100 = department.newCourse("INFO 5100", "Application Engineering", 4);
-        Course info5200 = department.newCourse("INFO 5200", "Data Structures", 4);
-        Course info6150 = department.newCourse("INFO 6150", "Web Design", 4);
-        Course info6250 = department.newCourse("INFO 6250", "Web Tools", 4);
-        Course info7390 = department.newCourse("INFO 7390", "Advanced Data Science", 4);
+        Course info5100 = department.newCourse("Application Engineering", "INFO 5100", 4);
+        Course info5200 = department.newCourse("Data Structures", "INFO 5200", 4);
+        Course info6150 = department.newCourse("Web Design", "INFO 6150", 4);
+        Course info6250 = department.newCourse("Web Tools", "INFO 6250", 4);
+        Course info7390 = department.newCourse("Advanced Data Science", "INFO 7390", 4);
         
 
         department.addCoreCourse(info5100);  
