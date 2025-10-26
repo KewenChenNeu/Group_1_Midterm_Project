@@ -59,7 +59,11 @@ public class TuitionAccount {
     }
 
     public double getTotalPaid() {                  
-        return totalPaid;
+        double sum = 0.0;
+        for (Payment p : paymentHistory) {
+            sum += p.getAmount();
+        }
+        return sum;
     }
 
     // 获取支付历史

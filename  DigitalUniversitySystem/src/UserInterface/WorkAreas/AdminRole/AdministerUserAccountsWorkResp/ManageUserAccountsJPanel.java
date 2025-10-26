@@ -46,11 +46,10 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
             Object[] row = new Object[4];
             row[0] = ua.getUsername();
             row[1] = ua.getRole();
-            row[2] = ""; // placeholder for "Last Activity"
-            row[3] = ""; // placeholder for "Last Updated"
+            row[2] = ua.getLastLoginTime(); 
+            row[3] = ua.getLastUpdatedTime(); 
             model.addRow(row);
         }
-
     }
 
     /**
@@ -63,7 +62,6 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         btnBack = new javax.swing.JButton();
-        btnNext = new javax.swing.JButton();
         lblTitle2 = new javax.swing.JLabel();
         lblTitle = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -83,15 +81,6 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
         });
         add(btnBack);
         btnBack.setBounds(30, 400, 80, 23);
-
-        btnNext.setText("Next >>");
-        btnNext.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNextActionPerformed(evt);
-            }
-        });
-        add(btnNext);
-        btnNext.setBounds(500, 400, 80, 23);
 
         lblTitle2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lblTitle2.setText("User Accounts");
@@ -163,13 +152,6 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
         CardLayout layout = (CardLayout) CardSequencePanel.getLayout();
         layout.previous(CardSequencePanel);
     }//GEN-LAST:event_btnBackActionPerformed
-
-    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
-        // TODO add your handling code here:
-        CardSequencePanel.remove(this);
-        CardLayout layout = (CardLayout) CardSequencePanel.getLayout();
-        layout.previous(CardSequencePanel);
-    }//GEN-LAST:event_btnNextActionPerformed
 
     private void UserAccountTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_UserAccountTableMousePressed
         // Extracts the row (uaser account) in the table that is selected by the user                       
@@ -326,7 +308,6 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnDeleteAccount;
     private javax.swing.JButton btnEditAccount;
     private javax.swing.JButton btnNewAccount;
-    private javax.swing.JButton btnNext;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblTitle2;

@@ -83,6 +83,10 @@ public class FacultyProfile {
         this.facultyName = facultyName;
     }
 
+    public ArrayList<FacultyAssignment> getFacultyAssignments() {
+        return facultyassignments;
+    }
+
     public double getProfAverageOverallRating() {
         if (facultyassignments.isEmpty()) {
             return 0.0;
@@ -121,6 +125,10 @@ public class FacultyProfile {
 //        String id = getPersonId();
 //        String name = (facultyName != null ? facultyName : "(no name)");
 //        return name + " [" + (id != null ? id : "?") + "]";
+//    }
+
+//    public ArrayList<FacultyAssignment> getFacultyAssignments() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 //    }
     
 }
