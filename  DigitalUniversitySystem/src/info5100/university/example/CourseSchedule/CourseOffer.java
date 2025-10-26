@@ -8,6 +8,7 @@ package info5100.university.example.CourseSchedule;
 import info5100.university.example.CourseCatalog.Course;
 import info5100.university.example.Persona.Faculty.FacultyAssignment;
 import info5100.university.example.Persona.Faculty.FacultyProfile;
+import info5100.university.example.Persona.StudentProfile;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,8 @@ public class CourseOffer {
     Course course;
     ArrayList<Seat> seatlist;
     FacultyAssignment facultyassignment;
+    String room;
+    String courseScheduleTime;
 
     public CourseOffer(Course c) {
         course = c;
@@ -83,6 +86,10 @@ public class CourseOffer {
         }
         return sum;
     }
+
+    public Course getCourse() {
+        return course;
+    }
     public Course getSubjectCourse(){
         return course;
     }
@@ -115,4 +122,100 @@ public class CourseOffer {
         this.enrollmentOpen = open;
     }
 
+    
+    
+    // New##################################################################
+
+    // Fixed enrollStudent method
+    public boolean enrollStudent(StudentProfile student) {
+        // Check if there's capacity
+        if (getAvailableSeats() <= 0) {
+            return false;
+        }
+
+        // Get or create current course load for the student
+        CourseLoad courseLoad = student.getCurrentCourseLoad();
+        if (courseLoad == null) {
+            // You might need to create a new course load here
+            // depending on your semester handling
+            return false;
+        }
+
+        SeatAssignment sa = assignEmptySeat(courseLoad);
+        return sa != null;
+    }
+
+    // Fixed dropStudent method
+    public boolean dropStudent(StudentProfile student) {
+        // Find and remove the student's seat assignment
+        for (Seat seat : seatlist) {
+            if (seat.isOccupied()) {
+                // Check if this seat belongs to the student
+                if (seat.seatassignment != null && 
+                    seat.seatassignment.courseload != null) {
+                    
+                    // Need to check if this courseload belongs to the student
+                    // This requires going through the student's course loads
+                    ArrayList<SeatAssignment> studentAssignments = student.getCourseList();
+                    for (SeatAssignment sa : studentAssignments) {
+                        if (sa.getSeat() == seat) {
+                            // Found the student's seat, now release it
+                            seat.occupied = false;
+                            seat.seatassignment = null;
+                            
+                            // Also remove from student's course load
+                            sa.courseload.getSeatAssignments().remove(sa);
+                            
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public int getAvailableSeats() {
+        int available = 0;
+        for (Seat seat : seatlist) {
+            if (!seat.isOccupied()) {
+                available++;
+            }
+        }
+        return available;
+    }
+
+    public int getCurrentEnrollment() {
+        int enrolled = 0;
+        for (Seat seat : seatlist) {
+            if (seat.isOccupied()) {
+                enrolled++;
+            }
+        }
+        return enrolled;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    // Fixed schedule methods
+    public void setSchedule(String schedule) {
+        this.courseScheduleTime = schedule;  // Use the actual variable name
+    }
+
+    public String getSchedule() {
+        return courseScheduleTime;  // Use the actual variable name
+    }
+
+    public void setEnrollmentCapacity(int capacity) {
+        // Adjust seat list size if needed
+        if (capacity > seatlist.size()) {
+            generatSeats(capacity - seatlist.size());
+        }
+    }
 }

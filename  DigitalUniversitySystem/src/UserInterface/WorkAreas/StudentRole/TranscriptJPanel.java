@@ -50,7 +50,8 @@ public class TranscriptJPanel extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         lbAcademicStanding = new javax.swing.JLabel();
 
-        cbCourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbCourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fall 2025", "Summer 2025", "Spring 2025", "Fall 2024" }));
+        cbCourse.setSelectedIndex(-1);
         cbCourse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbCourseActionPerformed(evt);

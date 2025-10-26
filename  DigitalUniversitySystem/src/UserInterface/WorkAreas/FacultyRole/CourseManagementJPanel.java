@@ -191,29 +191,29 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void populateCourseTable() {
-        courseTableModel = (DefaultTableModel) courseTable.getModel();
-        courseTableModel.setRowCount(0);
-
-        if (facultyProfile != null) {
-            ArrayList<FacultyAssignment> assignments = facultyProfile.getFacultyAssignments();
-            if (assignments != null) {
-                for (FacultyAssignment fa : assignments) {
-                    CourseOffer co = fa.getCourseOffer();
-                    if (co != null) {
-                        Course course = co.getSubjectCourse();
-                        Object[] row = {
-                            course.getCOurseNumber(),
-                            course.getCredits(),
-                            "MWF 10:00-11:00",
-                            co.getSeatList().size(),
-                            co.getEnrolledCount(),
-                            co.isEnrollmentOpen() ? "Open" : "Closed"
-                        };
-                        courseTableModel.addRow(row);
-                    }
-                }
-            }
-        }
+//        courseTableModel = (DefaultTableModel) courseTable.getModel();
+//        courseTableModel.setRowCount(0);
+//
+//        if (facultyProfile != null) {
+//            ArrayList<FacultyAssignment> assignments = facultyProfile.getFacultyAssignments();
+//            if (assignments != null) {
+//                for (FacultyAssignment fa : assignments) {
+//                    CourseOffer co = fa.getCourseOffer();
+//                    if (co != null) {
+//                        Course course = co.getSubjectCourse();
+//                        Object[] row = {
+//                            course.getCOurseNumber(),
+//                            course.getCredits(),
+//                            "MWF 10:00-11:00",
+//                            co.getSeatList().size(),
+//                            co.getEnrolledCount(),
+//                            co.isEnrollmentOpen() ? "Open" : "Closed"
+//                        };
+//                        courseTableModel.addRow(row);
+//                    }
+//                }
+//            }
+//        }
     }
 
     private void editCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCourseActionPerformed

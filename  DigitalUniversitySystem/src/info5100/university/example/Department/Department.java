@@ -12,12 +12,16 @@ import info5100.university.example.CourseSchedule.CourseOffer;
 import info5100.university.example.CourseSchedule.CourseSchedule;
 import info5100.university.example.Degree.Degree;
 import info5100.university.example.Employer.EmployerDirectory;
+import info5100.university.example.Financial.FinancialAccount;
 import info5100.university.example.Persona.Faculty.FacultyDirectory;
 import info5100.university.example.Persona.Faculty.FacultyProfile;
 import info5100.university.example.Persona.PersonDirectory;
+import info5100.university.example.Persona.RegistrarDirectory;
 import info5100.university.example.Persona.StudentDirectory;
 import info5100.university.example.Persona.StudentProfile;
 import info5100.university.example.Persona.UserAccountDirectory;
+import info5100.university.example.Reports.EnrollmentReport;
+import info5100.university.example.Reports.GPADistributionReport;
 import java.util.HashMap;
 
 /**
@@ -34,6 +38,8 @@ public class Department {
     EmployerDirectory employerdirectory;
     UserAccountDirectory useraccountdirectory;
     Degree degree;
+    RegistrarDirectory registrardirectory;
+    FinancialAccount financialAccount;
     HashMap<String, CourseSchedule> mastercoursecatalog;
 
     public Department(String n) {
@@ -45,6 +51,8 @@ public class Department {
         facultydirectory = new FacultyDirectory(this);
         employerdirectory = new EmployerDirectory(this);
         useraccountdirectory = new UserAccountDirectory();
+        registrardirectory = new RegistrarDirectory();
+        financialAccount = new FinancialAccount();
         degree = new Degree("MSIS");
     }
 
@@ -126,7 +134,14 @@ public class Department {
         co.assignEmptySeat(cl);
 
     }
+    
+    public HashMap<String, CourseSchedule> getMastercoursecatalog() {
+        return mastercoursecatalog;
+    }
 
+    public void setMastercoursecatalog(HashMap<String, CourseSchedule> mastercoursecatalog) {
+        this.mastercoursecatalog = mastercoursecatalog;
+    }
     public boolean assignFacultyToCourse(String facultyPersonId, String courseNumber, String semester) {
         try {
             FacultyDirectory fd = this.facultydirectory;
@@ -156,4 +171,54 @@ public class Department {
             return false;
         }
     }
+    
+    // NEW
+
+    public RegistrarDirectory getRegistrardirectory() {
+        return registrardirectory;
+    }
+
+    public FinancialAccount getFinancialAccount() {
+        return financialAccount;
+    }
+    
+    // Add enrollment management methods
+    public boolean enrollStudentInCourse(String studentId, String courseNumber, String semester) {
+        StudentProfile student = studentdirectory.findStudent(studentId);
+        if (student == null) return false;
+
+        CourseSchedule schedule = getCourseSchedule(semester);
+        if (schedule == null) return false;
+
+        CourseOffer offer = schedule.getCourseOfferByNumber(courseNumber);
+        if (offer == null) return false;
+
+        return offer.enrollStudent(student);
+    }
+
+    public boolean dropStudentFromCourse(String studentId, String courseNumber, String semester) {
+        StudentProfile student = studentdirectory.findStudent(studentId);
+        if (student == null) return false;
+
+        CourseSchedule schedule = getCourseSchedule(semester);
+        if (schedule == null) return false;
+
+        CourseOffer offer = schedule.getCourseOfferByNumber(courseNumber);
+        if (offer == null) return false;
+
+        return offer.dropStudent(student);
+    }
+
+    // Generate reports
+    public EnrollmentReport generateEnrollmentReport(String semester) {
+        EnrollmentReport report = new EnrollmentReport(semester);
+        // Implementation to populate report
+        return report;
+    }
+
+    public GPADistributionReport generateGPAReport(String program) {
+        GPADistributionReport report = new GPADistributionReport(program);
+        // Implementation to populate report
+        return report;
+}
 }
