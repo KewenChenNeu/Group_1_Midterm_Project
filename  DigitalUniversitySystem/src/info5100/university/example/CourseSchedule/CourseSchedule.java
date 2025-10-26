@@ -47,6 +47,30 @@ public class CourseSchedule {
         }
         return null;
     }
+    
+    public ArrayList<CourseOffer> getCourseOfferByCourseName(String n){
+        ArrayList<CourseOffer> courseOffers = new ArrayList<CourseOffer>();
+        for (CourseOffer co : schedule) {
+
+            if (co.getCourseName().toLowerCase().contains(n.toLowerCase())) {
+                courseOffers.add(co);
+            }
+        }
+        
+        return courseOffers;
+    }
+    
+    public ArrayList<CourseOffer> getCourseOfferByTeacherName(String n){
+        ArrayList<CourseOffer> courseOffers = new ArrayList<CourseOffer>();
+        for (CourseOffer co : schedule) {
+
+            if (co.getTeacherName().toLowerCase().contains(n.toLowerCase())) {
+                courseOffers.add(co);
+            }
+        }
+        
+        return courseOffers;
+    }
 
     public int calculateTotalRevenues() {
         int sum = 0;
