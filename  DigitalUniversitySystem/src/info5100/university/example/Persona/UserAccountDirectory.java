@@ -37,7 +37,6 @@ public class UserAccountDirectory {
         return null;
     }
 
-  
     public UserAccount findUserAccount(String personId) {
         if (personId == null) {
             return null;
@@ -62,12 +61,10 @@ public class UserAccountDirectory {
         return null;
     }
 
-   
     public java.util.List<UserAccount> getUserAccountList() {
         return Collections.unmodifiableList(useraccountlist);
     }
 
-   
     public ArrayList<UserAccount> getUserAccountsByRole(String role) {
         ArrayList<UserAccount> result = new ArrayList<>();
         for (UserAccount ua : useraccountlist) {
@@ -77,7 +74,6 @@ public class UserAccountDirectory {
         }
         return result;
     }
-
 
     public boolean updateUserAccount(String username, String newPassword, String newRole) {
         for (UserAccount ua : useraccountlist) {
@@ -121,11 +117,22 @@ public class UserAccountDirectory {
         return useraccountlist.size();
     }
 
-    
     public int getUserCountByRole(String role) {
         int count = 0;
         for (UserAccount ua : useraccountlist) {
             if (ua.getRole().equals(role)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int countActiveByRole(String role) {
+        int count = 0;
+        for (UserAccount ua : useraccountlist) {
+            if (ua.isActive()
+                    && ua.getRole() != null
+                    && ua.getRole().equalsIgnoreCase(role)) {
                 count++;
             }
         }

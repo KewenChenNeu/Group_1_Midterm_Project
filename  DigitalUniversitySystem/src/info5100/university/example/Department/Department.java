@@ -134,7 +134,7 @@ public class Department {
         co.assignEmptySeat(cl);
 
     }
-    
+
     public HashMap<String, CourseSchedule> getMastercoursecatalog() {
         return mastercoursecatalog;
     }
@@ -142,6 +142,7 @@ public class Department {
     public void setMastercoursecatalog(HashMap<String, CourseSchedule> mastercoursecatalog) {
         this.mastercoursecatalog = mastercoursecatalog;
     }
+
     public boolean assignFacultyToCourse(String facultyPersonId, String courseNumber, String semester) {
         try {
             FacultyDirectory fd = this.facultydirectory;
@@ -171,8 +172,6 @@ public class Department {
             return false;
         }
     }
-    
-    // NEW
 
     public RegistrarDirectory getRegistrarDirectory() {
         return registrardirectory;
@@ -181,30 +180,42 @@ public class Department {
     public FinancialAccount getFinancialAccount() {
         return financialAccount;
     }
-    
-    // Add enrollment management methods
+
     public boolean enrollStudentInCourse(String studentId, String courseNumber, String semester) {
-        StudentProfile student = studentdirectory.findStudent(studentId);
-        if (student == null) return false;
+        StudentProfile sp = studentdirectory.findStudent(studentId);
+        if (sp == null) {
+            return false;
+        }
 
         CourseSchedule schedule = getCourseSchedule(semester);
-        if (schedule == null) return false;
+        if (schedule == null) {
+            return false;
+        }
 
         CourseOffer offer = schedule.getCourseOfferByNumber(courseNumber);
-        if (offer == null) return false;
+        if (offer == null) {
+            return false;
+        }
 
-        return offer.enrollStudent(student);
+        CourseLoad cl = sp.getCurrentCourseLoad();
+        return offer.assignEmptySeat(cl) != null;
     }
 
     public boolean dropStudentFromCourse(String studentId, String courseNumber, String semester) {
         StudentProfile student = studentdirectory.findStudent(studentId);
-        if (student == null) return false;
+        if (student == null) {
+            return false;
+        }
 
         CourseSchedule schedule = getCourseSchedule(semester);
-        if (schedule == null) return false;
+        if (schedule == null) {
+            return false;
+        }
 
         CourseOffer offer = schedule.getCourseOfferByNumber(courseNumber);
-        if (offer == null) return false;
+        if (offer == null) {
+            return false;
+        }
 
         return offer.dropStudent(student);
     }
@@ -221,6 +232,25 @@ public class Department {
         // Implementation to populate report
         return report;
     }
+
+    public int getCourseOfferCountForSemester(String semester) {
+        CourseSchedule cs = mastercoursecatalog.get(semester);
+        if (cs == null) {
+            return 0;
+        }
+        return cs.getAllCourseOffers().size();
+    }
+
+    public double getTotalTuitionPaid() {
+        double total = 0.0;
+        for (StudentProfile sp : studentdirectory.getStudentList()) {
+            if (sp.getTuitionAccount() != null) {
+                total += sp.getTuitionAccount().getTotalPaid();
+            }
+        }
+        return total;
+    }
+
     
     public void initializeFinancialAccount() {
         if (financialAccount == null) {
