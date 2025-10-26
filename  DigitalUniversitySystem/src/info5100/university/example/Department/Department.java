@@ -124,4 +124,12 @@ public class Department {
         co.assignEmptySeat(cl);
 
     }
+    
+    public HashMap<String, CourseSchedule> getMastercoursecatalog() {
+        return mastercoursecatalog;
+    }
+
+    public void setMastercoursecatalog(HashMap<String, CourseSchedule> mastercoursecatalog) {
+        this.mastercoursecatalog = mastercoursecatalog;
+    }
 }

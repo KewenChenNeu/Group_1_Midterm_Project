@@ -83,6 +83,10 @@ public class CourseOffer {
         }
         return sum;
     }
+
+    public Course getCourse() {
+        return course;
+    }
     public Course getSubjectCourse(){
         return course;
     }
