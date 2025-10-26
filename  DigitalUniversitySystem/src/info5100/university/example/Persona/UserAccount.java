@@ -25,7 +25,6 @@ public class UserAccount {
     private boolean isActive;
     private String lastLoginTime;
     
-    // 构造函数
     public UserAccount(Person p, String un, String pw, String r) {
         person = p;
         username = un;
@@ -34,12 +33,10 @@ public class UserAccount {
         isActive = true;
     }
     
-    // 认证方法
     public boolean authenticate(String un, String pw) {
         return username.equals(un) && password.equals(pw);
     }
     
-    // Getter方法
     public String getRole() { 
         return role; 
     }
@@ -53,7 +50,7 @@ public class UserAccount {
     }
     
     public String getPassword() {
-        return password; // 实际项目中应该加密
+        return password; 
     }
     
     public boolean isActive() {
@@ -64,7 +61,7 @@ public class UserAccount {
         return lastLoginTime;
     }
     
-    // Setter方法
+    // Setter
     public void setPassword(String newPassword) {
         this.password = newPassword;
     }
@@ -81,7 +78,6 @@ public class UserAccount {
         this.lastLoginTime = time;
     }
     
-    // 判断是否匹配ID
     public boolean isMatch(String id) {
         return person.getPersonId().equals(id);
     }
