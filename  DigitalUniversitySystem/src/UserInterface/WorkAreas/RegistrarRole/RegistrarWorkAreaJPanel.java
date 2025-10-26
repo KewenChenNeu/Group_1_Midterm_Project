@@ -4,16 +4,24 @@
  */
 package UserInterface.WorkAreas.RegistrarRole;
 
+import info5100.university.example.Department.Department;
+import javax.swing.JPanel;
+
 /**
  *
  * @author chris
  */
 public class RegistrarWorkAreaJPanel extends javax.swing.JPanel {
 
+    private Department department;
+    private JPanel CardSequencePanel;
+    
     /**
      * Creates new form RegistrarWorkAreaJPanel
      */
-    public RegistrarWorkAreaJPanel() {
+    public RegistrarWorkAreaJPanel(Department dept, JPanel cardPanel) {
+        this.department = dept;
+        this.CardSequencePanel = cardPanel;
         initComponents();
     }
 
