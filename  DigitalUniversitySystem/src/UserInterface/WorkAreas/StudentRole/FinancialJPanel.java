@@ -32,9 +32,10 @@ public class FinancialJPanel extends javax.swing.JPanel {
         btnPay = new javax.swing.JButton();
         txtPayment = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblHistory = new javax.swing.JTable();
         lblPaymentHistory = new javax.swing.JLabel();
         lblCurrentBalance = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         lblTitle.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
         lblTitle.setText("Student Financial Portal");
@@ -45,7 +46,7 @@ public class FinancialJPanel extends javax.swing.JPanel {
 
         btnPay.setText("Pay Tuition");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblHistory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -56,9 +57,11 @@ public class FinancialJPanel extends javax.swing.JPanel {
                 "Date", "Amount Paid", "Balance", "Note"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblHistory);
 
         lblPaymentHistory.setText("Payment History");
+
+        jLabel1.setText("$");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -82,7 +85,10 @@ public class FinancialJPanel extends javax.swing.JPanel {
                         .addComponent(txtPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(40, 40, 40)
                         .addComponent(btnPay))
-                    .addComponent(lblCurrentBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblCurrentBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -92,7 +98,9 @@ public class FinancialJPanel extends javax.swing.JPanel {
                 .addComponent(lblTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblBalance)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblBalance)
+                        .addComponent(jLabel1))
                     .addComponent(lblCurrentBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -110,13 +118,14 @@ public class FinancialJPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPay;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblBalance;
     private javax.swing.JLabel lblCurrentBalance;
     private javax.swing.JLabel lblPayment;
     private javax.swing.JLabel lblPaymentHistory;
     private javax.swing.JLabel lblTitle;
+    private javax.swing.JTable tblHistory;
     private javax.swing.JTextField txtPayment;
     // End of variables declaration//GEN-END:variables
 }
