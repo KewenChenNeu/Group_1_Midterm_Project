@@ -126,4 +126,9 @@ public class FacultyProfile {
 //        String name = (facultyName != null ? facultyName : "(no name)");
 //        return name + " [" + (id != null ? id : "?") + "]";
 //    }
+
+    public ArrayList<FacultyAssignment> getFacultyAssignments() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
 }

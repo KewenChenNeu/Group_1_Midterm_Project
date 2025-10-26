@@ -6,8 +6,10 @@
 package UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp;
 
 import info5100.university.example.UniversitySystem;
-
+import UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp.AdministerPersonJPanel;
 import javax.swing.JPanel;
+import info5100.university.example.Department.Department;
+
 
 /**
  *
@@ -19,13 +21,15 @@ public class ManagePersonsJPanel extends javax.swing.JPanel {
      * Creates new form ManageSuppliersJPanel
      */
     JPanel CardSequencePanel;
+    Department department; 
     UniversitySystem universitySystem;
 
 
+
     public ManagePersonsJPanel(UniversitySystem us, JPanel jp) {
-        CardSequencePanel = jp;
-        this.universitySystem = us;
         initComponents();
+        this.CardSequencePanel = jp;
+        this.universitySystem = us;
 
     }
 
@@ -86,10 +90,10 @@ public class ManagePersonsJPanel extends javax.swing.JPanel {
     private void NextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextActionPerformed
         // TODO add your handling code here:
         
-//        AdministerPersonJPanel mppd = new AdministerPersonJPanel(universitySystem, CardSequencePanel);
-//        CardSequencePanel.add(mppd);
-//        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
-
+        AdministerPersonJPanel administerPanel =
+        new AdministerPersonJPanel(department, CardSequencePanel); // pass Department
+        CardSequencePanel.add("AdministerPerson", administerPanel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_NextActionPerformed
 
 
