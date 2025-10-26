@@ -127,8 +127,8 @@ public class FacultyProfile {
 //        return name + " [" + (id != null ? id : "?") + "]";
 //    }
 
-    public ArrayList<FacultyAssignment> getFacultyAssignments() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+//    public ArrayList<FacultyAssignment> getFacultyAssignments() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//    }
     
 }

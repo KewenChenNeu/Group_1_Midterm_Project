@@ -35,4 +35,8 @@ public class RegistrarDirectory {
     public ArrayList<RegistrarProfile> getRegistrarList() {
         return registrarlist;
     }
+
+    
+    
+    
 }
