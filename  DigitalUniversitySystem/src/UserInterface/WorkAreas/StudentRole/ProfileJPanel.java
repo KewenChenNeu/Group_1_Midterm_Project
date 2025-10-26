@@ -3,19 +3,76 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package UserInterface.WorkAreas.StudentRole;
+import info5100.university.example.Persona.StudentProfile;
+import info5100.university.example.Persona.Person;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author karaboss
  */
 public class ProfileJPanel extends javax.swing.JPanel {
+    
+    private StudentProfile student;
+
 
     /**
      * Creates new form ProfileJPanel
      */
-    public ProfileJPanel() {
+    public ProfileJPanel(StudentProfile student) {
+        this.student = student;
         initComponents();
+        loadStudentProfile();
+        setEditable(false);
     }
+    
+    private void loadStudentProfile() {
+        if (student != null && student.getPerson() != null) {
+            Person p = student.getPerson();
+            txtName.setText(p.getName());
+            txtEmail.setText(p.getEmail());
+            txtPhone.setText(p.getPhone());
+            txtMajor.setText(student.getDepartment());
+        }
+    }
+
+    private void saveStudentProfile() {
+        if (student != null && student.getPerson() != null) {
+            Person p = student.getPerson();
+            p.setName(txtName.getText().trim());
+            p.setEmail(txtEmail.getText().trim());
+            p.setPhone(txtPhone.getText().trim());
+            student.setDepartment(txtMajor.getText().trim());
+        }
+    }
+     
+    private boolean validateInput() {
+        if (txtName.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Name cannot be empty.");
+            return false;
+        }
+        if (!txtEmail.getText().contains("@")) {
+            JOptionPane.showMessageDialog(this, "Invalid email address.");
+            return false;
+        }
+        if (!txtPhone.getText().matches("\\d{10}")) {
+            JOptionPane.showMessageDialog(this, "Phone number must be 10 digits.");
+            return false;
+        }
+        return true;
+    }
+
+    private void setEditable(boolean editable) {
+        txtName.setEditable(editable);
+        txtEmail.setEditable(editable);
+        txtPhone.setEditable(editable);
+        txtAddress.setEditable(editable);
+        txtAddress2.setEditable(editable);
+        txtMajor.setEditable(editable);
+        btnSave.setEnabled(editable);
+        btnCancel.setEnabled(editable);
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,8 +84,7 @@ public class ProfileJPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         lblTitle = new javax.swing.JLabel();
-        lblFirstName = new javax.swing.JLabel();
-        lblLastName = new javax.swing.JLabel();
+        lblName = new javax.swing.JLabel();
         lblEmail = new javax.swing.JLabel();
         lblPhone = new javax.swing.JLabel();
         lblAddress = new javax.swing.JLabel();
@@ -36,8 +92,7 @@ public class ProfileJPanel extends javax.swing.JPanel {
         btnEdit = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
-        txtFirstName = new javax.swing.JTextField();
-        txtLastName = new javax.swing.JTextField();
+        txtName = new javax.swing.JTextField();
         txtEmail = new javax.swing.JTextField();
         txtPhone = new javax.swing.JTextField();
         txtAddress = new javax.swing.JTextField();
@@ -48,9 +103,7 @@ public class ProfileJPanel extends javax.swing.JPanel {
         lblTitle.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
         lblTitle.setText("Student Profile");
 
-        lblFirstName.setText("First Name:");
-
-        lblLastName.setText("Last Name:");
+        lblName.setText("First Name:");
 
         lblEmail.setText("E-Mail:");
 
@@ -61,10 +114,25 @@ public class ProfileJPanel extends javax.swing.JPanel {
         lblMajor.setText("Major:");
 
         btnEdit.setText("Edit");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         btnSave.setText("Save Changes");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         btnCancel.setText("Cancel");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         lblAddress2.setText("Address:");
 
@@ -73,16 +141,14 @@ public class ProfileJPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(138, 138, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(lblTitle)
                         .addGap(379, 379, 379))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(82, 82, 82)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblLastName)
-                            .addComponent(lblFirstName)
+                            .addComponent(lblName)
                             .addComponent(lblEmail)
                             .addComponent(lblPhone)
                             .addComponent(lblAddress)
@@ -95,8 +161,7 @@ public class ProfileJPanel extends javax.swing.JPanel {
                             .addComponent(txtMajor, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtPhone, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
-                            .addComponent(txtFirstName)
-                            .addComponent(txtLastName))
+                            .addComponent(txtName))
                         .addGap(269, 269, 269))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(70, 70, 70)
@@ -117,17 +182,13 @@ public class ProfileJPanel extends javax.swing.JPanel {
                 .addComponent(lblTitle)
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblFirstName))
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblName))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblLastName))
+                    .addComponent(lblEmail)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEmail))
-                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPhone)
                     .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -143,7 +204,7 @@ public class ProfileJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblMajor)
                     .addComponent(txtMajor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEdit)
                     .addComponent(btnSave)
@@ -151,6 +212,26 @@ public class ProfileJPanel extends javax.swing.JPanel {
                 .addGap(62, 62, 62))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+        setEditable(true);
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+        if (validateInput()) {
+            saveStudentProfile();
+            setEditable(false);
+            JOptionPane.showMessageDialog(this, "Profile updated successfully!");
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        loadStudentProfile();
+        setEditable(false);
+    }//GEN-LAST:event_btnCancelActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -160,17 +241,18 @@ public class ProfileJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblAddress;
     private javax.swing.JLabel lblAddress2;
     private javax.swing.JLabel lblEmail;
-    private javax.swing.JLabel lblFirstName;
-    private javax.swing.JLabel lblLastName;
     private javax.swing.JLabel lblMajor;
+    private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPhone;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JTextField txtAddress;
     private javax.swing.JTextField txtAddress2;
     private javax.swing.JTextField txtEmail;
-    private javax.swing.JTextField txtFirstName;
-    private javax.swing.JTextField txtLastName;
     private javax.swing.JTextField txtMajor;
+    private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPhone;
     // End of variables declaration//GEN-END:variables
+
+   
+
 }
