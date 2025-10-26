@@ -149,7 +149,7 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
         String role = useraccount.getRole();
         
         if ("Admin".equals(role)) {
-            AdminRoleWorkAreaJPanel adminPanel = new AdminRoleWorkAreaJPanel(department, CardSequencePanel);
+            AdminRoleWorkAreaJPanel adminPanel = new AdminRoleWorkAreaJPanel(department, useraccount, CardSequencePanel);
             CardSequencePanel.removeAll();
             CardSequencePanel.add("Admin", adminPanel);
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
@@ -167,22 +167,23 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
         }
         else if ("Faculty".equals(role)) {
-            Person person = useraccount.getPerson();
-            info5100.university.example.Persona.Faculty.FacultyProfile fp =
-                department.getFacultyDirectory().findFaculty(person.getPersonId());
-
-            FacultyWorkAreaJPanel facultyPanel = new FacultyWorkAreaJPanel(department, fp, CardSequencePanel);
-            CardSequencePanel.removeAll();
-            CardSequencePanel.add("Faculty", facultyPanel);
-            ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+//            Person person = useraccount.getPerson();
+//            info5100.university.example.Persona.Faculty.FacultyProfile fp =
+//                department.getFacultyDirectory().findFaculty(person.getPersonId());
+//
+//            FacultyWorkAreaJPanel facultyPanel = new FacultyWorkAreaJPanel(department, fp, CardSequencePanel);
+//            CardSequencePanel.removeAll();
+//            CardSequencePanel.add("Faculty", facultyPanel);
+//            ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
         }
         else if ("Registrar".equals(role)) {
             Person person = useraccount.getPerson();
-            // FacultyProfile fp = department.getFacultyDirectory().findFaculty(person.getPersonId());
-            
-            RegistrarWorkAreaJPanel registrarPanel = new RegistrarWorkAreaJPanel(department, CardSequencePanel);
+            info5100.university.example.Persona.Faculty.FacultyProfile fp =
+                department.getFacultyDirectory().findTeachingFaculty(person.getPersonId());
+
+            FacultyWorkAreaJPanel facultyPanel = new FacultyWorkAreaJPanel(department, fp, CardSequencePanel);
             CardSequencePanel.removeAll();
-            CardSequencePanel.add("Faculty", registrarPanel);
+            CardSequencePanel.add("Registrar", registrarPanel);
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
         }
         

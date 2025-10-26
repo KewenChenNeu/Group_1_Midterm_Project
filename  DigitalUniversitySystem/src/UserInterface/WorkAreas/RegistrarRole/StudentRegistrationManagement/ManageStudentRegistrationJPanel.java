@@ -4,16 +4,25 @@
  */
 package UserInterface.WorkAreas.RegistrarRole.StudentRegistrationManagement;
 
+import info5100.university.example.Department.Department;
+import javax.swing.JPanel;
+
 /**
  *
  * @author chris
  */
 public class ManageStudentRegistrationJPanel extends javax.swing.JPanel {
+    
+    JPanel CardSequencePanel;
+    Department department;
+
 
     /**
      * Creates new form ManageStudentRegistrationJPanel
      */
-    public ManageStudentRegistrationJPanel() {
+    public ManageStudentRegistrationJPanel(Department department, JPanel jpanel) {
+        this.CardSequencePanel = jpanel;
+        this.department = department;
         initComponents();
     }
 
