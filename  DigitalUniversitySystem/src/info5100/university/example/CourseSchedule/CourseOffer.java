@@ -22,6 +22,7 @@ public class CourseOffer {
     FacultyAssignment facultyassignment;
     String room;
     String courseScheduleTime;
+    
 
     public CourseOffer(Course c) {
         course = c;
@@ -90,6 +91,11 @@ public class CourseOffer {
     public Course getCourse() {
         return course;
     }
+    
+    public String getCourseName() {
+        return course.getName();
+    } 
+    
     public Course getSubjectCourse(){
         return course;
     }

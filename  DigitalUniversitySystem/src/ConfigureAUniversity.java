@@ -103,6 +103,7 @@ public class ConfigureAUniversity {
         for(int i = 1; i <= 10; i++) {
             Person studentPerson = personDirectory.newPerson("STU00" + i);
             if(studentPerson != null) {
+                studentPerson.setName(studentNames[i-1]);
                 studentPerson.setEmail("student" + i + "@university.edu");
                 studentPerson.setPhone("617-555-20" + String.format("%02d", i));
             }
