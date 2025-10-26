@@ -17,6 +17,7 @@ public class SeatAssignment {
     boolean like; //true means like and false means not like
     CourseLoad courseload;
     String letterGrade = "F";
+    String assignmentStatus = "Pending";
     
     // NEW - set letter grade and get the matched GPA
     public void setGrade(String letter) {
@@ -66,6 +67,14 @@ public class SeatAssignment {
     }
     public float GetCourseStudentScore(){
         return getCreditHours()*grade;
+    }
+    
+    public String getAssignmentStatus() {
+        return assignmentStatus;
+    }
+
+    public void setAssignmentSubmit() {
+        this.assignmentStatus = "Submitted";
     }
 
 }
