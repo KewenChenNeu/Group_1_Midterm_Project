@@ -35,7 +35,7 @@ public class CourseOffer {
     }
 
     public String getCourseNumber() {
-        return course.getCOurseNumber();
+        return course.getCourseNumber();
     }
 
     public void generatSeats(int n) {
@@ -113,6 +113,10 @@ public class CourseOffer {
 
     public void setEnrollmentOpen(boolean open) {
         this.enrollmentOpen = open;
+    }
+
+    public Course getAssociatedCourse() {
+        return course;
     }
 
 }

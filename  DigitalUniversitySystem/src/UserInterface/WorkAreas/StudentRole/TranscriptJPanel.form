@@ -27,12 +27,12 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" pref="92" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cbCourse" min="-2" pref="140" max="-2" attributes="0"/>
+                      <Component id="cmbCourse" min="-2" pref="140" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel4" min="-2" pref="77" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lbTeramGPA" min="-2" pref="143" max="-2" attributes="0"/>
+                      <Component id="lblTeramGPA" min="-2" pref="143" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane2" alignment="0" min="-2" pref="1141" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
@@ -42,8 +42,8 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lbOverallGPA" min="-2" pref="102" max="-2" attributes="0"/>
-                          <Component id="lbAcademicStanding" min="-2" pref="143" max="-2" attributes="0"/>
+                          <Component id="lblOverallGPA" min="-2" pref="102" max="-2" attributes="0"/>
+                          <Component id="lblAcademicStanding" min="-2" pref="143" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -62,24 +62,24 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel5" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                  <Component id="lbOverallGPA" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                  <Component id="lblOverallGPA" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel6" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                  <Component id="lbAcademicStanding" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                  <Component id="lblAcademicStanding" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="19" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                  <Component id="cbCourse" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cmbCourse" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jScrollPane2" min="-2" pref="290" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel4" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                  <Component id="lbTeramGPA" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                  <Component id="lblTeramGPA" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
           </Group>
@@ -87,7 +87,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JComboBox" name="cbCourse">
+    <Component class="javax.swing.JComboBox" name="cmbCourse">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="4">
@@ -100,7 +100,7 @@
         <Property name="selectedIndex" type="int" value="-1"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbCourseActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbCourseActionPerformed"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -127,7 +127,7 @@
         <Property name="text" type="java.lang.String" value="Term GPA:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lbTeramGPA">
+    <Component class="javax.swing.JLabel" name="lblTeramGPA">
       <Properties>
         <Property name="text" type="java.lang.String" value="0"/>
       </Properties>
@@ -185,7 +185,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JLabel" name="lbOverallGPA">
+    <Component class="javax.swing.JLabel" name="lblOverallGPA">
       <Properties>
         <Property name="text" type="java.lang.String" value="0"/>
       </Properties>
@@ -200,7 +200,7 @@
         <Property name="text" type="java.lang.String" value="Academic Standing:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lbAcademicStanding">
+    <Component class="javax.swing.JLabel" name="lblAcademicStanding">
     </Component>
   </SubComponents>
 </Form>
