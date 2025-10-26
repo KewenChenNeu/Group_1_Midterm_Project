@@ -148,7 +148,7 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
         String role = useraccount.getRole();
         
         if ("Admin".equals(role)) {
-            AdminRoleWorkAreaJPanel adminPanel = new AdminRoleWorkAreaJPanel(department, CardSequencePanel);
+            AdminRoleWorkAreaJPanel adminPanel = new AdminRoleWorkAreaJPanel(department, useraccount, CardSequencePanel);
             CardSequencePanel.removeAll();
             CardSequencePanel.add("Admin", adminPanel);
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
@@ -168,7 +168,7 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
         else if ("Faculty".equals(role)) {
             Person person = useraccount.getPerson();
             info5100.university.example.Persona.Faculty.FacultyProfile fp =
-                department.getFacultyDirectory().findFaculty(person.getPersonId());
+                department.getFacultyDirectory().findTeachingFaculty(person.getPersonId());
 
             FacultyWorkAreaJPanel facultyPanel = new FacultyWorkAreaJPanel(department, fp, CardSequencePanel);
             CardSequencePanel.removeAll();
