@@ -11,6 +11,7 @@
 package UserInterface.WorkAreas.FacultyRole;
 
 import info5100.university.example.Department.Department;
+import info5100.university.example.Persona.Faculty.FacultyProfile;
 import javax.swing.JPanel;
 
 
@@ -22,9 +23,17 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
 
     javax.swing.JPanel CardSequencePanel;
     Department department;
-    
+    FacultyProfile facultyProfile;
+
     public FacultyWorkAreaJPanel(Department d, JPanel clp) {
         department = d;
+        this.CardSequencePanel = clp;
+        initComponents();
+    }
+
+    public FacultyWorkAreaJPanel(Department d, FacultyProfile fp, JPanel clp) {
+        department = d;
+        facultyProfile = fp;
         this.CardSequencePanel = clp;
         initComponents();
     }
@@ -122,7 +131,7 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(632, Short.MAX_VALUE))
+                .addContainerGap(414, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,41 +146,42 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(221, Short.MAX_VALUE))
+                .addContainerGap(279, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4IdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4IdentifyResourceAssetsActionPerformed
-        // TODO add your handling code here:
+        // Course Management
         CardSequencePanel.removeAll();
-
-        //ManagePersonsJPanel aos = new ManagePersonsJPanel(business, CardSequencePanel);
-
-        //CardSequencePanel.add("Manage Persons", aos);
+        CourseManagementJPanel coursePanel = new CourseManagementJPanel(department, facultyProfile, CardSequencePanel);
+        CardSequencePanel.add("CourseManagement", coursePanel);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
-
     }//GEN-LAST:event_jButton4IdentifyResourceAssetsActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        // TODO add your handling code here:
-
-  
+        // Student Management
+        CardSequencePanel.removeAll();
+        StudentManagementJPanel studentPanel = new StudentManagementJPanel(department, facultyProfile, CardSequencePanel);
+        CardSequencePanel.add("StudentManagement", studentPanel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton6IdentifyEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6IdentifyEventsActionPerformed
-        // TODO add your handling code here:
+        // Faculty Profile
         CardSequencePanel.removeAll();
-        //    IdentifyEventTypes iet= new IdentifyEventTypes(businessunit, CardSequencePanel);
-
-        //    CardSequencePanel.add("IdentifyEventTypes", iet);
+        FacultyProfileJPanel profilePanel = new FacultyProfileJPanel(department, facultyProfile, CardSequencePanel);
+        CardSequencePanel.add("FacultyProfile", profilePanel);
         ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
-        //((java.awt.CardLayout)CardSequencePanel.getLayout()).show(CardSequencePanel, "IdentifyEventTypes");
-}//GEN-LAST:event_jButton6IdentifyEventsActionPerformed
+    }//GEN-LAST:event_jButton6IdentifyEventsActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        // TODO add your handling code here:
+        // Performance Reports
+        CardSequencePanel.removeAll();
+        PerformanceReportsJPanel reportsPanel = new PerformanceReportsJPanel(department, facultyProfile, CardSequencePanel);
+        CardSequencePanel.add("PerformanceReports", reportsPanel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+    }//GEN-LAST:event_jButton11ActionPerformed
 
-}//GEN-LAST:event_jButton11ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

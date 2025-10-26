@@ -161,13 +161,16 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4IdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4IdentifyResourceAssetsActionPerformed
-        
+
+        CourseworkMgmtPanel courseworkMgmtPanel = new CourseworkMgmtPanel(department, student, CardSequencePanel);
+        CardSequencePanel.add("CourseWorkManagement", courseworkMgmtPanel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 
     }//GEN-LAST:event_jButton4IdentifyResourceAssetsActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
-
+        
 
 
 }//GEN-LAST:event_jButton9ActionPerformed
@@ -180,12 +183,16 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         // TODO add your handling code here:
-
-        CardSequencePanel.removeAll();
+        CourseRegistrationPanel courseRegistrationPanel = new CourseRegistrationPanel(department, student, CardSequencePanel);
+        CardSequencePanel.add("CourseRegistration", courseRegistrationPanel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
 }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         // TODO add your handling code here:
+        TranscriptJPanel transcriptJPanel = new TranscriptJPanel(department, student, CardSequencePanel);
+        CardSequencePanel.add("Transcript", transcriptJPanel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_jButton12ActionPerformed
 
 

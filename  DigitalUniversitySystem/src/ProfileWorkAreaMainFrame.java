@@ -167,9 +167,10 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
         }
         else if ("Faculty".equals(role)) {
             Person person = useraccount.getPerson();
-            // FacultyProfile fp = department.getFacultyDirectory().findFaculty(person.getPersonId());
-            
-            FacultyWorkAreaJPanel facultyPanel = new FacultyWorkAreaJPanel(department, CardSequencePanel);
+            info5100.university.example.Persona.Faculty.FacultyProfile fp =
+                department.getFacultyDirectory().findFaculty(person.getPersonId());
+
+            FacultyWorkAreaJPanel facultyPanel = new FacultyWorkAreaJPanel(department, fp, CardSequencePanel);
             CardSequencePanel.removeAll();
             CardSequencePanel.add("Faculty", facultyPanel);
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);

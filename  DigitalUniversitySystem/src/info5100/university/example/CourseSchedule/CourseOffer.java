@@ -90,4 +90,29 @@ public class CourseOffer {
         return course.getCredits();
     }
 
+    // New methods for Faculty UI
+    public ArrayList<Seat> getSeatList() {
+        return seatlist;
+    }
+
+    public int getEnrolledCount() {
+        int count = 0;
+        for (Seat s : seatlist) {
+            if (s.isOccupied()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private boolean enrollmentOpen = true;
+
+    public boolean isEnrollmentOpen() {
+        return enrollmentOpen;
+    }
+
+    public void setEnrollmentOpen(boolean open) {
+        this.enrollmentOpen = open;
+    }
+
 }
