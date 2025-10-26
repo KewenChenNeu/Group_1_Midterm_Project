@@ -264,18 +264,18 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void populateCourseComboBox() {
-        courseComboBox.removeAllItems();
-        courseComboBox.addItem("-- Select Course --");
-
-        if (facultyProfile != null) {
-            ArrayList<FacultyAssignment> assignments = facultyProfile.getFacultyAssignments();
-            if (assignments != null) {
-                for (FacultyAssignment fa : assignments) {
-                    CourseOffer co = fa.getCourseOffer();
-                    
-                }
-            }
-        }
+//        courseComboBox.removeAllItems();
+//        courseComboBox.addItem("-- Select Course --");
+//
+//        if (facultyProfile != null) {
+//            ArrayList<FacultyAssignment> assignments = facultyProfile.getFacultyAssignments();
+//            if (assignments != null) {
+//                for (FacultyAssignment fa : assignments) {
+//                    CourseOffer co = fa.getCourseOffer();
+//                    
+//                }
+//            }
+//        }
     }
 
     private void courseComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseComboBoxActionPerformed
