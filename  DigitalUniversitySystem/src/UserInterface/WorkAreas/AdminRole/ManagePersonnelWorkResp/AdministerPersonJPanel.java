@@ -157,7 +157,7 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
         UserAccountDirectory uad = department.getUserAccountDirectory();
         StudentDirectory sd = department.getStudentDirectory();
         FacultyDirectory fd = department.getFacultyDirectory();
-        // RegistrarDirectory rd = department.getRegistrarDirectory(); // only if you have it
+        // RegistrarDirectory rd = department.getRegistrarDirectory(); 
 
         Person person;
         try {
@@ -176,7 +176,6 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
             }
             StudentProfile sp = sd.newStudentProfile(person);
             sp.setStudentName(name);
-            // default academic status & dept if you want:
             sp.setAcademicStatus("Active");
             sp.setDepartment("Undeclared");
 
@@ -187,18 +186,13 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
             }
             FacultyProfile fp = fd.newFacultyProfile(person);
             fp.setFacultyName(name);
-            fp.setTitle("Instructor");        // optional default
-            fp.setDepartment("Unassigned");   // optional default
+            fp.setTitle("Instructor");        
+            fp.setDepartment("Unassigned");   
 
         } else if ("REGISTRAR".equalsIgnoreCase(role)) {
-            // Only do this if you've created a RegistrarDirectory + RegistrarProfile
-            // Example:
-            // RegistrarProfile rp = rd.newRegistrarProfile(person);
-            // rp.setRegistrarName(name);
-            // rp.setOffice("Registrar Office");
+           
         } else if ("ADMIN".equalsIgnoreCase(role)) {
-            // You may not have an AdminProfile class. That's fine.
-            // You can skip profile creation for ADMIN.
+           
         }
 
         try {
