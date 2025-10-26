@@ -14,12 +14,15 @@ import javax.swing.JOptionPane;
 public class ProfileJPanel extends javax.swing.JPanel {
     
     private StudentProfile student;
+    private javax.swing.JPanel workArea;
+
 
 
     /**
      * Creates new form ProfileJPanel
      */
-    public ProfileJPanel(StudentProfile student) {
+    public ProfileJPanel(javax.swing.JPanel workArea, StudentProfile student) {
+        this.workArea = workArea;
         this.student = student;
         initComponents();
         loadStudentProfile();
@@ -99,6 +102,7 @@ public class ProfileJPanel extends javax.swing.JPanel {
         lblAddress2 = new javax.swing.JLabel();
         txtAddress2 = new javax.swing.JTextField();
         txtMajor = new javax.swing.JTextField();
+        btnBack = new javax.swing.JButton();
 
         lblTitle.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
         lblTitle.setText("Student Profile");
@@ -136,6 +140,13 @@ public class ProfileJPanel extends javax.swing.JPanel {
 
         lblAddress2.setText("Address:");
 
+        btnBack.setText("<<< Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -145,7 +156,9 @@ public class ProfileJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(lblTitle)
-                        .addGap(379, 379, 379))
+                        .addGap(295, 295, 295)
+                        .addComponent(btnBack)
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblName)
@@ -179,7 +192,9 @@ public class ProfileJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitle)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTitle)
+                    .addComponent(btnBack))
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -233,8 +248,15 @@ public class ProfileJPanel extends javax.swing.JPanel {
         setEditable(false);
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);         // hide profile panel
+        workArea.setVisible(true);
+    }//GEN-LAST:event_btnBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnSave;
