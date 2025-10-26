@@ -136,7 +136,7 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
             }
         });
         jPanel1.add(btnDelete);
-        btnDelete.setBounds(240, 450, 78, 23);
+        btnDelete.setBounds(230, 450, 78, 23);
 
         btnEdit.setText("Edit");
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
@@ -170,7 +170,7 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Object", "ID", "Name", "Department", "Status", "Email", "Phone"
+                "Object", "ID", "Name", "Department", "Title", "Email", "Phone"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -369,7 +369,7 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
 
         if (!okDept || !okTitle || !okName || !okContact) {
             JOptionPane.showMessageDialog(this,
-                    "Update failed. (Possible duplicate email?)");
+                    "Update failed.");
             return;
         }
 
@@ -379,7 +379,7 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnAssignCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssignCourseActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:                                          
         if (selectedFaculty == null) {
             JOptionPane.showMessageDialog(this, "Select a faculty member first.");
             return;
@@ -393,6 +393,40 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
             return;
         }
 
+        String semester = JOptionPane.showInputDialog(
+                this,
+                "Enter Semester (e.g. Fall2025):"
+        );
+        if (semester == null || semester.trim().isEmpty()) {
+            return;
+        }
+
+        boolean ok = department.assignFacultyToCourse(
+                selectedFaculty.getPersonId(),
+                courseNum.trim(),
+                semester.trim()
+        );
+
+        if (!ok) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Could not assign faculty to course.\n"
+                    + "Check that:\n"
+                    + "- The course exists in that semester's CourseSchedule\n"
+                    + "- The faculty profile exists\n"
+                    + "- The semester string matches a real schedule"
+            );
+            return;
+        }
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Assigned " + selectedFaculty.getFacultyName()
+                + " to " + courseNum.trim()
+                + " (" + semester.trim() + ")"
+        );
+
+        refreshTable(department.getFacultyDirectory().getFacultylist());
     }//GEN-LAST:event_btnAssignCourseActionPerformed
 
 
@@ -435,7 +469,7 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
             String phone = (p != null ? p.getPhone() : "");
 
             Object[] row = new Object[]{
-                fp, 
+                fp,
                 pid,
                 name,
                 dept,

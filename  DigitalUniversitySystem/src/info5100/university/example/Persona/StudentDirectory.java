@@ -150,7 +150,7 @@ public class StudentDirectory {
     }
 
     public ArrayList<StudentProfile> searchbyId(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
 }

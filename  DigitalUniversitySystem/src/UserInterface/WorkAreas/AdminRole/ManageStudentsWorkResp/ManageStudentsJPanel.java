@@ -11,7 +11,6 @@ import info5100.university.example.Persona.StudentProfile;
 import java.awt.CardLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.util.List;  
@@ -278,6 +277,15 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Missing student ID.");
             return;
         }
+        
+        String newName = JOptionPane.showInputDialog(
+                this,
+                "New Name:",
+                selectedStudent.getStudentName()
+        );
+        if (newName == null) {
+            return;
+        }
 
         String newDept = JOptionPane.showInputDialog(this,
                 "New Department:",
@@ -313,7 +321,7 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         boolean okContact = sd.updateStudentContact(personId, newEmail.trim(), newPhone.trim());
 
         if (!okDept || !okStatus || !okContact) {
-            JOptionPane.showMessageDialog(this, "Update failed. (Possible duplicate email?)");
+            JOptionPane.showMessageDialog(this, "Update failed.");
             return;
         }
 
