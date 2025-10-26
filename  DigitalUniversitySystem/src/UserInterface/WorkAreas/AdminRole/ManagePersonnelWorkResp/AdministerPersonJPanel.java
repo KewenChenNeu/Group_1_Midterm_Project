@@ -5,7 +5,16 @@
  */
 package UserInterface.WorkAreas.AdminRole.ManagePersonnelWorkResp;
 
-import info5100.university.example.UniversitySystem;
+import info5100.university.example.Persona.Person;
+import info5100.university.example.Persona.StudentProfile;
+import info5100.university.example.Persona.Faculty.FacultyProfile;
+import info5100.university.example.Department.Department;
+import info5100.university.example.Persona.Faculty.FacultyDirectory;
+import info5100.university.example.Persona.PersonDirectory;
+import info5100.university.example.Persona.StudentDirectory;
+import info5100.university.example.Persona.UserAccountDirectory;
+import java.awt.CardLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -19,14 +28,13 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
      */
     JPanel CardSequencePanel;
 
-    UniversitySystem universitySystem;
+    Department department;
 
-    public AdministerPersonJPanel(UniversitySystem us, JPanel jp) {
+    public AdministerPersonJPanel(Department dept, JPanel jp) {
 
         CardSequencePanel = jp;
-        this.universitySystem = us;
+        this.department = dept;
         initComponents();
-
 
     }
 
@@ -43,39 +51,196 @@ public class AdministerPersonJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Back = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
+        lblTitle = new javax.swing.JLabel();
+        lblName = new javax.swing.JLabel();
+        txtFieldName = new javax.swing.JTextField();
+        lblEmail = new javax.swing.JLabel();
+        txtFieldEmail = new javax.swing.JTextField();
+        lblPhone = new javax.swing.JLabel();
+        txtFieldPhone = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        txtFieldUsername = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        lblRole = new javax.swing.JLabel();
+        cmbRole = new javax.swing.JComboBox<>();
+        btnRegister = new javax.swing.JButton();
+        txtFieldPassword = new javax.swing.JPasswordField();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setLayout(null);
 
-        Back.setText("<< Back");
-        Back.addActionListener(new java.awt.event.ActionListener() {
+        btnBack.setText("<< Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BackActionPerformed(evt);
+                btnBackActionPerformed(evt);
             }
         });
-        add(Back);
-        Back.setBounds(30, 290, 76, 32);
+        add(btnBack);
+        btnBack.setBounds(30, 370, 80, 23);
 
-        jLabel2.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        jLabel2.setText("Manage Person Profile");
+        lblTitle.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        lblTitle.setText("Manage Person Profile");
+        add(lblTitle);
+        lblTitle.setBounds(21, 20, 550, 28);
+
+        lblName.setText("Name");
+        add(lblName);
+        lblName.setBounds(50, 90, 34, 17);
+        add(txtFieldName);
+        txtFieldName.setBounds(110, 90, 140, 23);
+
+        lblEmail.setText("Email");
+        add(lblEmail);
+        lblEmail.setBounds(310, 90, 32, 17);
+        add(txtFieldEmail);
+        txtFieldEmail.setBounds(360, 80, 140, 23);
+
+        lblPhone.setText("Phone");
+        add(lblPhone);
+        lblPhone.setBounds(50, 150, 36, 17);
+        add(txtFieldPhone);
+        txtFieldPhone.setBounds(110, 150, 140, 23);
+
+        jLabel1.setText("Username");
+        add(jLabel1);
+        jLabel1.setBounds(290, 150, 70, 17);
+        add(txtFieldUsername);
+        txtFieldUsername.setBounds(370, 150, 140, 23);
+
+        jLabel2.setText("Password");
         add(jLabel2);
-        jLabel2.setBounds(21, 20, 550, 29);
+        jLabel2.setBounds(40, 220, 70, 17);
+
+        lblRole.setText("Role");
+        add(lblRole);
+        lblRole.setBounds(320, 230, 26, 17);
+
+        cmbRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "STUDENT", "FACULTY", "REGISTRAR", "ADMIN" }));
+        add(cmbRole);
+        cmbRole.setBounds(380, 230, 130, 23);
+
+        btnRegister.setText("Register");
+        btnRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisterActionPerformed(evt);
+            }
+        });
+        add(btnRegister);
+        btnRegister.setBounds(250, 300, 78, 23);
+        add(txtFieldPassword);
+        txtFieldPassword.setBounds(110, 220, 140, 23);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
         CardSequencePanel.remove(this);
-        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+        CardLayout layout = (CardLayout) CardSequencePanel.getLayout();
+        layout.previous(CardSequencePanel);
+    }//GEN-LAST:event_btnBackActionPerformed
 
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+        // TODO add your handling code here:
+        String name = txtFieldName.getText().trim();
+        String email = txtFieldEmail.getText().trim();
+        String phone = txtFieldPhone.getText().trim();
+        String username = txtFieldUsername.getText().trim();
+        String password = new String(txtFieldPassword.getPassword());
+        String role = (String) cmbRole.getSelectedItem();
 
-    }//GEN-LAST:event_BackActionPerformed
+        if (name.isEmpty() || email.isEmpty() || username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Name, Email, Username, and Password are required.");
+            return;
+        }
+
+        PersonDirectory pd = department.getPersonDirectory();
+        UserAccountDirectory uad = department.getUserAccountDirectory();
+        StudentDirectory sd = department.getStudentDirectory();
+        FacultyDirectory fd = department.getFacultyDirectory();
+        // RegistrarDirectory rd = department.getRegistrarDirectory(); // only if you have it
+
+        Person person;
+        try {
+            person = pd.newPersonWithAutoId(email, phone);
+        } catch (IllegalArgumentException dupEmail) {
+            JOptionPane.showMessageDialog(this, "This email is already registered.");
+            return;
+        }
+
+        String generatedId = person.getPersonId();
+
+        if ("STUDENT".equalsIgnoreCase(role)) {
+            if (sd == null) {
+                JOptionPane.showMessageDialog(this, "StudentDirectory not available.");
+                return;
+            }
+            StudentProfile sp = sd.newStudentProfile(person);
+            sp.setStudentName(name);
+            // default academic status & dept if you want:
+            sp.setAcademicStatus("Active");
+            sp.setDepartment("Undeclared");
+
+        } else if ("FACULTY".equalsIgnoreCase(role)) {
+            if (fd == null) {
+                JOptionPane.showMessageDialog(this, "FacultyDirectory not available.");
+                return;
+            }
+            FacultyProfile fp = fd.newFacultyProfile(person);
+            fp.setFacultyName(name);
+            fp.setTitle("Instructor");        // optional default
+            fp.setDepartment("Unassigned");   // optional default
+
+        } else if ("REGISTRAR".equalsIgnoreCase(role)) {
+            // Only do this if you've created a RegistrarDirectory + RegistrarProfile
+            // Example:
+            // RegistrarProfile rp = rd.newRegistrarProfile(person);
+            // rp.setRegistrarName(name);
+            // rp.setOffice("Registrar Office");
+        } else if ("ADMIN".equalsIgnoreCase(role)) {
+            // You may not have an AdminProfile class. That's fine.
+            // You can skip profile creation for ADMIN.
+        }
+
+        try {
+            uad.newUserAccount(person, username, password, role);
+        } catch (IllegalArgumentException dupUsername) {
+            JOptionPane.showMessageDialog(this, "That username is already taken.");
+            return;
+        }
+
+        JOptionPane.showMessageDialog(this,
+                "SUCCESS:\n"
+                + "Name: " + name + "\n"
+                + "Role: " + role + "\n"
+                + "University ID: " + generatedId + "\n"
+                + "Username: " + username);
+
+        txtFieldName.setText("");
+        txtFieldEmail.setText("");
+        txtFieldPhone.setText("");
+        txtFieldUsername.setText("");
+        txtFieldPassword.setText("");
+        cmbRole.setSelectedIndex(0);
+        
+    }//GEN-LAST:event_btnRegisterActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Back;
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnRegister;
+    private javax.swing.JComboBox<String> cmbRole;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblPhone;
+    private javax.swing.JLabel lblRole;
+    private javax.swing.JLabel lblTitle;
+    private javax.swing.JTextField txtFieldEmail;
+    private javax.swing.JTextField txtFieldName;
+    private javax.swing.JPasswordField txtFieldPassword;
+    private javax.swing.JTextField txtFieldPhone;
+    private javax.swing.JTextField txtFieldUsername;
     // End of variables declaration//GEN-END:variables
 
 }
