@@ -12,29 +12,35 @@ import info5100.university.example.CourseSchedule.CourseOffer;
  * @author kal bugrara
  */
 public class FacultyAssignment {
+
     double tracerating;
     CourseOffer courseoffer;
     FacultyProfile facultyprofile;
-    public FacultyAssignment(FacultyProfile fp, CourseOffer co){
-        courseoffer = co;
-        facultyprofile = fp;
+
+    public FacultyAssignment(FacultyProfile fp, CourseOffer co) {
+        this.courseoffer = co;
+        this.facultyprofile = fp;
     }
 
-       public double getRating(){
-        
+    public double getRating() {
         return tracerating;
     }
-       public void seProfRating(double r){
-           
-           tracerating = r;
-       }
-    public FacultyProfile getFacultyProfile(){
-        return facultyprofile;
+
+    public void seProfRating(double r) {
+
+        tracerating = r;
     }
 
-    // New method for Faculty Use Case
     public CourseOffer getCourseOffer() {
         return courseoffer;
+    }
+
+    public void setCourseOffer(CourseOffer co) {
+        this.courseoffer = co;
+    }
+
+    public FacultyProfile getFacultyProfile() {
+        return facultyprofile;
     }
 
 }

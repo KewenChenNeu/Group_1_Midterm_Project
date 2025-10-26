@@ -13,6 +13,7 @@ import info5100.university.example.CourseSchedule.CourseSchedule;
 import info5100.university.example.Degree.Degree;
 import info5100.university.example.Employer.EmployerDirectory;
 import info5100.university.example.Persona.Faculty.FacultyDirectory;
+import info5100.university.example.Persona.Faculty.FacultyProfile;
 import info5100.university.example.Persona.PersonDirectory;
 import info5100.university.example.Persona.StudentDirectory;
 import info5100.university.example.Persona.StudentProfile;
@@ -41,16 +42,16 @@ public class Department {
         coursecatalog = new CourseCatalog(this);
         studentdirectory = new StudentDirectory(this);
         persondirectory = new PersonDirectory();
-        facultydirectory = new FacultyDirectory(this);  
+        facultydirectory = new FacultyDirectory(this);
         employerdirectory = new EmployerDirectory(this);
         useraccountdirectory = new UserAccountDirectory();
         degree = new Degree("MSIS");
     }
-    
+
     public FacultyDirectory getFacultyDirectory() {
         return facultydirectory;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -59,15 +60,16 @@ public class Department {
         return useraccountdirectory;
     }
 
-    
-    public void addCoreCourse(Course c){
+    public void addCoreCourse(Course c) {
         degree.addCoreCourse(c);
-        
+
     }
-    public void addElectiveCourse(Course c){
+
+    public void addElectiveCourse(Course c) {
         degree.addElectiveCourse(c);
-        
+
     }
+
     public PersonDirectory getPersonDirectory() {
 
         return persondirectory;
@@ -75,7 +77,7 @@ public class Department {
     }
 
     public StudentDirectory getStudentDirectory() {
-    return studentdirectory;
+        return studentdirectory;
     }
 
     public CourseSchedule newCourseSchedule(String semester) {
@@ -123,5 +125,35 @@ public class Department {
 
         co.assignEmptySeat(cl);
 
+    }
+
+    public boolean assignFacultyToCourse(String facultyPersonId, String courseNumber, String semester) {
+        try {
+            FacultyDirectory fd = this.facultydirectory;
+            if (fd == null) {
+                return false;
+            }
+
+            FacultyProfile fp = fd.findTeachingFaculty(facultyPersonId);
+            if (fp == null) {
+                return false;
+            }
+
+            CourseSchedule cs = getCourseSchedule(semester);
+            if (cs == null) {
+                return false;
+            }
+
+            CourseOffer co = cs.getCourseOfferByNumber(courseNumber);
+            if (co == null) {
+                return false;
+            }
+
+            co.AssignAsTeacher(fp);
+            return true;
+
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
