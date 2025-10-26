@@ -4,16 +4,24 @@
  */
 package UserInterface.WorkAreas.RegistrarRole.ReportsAnalytics;
 
+import info5100.university.example.Department.Department;
+import javax.swing.JPanel;
+
 /**
  *
  * @author chris
  */
 public class InstitutionalReportsJPanel extends javax.swing.JPanel {
+    
+    JPanel CardSequencePanel;
+    Department department;
 
     /**
      * Creates new form InstitutionalReportsJPanel
      */
-    public InstitutionalReportsJPanel() {
+    public InstitutionalReportsJPanel(Department department, JPanel jpanel) {
+        this.CardSequencePanel = jpanel;
+        this.department = department;
         initComponents();
     }
 

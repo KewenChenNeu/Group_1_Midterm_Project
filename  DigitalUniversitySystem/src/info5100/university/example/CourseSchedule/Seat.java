@@ -15,6 +15,7 @@ public class Seat {
     int number;
     SeatAssignment seatassignment; //links back to studentprofile
     CourseOffer courseoffer;
+    
     public Seat (CourseOffer co, int n){
         courseoffer = co;
         number = n;
@@ -38,4 +39,36 @@ public class Seat {
     public int getCourseCredits(){
         return courseoffer.getCreditHours();
     }
+
+    public Boolean getOccupied() {
+        return occupied;
+    }
+
+    public void setOccupied(Boolean occupied) {
+        this.occupied = occupied;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public SeatAssignment getSeatassignment() {
+        return seatassignment;
+    }
+
+    public void setSeatassignment(SeatAssignment seatassignment) {
+        this.seatassignment = seatassignment;
+    }
+    
+    // Add this method to release the seat
+    public void releaseSeat() {
+        this.occupied = false;
+        this.seatassignment = null;
+    }
+    
+    
 }

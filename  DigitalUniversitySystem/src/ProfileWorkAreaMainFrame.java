@@ -181,7 +181,7 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
             
             RegistrarWorkAreaJPanel registrarPanel = new RegistrarWorkAreaJPanel(department, CardSequencePanel);
             CardSequencePanel.removeAll();
-            CardSequencePanel.add("Faculty", registrarPanel);
+            CardSequencePanel.add("Registrar", registrarPanel);
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
         }
         
