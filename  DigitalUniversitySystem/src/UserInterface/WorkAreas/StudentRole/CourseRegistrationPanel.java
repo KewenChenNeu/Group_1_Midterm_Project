@@ -4,10 +4,16 @@
  */
 package UserInterface.WorkAreas.StudentRole;
 
+import info5100.university.example.CourseCatalog.Course;
+import info5100.university.example.CourseSchedule.CourseOffer;
+import info5100.university.example.CourseSchedule.CourseSchedule;
 import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.StudentProfile;
 import java.awt.CardLayout;
+import java.util.HashMap;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -26,6 +32,15 @@ public class CourseRegistrationPanel extends javax.swing.JPanel {
         this.department = department;
         this.student = student;
         this.CardSequencePanel = CardSequencePanel;
+        populateComboBox();
+    }
+    
+    public void populateComboBox(){
+        cbSemester.removeAllItems();
+        HashMap<String, CourseSchedule> cHashMap = department.getMastercoursecatalog();
+        for (String term : cHashMap.keySet()) {
+            cbSemester.addItem(term);
+        }
     }
 
     /**
@@ -53,6 +68,8 @@ public class CourseRegistrationPanel extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         fieldInstrucor = new javax.swing.JTextField();
         btnSearchInstructor = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        cbSemester = new javax.swing.JComboBox<>();
 
         tbCourse.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -78,6 +95,7 @@ public class CourseRegistrationPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         jLabel5.setText("Course Offer List & Search Results    ");
 
         btnEnroll.setText("Enroll");
@@ -117,6 +135,15 @@ public class CourseRegistrationPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel1.setText("Select a Semester:");
+
+        cbSemester.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbSemester.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbSemesterActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -133,35 +160,38 @@ public class CourseRegistrationPanel extends javax.swing.JPanel {
                         .addComponent(jScrollPane2)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(fieldCourseID, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
-                            .addComponent(fieldCouseName))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnSearchId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnSearchCourseName))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnEnroll, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDrop, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
-                        .addComponent(fieldInstrucor, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSearchInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnEnroll, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDrop, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(fieldCourseID)
+                                        .addComponent(fieldCouseName, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(btnSearchId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnSearchCourseName)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(32, 32, 32)
+                                    .addComponent(fieldInstrucor, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnSearchInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,7 +199,11 @@ public class CourseRegistrationPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBack))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -187,63 +221,43 @@ public class CourseRegistrationPanel extends javax.swing.JPanel {
                     .addComponent(btnSearchInstructor))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEnroll)
-                    .addComponent(btnDrop))
-                .addGap(24, 24, 24))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDrop)
+                    .addComponent(btnEnroll))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchIdActionPerformed
         // TODO add your handling code here:
-//        if (!fieldCourseID.getText().isBlank()) {
-//            String customerID = fieldCourseID.getText();
-//            Customer foundCustomer = orderDirectory.searchCustomerByID(customerID);
-//            if (foundCustomer != null) {
-//                DefaultTableModel customerModel = (DefaultTableModel) tbCourse.getModel();
-//                customerModel.setRowCount(0);
-//
-//                Object[] customerRow = new Object[]{
-//                    foundCustomer,
-//                    foundCustomer.getFirstName(),
-//                    foundCustomer.getLastName(),
-//                    foundCustomer.getContact()
-//                };
-//                customerModel.addRow(customerRow);
-//
-//                // Refresh and add tbOrders
-//                ArrayList<Customer> customerList = new ArrayList<Customer>();
-//                customerList.add(foundCustomer);
-//                ArrayList<Order> orderList = orderDirectory.searchOrderByCustomer(customerList);
-//                DefaultTableModel orderModel = (DefaultTableModel) tbOrders.getModel();
-//                orderModel.setRowCount(0);
-//                for (Order o : orderList) {
-//                    Product p = o.getProduct();
-//                    int number = o.getNumber();
-//                    double price = p.getPrice();
-//                    double total = number * price;
-//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//
-//                    Object[] orderRow = new Object []{
-//                        o,
-//                        o.getOrderDateTime().format(formatter),
-//                        o.getOrderStatus(),
-//                        String.valueOf(number),
-//                        String.valueOf(total),
-//                    };
-//                    orderModel.addRow(orderRow);
-//                }
-//            }
-//            else{
-//                JOptionPane.showMessageDialog(null, "Customer not found. Please check the customer ID and try again.","Warning",JOptionPane.WARNING_MESSAGE);
-//            }
-//        }
-//        else{
-//            JOptionPane.showMessageDialog(null, "please type the customer ID to view", "Warning", JOptionPane.WARNING_MESSAGE);
-//        }
+        if (!fieldCourseID.getText().isBlank()) {
+            String customerID = fieldCourseID.getText();
+            String selectedSemester = (String) cbSemester.getSelectedItem();
+            CourseSchedule courseSchedule = department.getCourseSchedule(selectedSemester);
+            CourseOffer courseOffer = courseSchedule.getCourseOfferByNumber(customerID);
+            if (courseOffer != null) {
+                Course course = courseOffer.getCourse();
+                DefaultTableModel courseModel = (DefaultTableModel) tbCourse.getModel();
+                courseModel.setRowCount(0);
+
+                Object[] customerRow = new Object[]{
+                    course,
+                    course.getName(),
+                    course.getTeacherName(),
+                    course.getCredits()
+                };
+                courseModel.addRow(customerRow);
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Course not found. Please check the Course ID and try again.","Warning",JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "please type the Course ID to view", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
 
     }//GEN-LAST:event_btnSearchIdActionPerformed
 
@@ -341,6 +355,13 @@ public class CourseRegistrationPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSearchInstructorActionPerformed
 
+    private void cbSemesterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSemesterActionPerformed
+        // TODO add your handling code here:
+        //        if (cbCourse.getItemCount() > 0) {
+            //            populateTable();
+            //        }
+    }//GEN-LAST:event_cbSemesterActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
@@ -349,9 +370,11 @@ public class CourseRegistrationPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnSearchCourseName;
     private javax.swing.JButton btnSearchId;
     private javax.swing.JButton btnSearchInstructor;
+    private javax.swing.JComboBox<String> cbSemester;
     private javax.swing.JTextField fieldCourseID;
     private javax.swing.JTextField fieldCouseName;
     private javax.swing.JTextField fieldInstrucor;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
