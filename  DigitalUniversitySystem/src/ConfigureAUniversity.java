@@ -29,7 +29,12 @@ public class ConfigureAUniversity {
         Course info6250 = department.newCourse("Web Tools", "INFO 6250", 4);
         Course info7390 = department.newCourse("Advanced Data Science", "INFO 7390", 4);
         
-
+        info5100.setTeacherName("Prof. Smith");
+        info5200.setTeacherName("Dr. Johnson");
+        info6150.setTeacherName("Dr. Lee");
+        info6250.setTeacherName("Ms. Brown");
+        info7390.setTeacherName("Dr. Williams");
+        
         department.addCoreCourse(info5100);  
         department.addElectiveCourse(info5200);
         department.addElectiveCourse(info6150);

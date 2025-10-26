@@ -5,11 +5,15 @@
 package UserInterface.WorkAreas.StudentRole;
 
 import info5100.university.example.CourseCatalog.Course;
+import info5100.university.example.CourseSchedule.CourseLoad;
 import info5100.university.example.CourseSchedule.CourseOffer;
 import info5100.university.example.CourseSchedule.CourseSchedule;
+import info5100.university.example.CourseSchedule.SeatAssignment;
 import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.StudentProfile;
+import info5100.university.example.Persona.Transcript;
 import java.awt.CardLayout;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -234,17 +238,17 @@ public class CourseRegistrationPanel extends javax.swing.JPanel {
     private void btnSearchIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchIdActionPerformed
         // TODO add your handling code here:
         if (!fieldCourseID.getText().isBlank()) {
-            String customerID = fieldCourseID.getText();
+            String courseID = fieldCourseID.getText();
             String selectedSemester = (String) cbSemester.getSelectedItem();
             CourseSchedule courseSchedule = department.getCourseSchedule(selectedSemester);
-            CourseOffer courseOffer = courseSchedule.getCourseOfferByNumber(customerID);
+            CourseOffer courseOffer = courseSchedule.getCourseOfferByNumber(courseID);
             if (courseOffer != null) {
                 Course course = courseOffer.getCourse();
                 DefaultTableModel courseModel = (DefaultTableModel) tbCourse.getModel();
                 courseModel.setRowCount(0);
 
                 Object[] customerRow = new Object[]{
-                    course,
+                    course.getNumber(),
                     course.getName(),
                     course.getTeacherName(),
                     course.getCredits()
@@ -263,84 +267,128 @@ public class CourseRegistrationPanel extends javax.swing.JPanel {
 
     private void btnSearchCourseNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchCourseNameActionPerformed
         // TODO add your handling code here:
-//        if (!fieldCouseName.getText().isBlank()) {
-//            String customerName = fieldCouseName.getText();
-//            ArrayList<Customer> foundCustomerList = orderDirectory.searchCustomerByName(customerName);
-//            if (!foundCustomerList.isEmpty()) {
-//                DefaultTableModel customerModel = (DefaultTableModel) tbCourse.getModel();
-//                customerModel.setRowCount(0);
-//                for (Customer foundCustomer : foundCustomerList) {
-//                    Object[] customerRow = new Object[]{
-//                        foundCustomer,
-//                        foundCustomer.getFirstName(),
-//                        foundCustomer.getLastName(),
-//                        foundCustomer.getContact()
-//                    };
-//                    customerModel.addRow(customerRow);
-//                }
-//                // Refresh and add tbOrders
-//
-//                ArrayList<Order> orderList = orderDirectory.searchOrderByCustomer(foundCustomerList);
-//                DefaultTableModel orderModel = (DefaultTableModel) tbOrders.getModel();
-//                orderModel.setRowCount(0);
-//                for (Order o : orderList) {
-//                    Product p = o.getProduct();
-//                    int number = o.getNumber();
-//                    double price = p.getPrice();
-//                    double total = number * price;
-//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//
-//                    Object[] orderRow = new Object []{
-//                        o,
-//                        o.getOrderDateTime().format(formatter),
-//                        o.getOrderStatus(),
-//                        String.valueOf(number),
-//                        String.valueOf(total),
-//                    };
-//                    orderModel.addRow(orderRow);
-//                }
-//            }
-//            else{
-//                JOptionPane.showMessageDialog(null, "Customer not found. Please check the customer Name and try again.","Warning",JOptionPane.WARNING_MESSAGE);
-//            }
-//        }
-//        else{
-//            JOptionPane.showMessageDialog(null, "please type the customer Name to view", "Warning", JOptionPane.WARNING_MESSAGE);
-//        }
+        if (!fieldCouseName.getText().isBlank()) {
+            String courseName = fieldCouseName.getText();
+            String selectedSemester = (String) cbSemester.getSelectedItem();
+            CourseSchedule courseSchedule = department.getCourseSchedule(selectedSemester);
+            ArrayList<CourseOffer> courseOffers = courseSchedule.getCourseOfferByCourseName(courseName);
+            
+            if (!courseOffers.isEmpty()) {
+                DefaultTableModel courseModel = (DefaultTableModel) tbCourse.getModel();
+                courseModel.setRowCount(0);
+                for (CourseOffer courseOffer: courseOffers){
+                    Course course = courseOffer.getCourse();
+                    Object[] customerRow = new Object[]{
+                        course.getNumber(),
+                        course.getName(),
+                        course.getTeacherName(),
+                        course.getCredits()
+                    };
+                    courseModel.addRow(customerRow);       
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Course not found. Please check the Course Name and try again.","Warning",JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "please type the Course Name to view", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnSearchCourseNameActionPerformed
 
     private void btnEnrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnrollActionPerformed
         // TODO add your handling code here:
-//        int selectedRow = tbCourse.getSelectedRow();
-//        if (selectedRow >= 0) {
-//            Customer selectedCustomer = (Customer) tbCourse.getValueAt(selectedRow, 0);
-//            ViewCustomerDetailJPanel panel = new ViewCustomerDetailJPanel(workJPanel, selectedCustomer);
-//            workJPanel.add("ViewCustomerDetailJPanel", panel);
-//            CardLayout layout = (CardLayout) workJPanel.getLayout();
-//            layout.next(workJPanel);
-//
-//            // We want to open ViewJPanel here for the selected account
-//        } else {
-//            JOptionPane.showMessageDialog(null, "Please select a order from the list to view.", "Warning", JOptionPane.WARNING_MESSAGE);
-//        }
+        int selectedRow = tbCourse.getSelectedRow();
+        if (selectedRow >= 0) {
+            String selectedCourseNumber = (String)tbCourse.getValueAt(selectedRow, 0);
+            System.out.print(selectedCourseNumber);
+            String selectedSemester = (String) cbSemester.getSelectedItem();
+            Transcript transcript = student.getTranscript();
+            CourseLoad courseLoad = transcript.getCourseLoadBySemester(selectedSemester);
+            if(courseLoad == null){
+                courseLoad = transcript.newCourseLoad(selectedSemester);
+            }
+            CourseSchedule courseSchedule = department.getCourseSchedule(selectedSemester);
+            CourseOffer courseOffer = courseSchedule.getCourseOfferByNumber(selectedCourseNumber);
+            if(courseLoad.canRegister(courseOffer.getCreditHours())) {
+                SeatAssignment sa = courseLoad.newSeatAssignment(courseOffer);
+                if(sa != null) {
+                    JOptionPane.showMessageDialog(
+                        null, 
+                        "Course registration successful: " + courseOffer.getCourse().getName(), 
+                        "Success", 
+                        JOptionPane.INFORMATION_MESSAGE
+                        );
+                } else {
+                    JOptionPane.showMessageDialog(
+                        null, 
+                        "No available seats. The course is full.", 
+                        "Warning", 
+                        JOptionPane.WARNING_MESSAGE
+                    );
+                }
+            } else {
+                JOptionPane.showMessageDialog(
+                    null, 
+                    "Credit limit exceeded. Cannot add this course.", 
+                    "Warning", 
+                    JOptionPane.WARNING_MESSAGE
+                );
+            }
+            
+            // We want to open ViewJPanel here for the selected account
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select a Course from the list to enroll.", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
 
     }//GEN-LAST:event_btnEnrollActionPerformed
 
     private void btnDropActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDropActionPerformed
         // TODO add your handling code here:
-//        int selectedRow = tbCourse.getSelectedRow();
-//        if (selectedRow >= 0) {
-//            int dialogButton = JOptionPane.YES_NO_OPTION;
-//            int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the selected customer?", "Warning", dialogButton);
-//            if (dialogResult == JOptionPane.YES_OPTION) {
-//                Customer selectedCustomer = (Customer) tbCourse.getValueAt(selectedRow, 0);
-//                orderDirectory.deleteCustomer(selectedCustomer);
-//                clearSearchTables();
-//            }
-//            // We want to open ViewJPanel here for the selected account
-//        } else {
-//            JOptionPane.showMessageDialog(null, "Please select an customer from the list to view.", "Warning", JOptionPane.WARNING_MESSAGE);
-//        }
+            int selectedRow = tbCourse.getSelectedRow();
+        if (selectedRow >= 0) {
+            String selectedCourseNumber = (String) tbCourse.getValueAt(selectedRow, 0); 
+            String selectedSemester = (String) cbSemester.getSelectedItem();          
+            Transcript transcript = student.getTranscript();
+            CourseLoad courseLoad = transcript.getCourseLoadBySemester(selectedSemester);
+
+            if (courseLoad == null || courseLoad.getSeatAssignments().isEmpty()) {
+                JOptionPane.showMessageDialog(null, 
+                        "You have not registered any course in this semester.", 
+                        "Warning", 
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            SeatAssignment targetSA = null;
+            for (SeatAssignment sa : courseLoad.getSeatAssignments()) {
+                if (sa.getCourseOffer().getCourse().getCOurseNumber().equals(selectedCourseNumber)) {
+                    targetSA = sa;
+                    break;
+                }
+            }
+
+            if (targetSA == null) {
+                JOptionPane.showMessageDialog(null, 
+                        "You are not enrolled in this course.", 
+                        "Warning", 
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            courseLoad.getSeatAssignments().remove(targetSA);
+
+            JOptionPane.showMessageDialog(null, 
+                    "Successfully dropped course: " + targetSA.getCourseOffer().getCourse().getName(), 
+                    "Success", 
+                    JOptionPane.INFORMATION_MESSAGE);
+
+        } else {
+            JOptionPane.showMessageDialog(null, 
+                    "Please select a course from the table to drop.", 
+                    "Warning", 
+                    JOptionPane.WARNING_MESSAGE);
+        }
 
     }//GEN-LAST:event_btnDropActionPerformed
 
@@ -353,6 +401,33 @@ public class CourseRegistrationPanel extends javax.swing.JPanel {
 
     private void btnSearchInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchInstructorActionPerformed
         // TODO add your handling code here:
+        if (!fieldInstrucor.getText().isBlank()) {
+            String instructorName = fieldInstrucor.getText();
+            String selectedSemester = (String) cbSemester.getSelectedItem();
+            CourseSchedule courseSchedule = department.getCourseSchedule(selectedSemester);
+            ArrayList<CourseOffer> courseOffers = courseSchedule.getCourseOfferByCourseName(instructorName);
+            
+            if (!courseOffers.isEmpty()) {
+                DefaultTableModel courseModel = (DefaultTableModel) tbCourse.getModel();
+                courseModel.setRowCount(0);
+                for (CourseOffer courseOffer: courseOffers){
+                    Course course = courseOffer.getCourse();
+                    Object[] customerRow = new Object[]{
+                        course.getNumber(),
+                        course.getName(),
+                        course.getTeacherName(),
+                        course.getCredits()
+                    };
+                    courseModel.addRow(customerRow);       
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Course not found. Please check the instroctor name and try again.","Warning",JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "please type the instroctor name to view", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnSearchInstructorActionPerformed
 
     private void cbSemesterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSemesterActionPerformed
