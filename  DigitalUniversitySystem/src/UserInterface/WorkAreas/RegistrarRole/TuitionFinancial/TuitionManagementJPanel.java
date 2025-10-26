@@ -4,16 +4,24 @@
  */
 package UserInterface.WorkAreas.RegistrarRole.TuitionFinancial;
 
+import info5100.university.example.Department.Department;
+import javax.swing.JPanel;
+
 /**
  *
  * @author chris
  */
 public class TuitionManagementJPanel extends javax.swing.JPanel {
 
+    JPanel CardSequencePanel;
+    Department department;
+    
     /**
      * Creates new form TuitionManagementJPanel
      */
-    public TuitionManagementJPanel() {
+    public TuitionManagementJPanel(Department department, JPanel jpanel) {
+        this.CardSequencePanel = jpanel;
+        this.department = department;
         initComponents();
     }
 

@@ -79,5 +79,9 @@ public class SeatAssignment {
     public Object getCourseoffer() {
         return seat.getCourseOffer();
     }
+    
+    public CourseLoad getCourseLoad() {
+        return courseload;
+    }
 
 }

@@ -83,6 +83,10 @@ public class FacultyProfile {
         this.facultyName = facultyName;
     }
 
+    public ArrayList<FacultyAssignment> getFacultyAssignments() {
+        return facultyassignments;
+    }
+
     public double getProfAverageOverallRating() {
         if (facultyassignments.isEmpty()) {
             return 0.0;

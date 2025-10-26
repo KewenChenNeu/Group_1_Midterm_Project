@@ -149,4 +149,8 @@ public class StudentDirectory {
         return out;
     }
 
+    public ArrayList<StudentProfile> searchbyId(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
+
 }

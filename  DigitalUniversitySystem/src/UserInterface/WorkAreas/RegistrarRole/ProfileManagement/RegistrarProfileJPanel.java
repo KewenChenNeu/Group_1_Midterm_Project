@@ -4,16 +4,24 @@
  */
 package UserInterface.WorkAreas.RegistrarRole.ProfileManagement;
 
+import info5100.university.example.Department.Department;
+import javax.swing.JPanel;
+
 /**
  *
  * @author chris
  */
 public class RegistrarProfileJPanel extends javax.swing.JPanel {
 
+    JPanel CardSequencePanel;
+    Department department;
+    
     /**
      * Creates new form RegistrarProfileJPanel
      */
-    public RegistrarProfileJPanel() {
+    public RegistrarProfileJPanel(Department department, JPanel jpanel) {
+        this.CardSequencePanel = jpanel;
+        this.department = department;
         initComponents();
     }
 
