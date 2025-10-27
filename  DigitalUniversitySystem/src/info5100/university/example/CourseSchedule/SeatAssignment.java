@@ -75,6 +75,8 @@ public class SeatAssignment {
 
     public void setAssignmentSubmit() {
         this.assignmentStatus = "Submitted";
+    }
+    
     public CourseLoad getCourseLoad() {
         return courseload;
     }

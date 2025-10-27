@@ -179,7 +179,8 @@ public class Department {
 
     public void setDegree(Degree degree) {
         this.degree = degree;
-
+    }
+    
     public RegistrarDirectory getRegistrarDirectory() {
         return registrardirectory;
     }
@@ -263,5 +264,9 @@ public class Department {
         if (financialAccount == null) {
             financialAccount = new FinancialAccount();
         }
+    }
+
+    public Object getRegistrardirectory() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
