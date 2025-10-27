@@ -293,9 +293,21 @@ public class FacultyProfileJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_editActionPerformed
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
+        // Basic validation
+        if (emailField.getText().trim().isEmpty() || phoneField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Email and Phone cannot be empty!",
+                                        "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         if (person != null) {
-            person.setEmail(emailField.getText());
-            person.setPhone(phoneField.getText());
+            person.setName(nameField.getText().trim());
+            person.setEmail(emailField.getText().trim());
+            person.setPhone(phoneField.getText().trim());
+        }
+        
+        if (facultyProfile != null) {
+            facultyProfile.setTitle(positionField.getText().trim());
         }
 
         isEditing = false;
@@ -319,6 +331,7 @@ public class FacultyProfileJPanel extends javax.swing.JPanel {
 
     private void setFieldsEditable(boolean editable) {
         // ID and Department should never be editable
+        nameField.setEditable(editable);
         emailField.setEditable(editable);
         phoneField.setEditable(editable);
         positionField.setEditable(editable);
@@ -326,6 +339,7 @@ public class FacultyProfileJPanel extends javax.swing.JPanel {
 
         // Visual feedback
         Color bgColor = editable ? Color.WHITE : new Color(240, 240, 240);
+        nameField.setBackground(bgColor);
         emailField.setBackground(bgColor);
         phoneField.setBackground(bgColor);
         positionField.setBackground(bgColor);

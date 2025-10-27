@@ -5,9 +5,15 @@
 package UserInterface.WorkAreas.StudentRole;
 
 import info5100.university.example.Department.Department;
+import info5100.university.example.CourseSchedule.CourseLoad;
+import info5100.university.example.CourseSchedule.SeatAssignment;
+import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.StudentProfile;
-import java.awt.CardLayout;
+import java.text.DecimalFormat;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+import java.awt.CardLayout;
+
 
 /**
  *
@@ -21,11 +27,74 @@ public class TranscriptJPanel extends javax.swing.JPanel {
     Department department;
     StudentProfile student;
     JPanel CardSequencePanel;
+    
     public TranscriptJPanel(Department department, StudentProfile student, JPanel CardSequencePanel) {
         initComponents();
         this.department = department;
         this.student = student;
         this.CardSequencePanel = CardSequencePanel;
+    }
+    
+        private void populateSemesters() {
+        cmbCourse.removeAllItems();
+
+        if (student.getTranscript() != null) {
+            for (CourseLoad cl : student.getTranscript().getCourseloadlist()) {
+                cmbCourse.addItem(cl.getSemester());
+            }
+        }
+    }
+    
+    private void populateTable(String semester) {
+        DefaultTableModel model = (DefaultTableModel) tbGradeList.getModel();
+        model.setRowCount(0);
+
+        CourseLoad cl = student.getCourseLoadBySemester(semester);
+        if (cl == null) return;
+
+            double totalPoints = 0.0;
+            int totalCourses = 0;
+
+        for (SeatAssignment sa : cl.getSeatAssignments()) {
+        
+            String courseId = sa.getCourseOffer().getSubjectCourse().getCOurseNumber();
+            String courseName = sa.getCourseOffer().getSubjectCourse().getName();
+            String grade = sa.getGrade() != null ? sa.getGrade() : "N/A";
+            double gpaPoints = sa.getGradePoint();
+
+        
+        model.addRow(new Object[]{courseId, courseName, grade, gpaPoints});
+
+        totalPoints += gpaPoints;
+        totalCourses++;
+    }
+
+    
+    double termGPA = totalCourses > 0 ? totalPoints / totalCourses : 0.0;
+    lblTeramGPA.setText(new DecimalFormat("#.##").format(termGPA));
+    }
+
+    // --- Calculate overall GPA and academic standing ---
+    private void populateOverallStats() {
+        if (student.getTranscript() == null) return;
+
+        double totalPoints = 0;
+        int totalCourses = 0;
+
+        for (CourseLoad cl : student.getTranscript().getCourseloadlist()) {
+            for (SeatAssignment sa : cl.getSeatassignments()) {
+                totalPoints += sa.getGradePoint();
+                totalCourses++;
+            }
+        }
+
+        double overallGPA = totalCourses > 0 ? totalPoints / totalCourses : 0.0;
+        lblOverallGPA.setText(new DecimalFormat("#.##").format(overallGPA));
+
+        // Academic standing
+        String standing = overallGPA >= 3.0 ? "Good Standing" :
+                          overallGPA >= 2.0 ? "Probation" : "At Risk";
+        lblAcademicStanding.setText(standing);
     }
 
     /**
@@ -37,24 +106,24 @@ public class TranscriptJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        cbCourse = new javax.swing.JComboBox<>();
+        cmbCourse = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        lbTeramGPA = new javax.swing.JLabel();
+        lblTeramGPA = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbGradeList = new javax.swing.JTable();
-        lbOverallGPA = new javax.swing.JLabel();
+        lblOverallGPA = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        lbAcademicStanding = new javax.swing.JLabel();
+        lblAcademicStanding = new javax.swing.JLabel();
 
-        cbCourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fall 2025", "Summer 2025", "Spring 2025", "Fall 2024" }));
-        cbCourse.setSelectedIndex(-1);
-        cbCourse.addActionListener(new java.awt.event.ActionListener() {
+        cmbCourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fall 2025", "Summer 2025", "Spring 2025", "Fall 2024" }));
+        cmbCourse.setSelectedIndex(-1);
+        cmbCourse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbCourseActionPerformed(evt);
+                cmbCourseActionPerformed(evt);
             }
         });
 
@@ -70,7 +139,7 @@ public class TranscriptJPanel extends javax.swing.JPanel {
 
         jLabel4.setText("Term GPA:");
 
-        lbTeramGPA.setText("0");
+        lblTeramGPA.setText("0");
 
         jLabel1.setText("Semester:");
 
@@ -84,7 +153,7 @@ public class TranscriptJPanel extends javax.swing.JPanel {
         ));
         jScrollPane2.setViewportView(tbGradeList);
 
-        lbOverallGPA.setText("0");
+        lblOverallGPA.setText("0");
 
         jLabel5.setText("Overall GPA:");
 
@@ -104,11 +173,11 @@ public class TranscriptJPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cmbCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbTeramGPA, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblTeramGPA, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1141, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,8 +185,8 @@ public class TranscriptJPanel extends javax.swing.JPanel {
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbOverallGPA, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbAcademicStanding, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(lblOverallGPA, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblAcademicStanding, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(78, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -130,32 +199,40 @@ public class TranscriptJPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbOverallGPA, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblOverallGPA, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbAcademicStanding, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblAcademicStanding, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbCourse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbCourse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbTeramGPA, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblTeramGPA, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cbCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCourseActionPerformed
+    private void cmbCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCourseActionPerformed
         // TODO add your handling code here:
+        String selectedSemester = (String) cmbCourse.getSelectedItem();
+        if (selectedSemester != null && !selectedSemester.isEmpty()) {
+            populateTable(selectedSemester);
+        }
         //        if (cbCourse.getItemCount() > 0) {
             //            populateTable();
             //        }
-    }//GEN-LAST:event_cbCourseActionPerformed
+    }//GEN-LAST:event_cmbCourseActionPerformed
 
+
+    
+
+    
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
         CardSequencePanel.remove(this);
@@ -166,16 +243,16 @@ public class TranscriptJPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
-    private javax.swing.JComboBox<String> cbCourse;
+    private javax.swing.JComboBox<String> cmbCourse;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel lbAcademicStanding;
-    private javax.swing.JLabel lbOverallGPA;
-    private javax.swing.JLabel lbTeramGPA;
+    private javax.swing.JLabel lblAcademicStanding;
+    private javax.swing.JLabel lblOverallGPA;
+    private javax.swing.JLabel lblTeramGPA;
     private javax.swing.JTable tbGradeList;
     // End of variables declaration//GEN-END:variables
 }

@@ -56,4 +56,12 @@ public class CourseLoad {
             return seatassignments;
         }
 
+    public String getSemester() {
+        return semester;
+    }
+    
+    public ArrayList<SeatAssignment> getSeatassignments() {
+        return seatassignments;
+    }
+
 }
