@@ -35,6 +35,9 @@ public class CourseOffer {
     }
 
     public FacultyProfile getFacultyProfile() {
+        if (facultyassignment == null) {
+            return null;
+        }
         return facultyassignment.getFacultyProfile();
     }
 
@@ -42,9 +45,6 @@ public class CourseOffer {
         return course.getCOurseNumber();
     }
     
-    public String getCourseName() {
-        return course.getName();
-    }
     
     public String getTeacherName() {
         return course.getTeacherName();

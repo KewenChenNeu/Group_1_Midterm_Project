@@ -4,6 +4,7 @@ import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.Faculty.FacultyProfile;
 import info5100.university.example.Persona.Faculty.FacultyAssignment;
 import info5100.university.example.CourseSchedule.CourseOffer;
+import info5100.university.example.CourseSchedule.CourseSchedule;
 import info5100.university.example.CourseCatalog.Course;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,6 +17,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
     private Department department;
     private FacultyProfile facultyProfile;
     private DefaultTableModel courseTableModel;
+    private JLabel tuitionLabel;
 
     public CourseManagementJPanel(Department d, FacultyProfile fp, JPanel clp) {
         department = d;
@@ -165,6 +167,11 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
             }
         });
 
+        // Add tuition label
+        tuitionLabel = new JLabel("Total Tuition Collected: $0.00");
+        tuitionLabel.setFont(new Font("Dialog", Font.BOLD, 16));
+        tuitionLabel.setForeground(new Color(0, 128, 0));
+        
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -172,9 +179,11 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
             .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 860, Short.MAX_VALUE)
             .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(346, 346, 346)
+                .addGap(20, 20, 20)
+                .addComponent(tuitionLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,7 +192,9 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tuitionLabel)
+                    .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -191,29 +202,54 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void populateCourseTable() {
-//        courseTableModel = (DefaultTableModel) courseTable.getModel();
-//        courseTableModel.setRowCount(0);
-//
-//        if (facultyProfile != null) {
-//            ArrayList<FacultyAssignment> assignments = facultyProfile.getFacultyAssignments();
-//            if (assignments != null) {
-//                for (FacultyAssignment fa : assignments) {
-//                    CourseOffer co = fa.getCourseOffer();
-//                    if (co != null) {
-//                        Course course = co.getSubjectCourse();
-//                        Object[] row = {
-//                            course.getCOurseNumber(),
-//                            course.getCredits(),
-//                            "MWF 10:00-11:00",
-//                            co.getSeatList().size(),
-//                            co.getEnrolledCount(),
-//                            co.isEnrollmentOpen() ? "Open" : "Closed"
-//                        };
-//                        courseTableModel.addRow(row);
-//                    }
-//                }
-//            }
-//        }
+        courseTableModel = (DefaultTableModel) courseTable.getModel();
+        courseTableModel.setRowCount(0);
+        
+        double totalTuition = 0;
+        
+        // Get current semester courses
+        if (department != null) {
+            // Try Fall2025 first, then Spring2025
+            String[] semesters = {"Fall2025", "Spring2025"};
+            
+            for (String semester : semesters) {
+                CourseSchedule schedule = department.getCourseSchedule(semester);
+                if (schedule != null && schedule.getAllCourseOffers() != null) {
+                    for (CourseOffer co : schedule.getAllCourseOffers()) {
+                        if (co != null) {
+                            FacultyProfile coFaculty = co.getFacultyProfile();
+                            if (coFaculty != null && coFaculty == facultyProfile) {
+                                Course course = co.getSubjectCourse();
+                                if (course != null) {
+                                String status = "Open"; // Default status
+                                int enrolled = co.getEnrolledCount();
+                                int capacity = co.getSeatList() != null ? co.getSeatList().size() : 0;
+                                
+                                Object[] row = {
+                                    course.getCOurseNumber(),
+                                    course.getName(),
+                                    course.getCredits(),
+                                    co.getSchedule() != null ? co.getSchedule() : "TBD",
+                                    capacity,
+                                    enrolled,
+                                    status
+                                };
+                                courseTableModel.addRow(row);
+                                
+                                // Calculate tuition (assuming $1000 per credit)
+                                totalTuition += enrolled * course.getCredits() * 1000;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Update tuition label
+        if (tuitionLabel != null) {
+            tuitionLabel.setText("Total Tuition Collected: $" + String.format("%,.2f", totalTuition));
+        }
     }
 
     private void editCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCourseActionPerformed
@@ -225,8 +261,10 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
 
         String courseId = (String) courseTableModel.getValueAt(selectedRow, 0);
         String courseName = (String) courseTableModel.getValueAt(selectedRow, 1);
+        String currentSchedule = (String) courseTableModel.getValueAt(selectedRow, 3);
+        int currentCapacity = (int) courseTableModel.getValueAt(selectedRow, 4);
 
-        JPanel editPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+        JPanel editPanel = new JPanel(new GridLayout(5, 2, 10, 10));
         editPanel.add(new JLabel("Course ID:"));
         JTextField idField = new JTextField(courseId);
         idField.setEditable(false);
@@ -237,18 +275,53 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
         editPanel.add(nameField);
 
         editPanel.add(new JLabel("Schedule:"));
-        JTextField scheduleField = new JTextField("MWF 10:00-11:00");
+        JTextField scheduleField = new JTextField(currentSchedule);
         editPanel.add(scheduleField);
 
         editPanel.add(new JLabel("Capacity:"));
-        JTextField capacityField = new JTextField(String.valueOf(courseTableModel.getValueAt(selectedRow, 4)));
+        JTextField capacityField = new JTextField(String.valueOf(currentCapacity));
         editPanel.add(capacityField);
+        
+        editPanel.add(new JLabel("Syllabus:"));
+        JTextArea syllabusArea = new JTextArea(3, 20);
+        syllabusArea.setText("Course syllabus content here...");
+        syllabusArea.setLineWrap(true);
+        JScrollPane syllabusScroll = new JScrollPane(syllabusArea);
+        editPanel.add(syllabusScroll);
 
         int result = JOptionPane.showConfirmDialog(this, editPanel, "Edit Course Details",
                                                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
-            JOptionPane.showMessageDialog(this, "Course details updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            populateCourseTable();
+            try {
+                // Find and update the CourseOffer
+                if (department != null) {
+                    String[] semesters = {"Fall2025", "Spring2025"};
+                    for (String semester : semesters) {
+                        CourseSchedule schedule = department.getCourseSchedule(semester);
+                        if (schedule != null) {
+                            for (CourseOffer co : schedule.getAllCourseOffers()) {
+                                if (co != null && co.getCourseNumber().equals(courseId)) {
+                                    FacultyProfile coFaculty = co.getFacultyProfile();
+                                    if (coFaculty != null && coFaculty == facultyProfile) {
+                                    // Update course details
+                                    co.setSchedule(scheduleField.getText());
+                                    co.setRoom("Updated Room");
+                                    // Note: In real implementation, we'd update capacity if model supports it
+                                    break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                JOptionPane.showMessageDialog(this, "Course details updated successfully!", 
+                                            "Success", JOptionPane.INFORMATION_MESSAGE);
+                populateCourseTable();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error updating course: " + e.getMessage(), 
+                                            "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_editCourseActionPerformed
 

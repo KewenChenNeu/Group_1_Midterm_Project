@@ -179,8 +179,8 @@ public class Department {
 
     public void setDegree(Degree degree) {
         this.degree = degree;
-    }    
-
+    }
+    
     public RegistrarDirectory getRegistrarDirectory() {
         return registrardirectory;
     }

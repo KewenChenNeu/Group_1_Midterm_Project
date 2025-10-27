@@ -57,7 +57,7 @@ public class TranscriptJPanel extends javax.swing.JPanel {
 
         for (SeatAssignment sa : cl.getSeatAssignments()) {
         
-            String courseId = sa.getCourseOffer().getSubjectCourse().getCourseNumber();
+            String courseId = sa.getCourseOffer().getSubjectCourse().getCOurseNumber();
             String courseName = sa.getCourseOffer().getSubjectCourse().getName();
             String grade = sa.getGrade() != null ? sa.getGrade() : "N/A";
             double gpaPoints = sa.getGradePoint();
