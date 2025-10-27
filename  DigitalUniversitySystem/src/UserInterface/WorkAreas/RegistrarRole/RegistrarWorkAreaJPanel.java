@@ -10,6 +10,7 @@ import UserInterface.WorkAreas.RegistrarRole.ReportsAnalytics.InstitutionalRepor
 import UserInterface.WorkAreas.RegistrarRole.StudentRegistrationManagement.ManageStudentRegistrationJPanel;
 import UserInterface.WorkAreas.RegistrarRole.TuitionFinancial.TuitionManagementJPanel;
 import info5100.university.example.Department.Department;
+import info5100.university.example.Persona.UserAccount;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
 
@@ -21,12 +22,14 @@ public class RegistrarWorkAreaJPanel extends javax.swing.JPanel {
 
     private Department department;
     private JPanel CardSequencePanel;
-    
+    private UserAccount useraccount;
+
     /**
      * Creates new form RegistrarWorkAreaJPanel
      */
-    public RegistrarWorkAreaJPanel(Department dept, JPanel cardPanel) {
+    public RegistrarWorkAreaJPanel(Department dept, UserAccount useracc, JPanel cardPanel) {
         this.department = dept;
+        this.useraccount = useracc;
         this.CardSequencePanel = cardPanel;
         initComponents();
     }
