@@ -59,9 +59,9 @@ public class CourseLoad {
     public String getSemester() {
         return semester;
     }
-
-    public Iterable<SeatAssignment> getSeatassignments() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    
+    public ArrayList<SeatAssignment> getSeatassignments() {
+        return seatassignments;
     }
 
 }
