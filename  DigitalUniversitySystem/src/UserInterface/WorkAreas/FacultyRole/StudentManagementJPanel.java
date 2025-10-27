@@ -264,23 +264,146 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void populateCourseComboBox() {
-//        courseComboBox.removeAllItems();
-//        courseComboBox.addItem("-- Select Course --");
-//
-//        if (facultyProfile != null) {
-//            ArrayList<FacultyAssignment> assignments = facultyProfile.getFacultyAssignments();
-//            if (assignments != null) {
-//                for (FacultyAssignment fa : assignments) {
-//                    CourseOffer co = fa.getCourseOffer();
-//                    
-//                }
-//            }
-//        }
+        courseComboBox.removeAllItems();
+        courseComboBox.addItem("-- Select Course --");
+        
+        if (department != null) {
+            String[] semesters = {"Fall2025", "Spring2025"};
+            for (String semester : semesters) {
+                var schedule = department.getCourseSchedule(semester);
+                if (schedule != null) {
+                    for (CourseOffer co : schedule.getScheduleOfClasses()) {
+                        if (co != null && co.getFacultyProfile() == facultyProfile) {
+                            String courseItem = co.getCourseNumber() + " - " + co.getCourseName();
+                            courseComboBox.addItem(courseItem);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void courseComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseComboBoxActionPerformed
-        
+        if (courseComboBox.getSelectedIndex() > 0) {
+            populateStudentTable();
+        }
     }//GEN-LAST:event_courseComboBoxActionPerformed
+    
+    private void populateStudentTable() {
+        studentTableModel = (DefaultTableModel) studentTable.getModel();
+        studentTableModel.setRowCount(0);
+        
+        String selectedCourse = (String) courseComboBox.getSelectedItem();
+        if (selectedCourse == null || selectedCourse.equals("-- Select Course --")) {
+            return;
+        }
+        
+        String courseId = selectedCourse.split(" - ")[0];
+        List<StudentGradeInfo> studentGrades = new ArrayList<>();
+        double totalGradePoints = 0;
+        int studentCount = 0;
+        
+        if (department != null) {
+            // Find the course offer
+            CourseOffer targetCourse = null;
+            String[] semesters = {"Fall2025", "Spring2025"};
+            for (String semester : semesters) {
+                var schedule = department.getCourseSchedule(semester);
+                if (schedule != null) {
+                    for (CourseOffer co : schedule.getScheduleOfClasses()) {
+                        if (co != null && co.getCourseNumber().equals(courseId) && 
+                            co.getFacultyProfile() == facultyProfile) {
+                            targetCourse = co;
+                            break;
+                        }
+                    }
+                }
+                if (targetCourse != null) break;
+            }
+            
+            // Get enrolled students
+            if (targetCourse != null && targetCourse.getSeatList() != null) {
+                for (Seat seat : targetCourse.getSeatList()) {
+                    if (seat.isOccupied()) {
+                        SeatAssignment sa = seat.getSeatAssignment();
+                        if (sa != null) {
+                            // Find the student who owns this seat assignment
+                            StudentProfile student = findStudentBySeatAssignment(sa);
+                            if (student != null && student.getPerson() != null) {
+                                Person person = student.getPerson();
+                                String grade = sa.getGrade();
+                                float gradePoint = sa.getGradePoint();
+                                
+                                // Calculate percentage based on grade
+                                String percentage = calculatePercentage(gradePoint);
+                                
+                                StudentGradeInfo info = new StudentGradeInfo(
+                                    person.getPersonId(),
+                                    person.getName() != null ? person.getName() : "Student",
+                                    person.getEmail() != null ? person.getEmail() : "",
+                                    gradePoint + "",
+                                    grade,
+                                    percentage
+                                );
+                                studentGrades.add(info);
+                                
+                                totalGradePoints += gradePoint;
+                                studentCount++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Sort by grade points for ranking
+        studentGrades.sort((a, b) -> Float.compare(
+            Float.parseFloat(b.gradePoints), 
+            Float.parseFloat(a.gradePoints)
+        ));
+        
+        // Add to table with rankings
+        int rank = 1;
+        for (StudentGradeInfo info : studentGrades) {
+            Object[] row = {
+                info.studentId,
+                info.studentName,
+                info.email,
+                info.gradePoints,
+                info.letterGrade,
+                info.percentage,
+                rank++
+            };
+            studentTableModel.addRow(row);
+        }
+        
+        // Calculate and display class GPA
+        if (studentCount > 0) {
+            double classGPA = totalGradePoints / studentCount;
+            gpaLabel.setText("    Class GPA: " + String.format("%.2f", classGPA));
+        } else {
+            gpaLabel.setText("    Class GPA: N/A");
+        }
+    }
+    
+    private String calculatePercentage(float gradePoint) {
+        // Convert grade point to percentage (4.0 = 100%)
+        float percentage = (gradePoint / 4.0f) * 100;
+        return String.format("%.1f%%", percentage);
+    }
+    
+    private class StudentGradeInfo {
+        String studentId, studentName, email, gradePoints, letterGrade, percentage;
+        
+        StudentGradeInfo(String id, String name, String email, String points, String letter, String pct) {
+            this.studentId = id;
+            this.studentName = name;
+            this.email = email;
+            this.gradePoints = points;
+            this.letterGrade = letter;
+            this.percentage = pct;
+        }
+    }
 
     
     
@@ -340,7 +463,72 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_viewTranscriptActionPerformed
 
     private void gradeAssignmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeAssignmentActionPerformed
+        int selectedRow = studentTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a student!", "No Selection", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         
+        String studentId = (String) studentTableModel.getValueAt(selectedRow, 0);
+        String studentName = (String) studentTableModel.getValueAt(selectedRow, 1);
+        String currentGrade = (String) studentTableModel.getValueAt(selectedRow, 4);
+        
+        // Create grade dialog
+        String[] grades = {"A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F"};
+        JComboBox<String> gradeCombo = new JComboBox<>(grades);
+        gradeCombo.setSelectedItem(currentGrade);
+        
+        JPanel gradePanel = new JPanel(new GridLayout(3, 2, 10, 10));
+        gradePanel.add(new JLabel("Student ID:"));
+        gradePanel.add(new JLabel(studentId));
+        gradePanel.add(new JLabel("Student Name:"));
+        gradePanel.add(new JLabel(studentName));
+        gradePanel.add(new JLabel("Grade:"));
+        gradePanel.add(gradeCombo);
+        
+        int result = JOptionPane.showConfirmDialog(this, gradePanel, "Assign Grade",
+                                                   JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        
+        if (result == JOptionPane.OK_OPTION) {
+            String newGrade = (String) gradeCombo.getSelectedItem();
+            
+            // Update the grade in the model
+            String selectedCourse = (String) courseComboBox.getSelectedItem();
+            if (selectedCourse != null && !selectedCourse.equals("-- Select Course --")) {
+                String courseId = selectedCourse.split(" - ")[0];
+                
+                // Find and update the seat assignment
+                if (department != null) {
+                    String[] semesters = {"Fall2025", "Spring2025"};
+                    for (String semester : semesters) {
+                        var schedule = department.getCourseSchedule(semester);
+                        if (schedule != null) {
+                            for (CourseOffer co : schedule.getScheduleOfClasses()) {
+                                if (co != null && co.getCourseNumber().equals(courseId)) {
+                                    for (Seat seat : co.getSeatList()) {
+                                        if (seat.isOccupied()) {
+                                            SeatAssignment sa = seat.getSeatAssignment();
+                                            if (sa != null && sa.getCourseLoad() != null) {
+                                                StudentProfile student = sa.getCourseLoad().getStudent();
+                                                if (student != null && student.getPerson() != null &&
+                                                    student.getPerson().getPersonId().equals(studentId)) {
+                                                    sa.setGrade(newGrade);
+                                                    JOptionPane.showMessageDialog(this, 
+                                                        "Grade updated successfully!", 
+                                                        "Success", JOptionPane.INFORMATION_MESSAGE);
+                                                    populateStudentTable();
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }//GEN-LAST:event_gradeAssignmentActionPerformed
 
     private void computeFinalGradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeFinalGradeActionPerformed
@@ -370,7 +558,15 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_computeFinalGradeActionPerformed
 
     private void rankStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rankStudentsActionPerformed
+        if (studentTableModel.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No students to rank!", "No Data", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         
+        // Re-populate the table which automatically ranks students
+        populateStudentTable();
+        JOptionPane.showMessageDialog(this, "Students have been ranked by grade percentage!", 
+                                    "Ranking Complete", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_rankStudentsActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
