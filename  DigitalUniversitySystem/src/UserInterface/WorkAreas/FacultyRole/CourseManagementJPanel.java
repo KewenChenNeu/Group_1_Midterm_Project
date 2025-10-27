@@ -264,7 +264,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
         String currentSchedule = (String) courseTableModel.getValueAt(selectedRow, 3);
         int currentCapacity = (int) courseTableModel.getValueAt(selectedRow, 4);
 
-        JPanel editPanel = new JPanel(new GridLayout(5, 2, 10, 10));
+        JPanel editPanel = new JPanel(new GridLayout(6, 2, 10, 10));
         editPanel.add(new JLabel("Course ID:"));
         JTextField idField = new JTextField(courseId);
         idField.setEditable(false);
@@ -273,6 +273,14 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
         editPanel.add(new JLabel("Course Name:"));
         JTextField nameField = new JTextField(courseName);
         editPanel.add(nameField);
+        
+        editPanel.add(new JLabel("Description:"));
+        JTextArea descriptionArea = new JTextArea(2, 20);
+        descriptionArea.setText("Advanced software engineering concepts and practices");
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+        JScrollPane descScroll = new JScrollPane(descriptionArea);
+        editPanel.add(descScroll);
 
         editPanel.add(new JLabel("Schedule:"));
         JTextField scheduleField = new JTextField(currentSchedule);
@@ -284,8 +292,9 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
         
         editPanel.add(new JLabel("Syllabus:"));
         JTextArea syllabusArea = new JTextArea(3, 20);
-        syllabusArea.setText("Course syllabus content here...");
+        syllabusArea.setText("Week 1-2: Introduction\nWeek 3-5: Core Concepts\nWeek 6-8: Advanced Topics\nWeek 9-10: Project Work\nWeek 11-12: Reviews and Exams");
         syllabusArea.setLineWrap(true);
+        syllabusArea.setWrapStyleWord(true);
         JScrollPane syllabusScroll = new JScrollPane(syllabusArea);
         editPanel.add(syllabusScroll);
 
@@ -332,14 +341,44 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
             return;
         }
 
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Upload Syllabus");
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PDF Files", "pdf"));
-
-        int result = fileChooser.showOpenDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            String fileName = fileChooser.getSelectedFile().getName();
-            JOptionPane.showMessageDialog(this, "Syllabus '" + fileName + "' uploaded successfully!",
+        String courseId = (String) courseTableModel.getValueAt(selectedRow, 0);
+        String courseName = (String) courseTableModel.getValueAt(selectedRow, 1);
+        
+        // Create syllabus input panel
+        JPanel syllabusPanel = new JPanel(new BorderLayout(10, 10));
+        syllabusPanel.add(new JLabel("Enter syllabus content for " + courseName + ":"), BorderLayout.NORTH);
+        
+        JTextArea syllabusArea = new JTextArea(15, 40);
+        syllabusArea.setText("Course: " + courseName + "\n\n" +
+                           "Objectives:\n" +
+                           "- Understand core concepts\n" +
+                           "- Apply practical skills\n" +
+                           "- Complete hands-on projects\n\n" +
+                           "Weekly Schedule:\n" +
+                           "Week 1-2: Introduction and Setup\n" +
+                           "Week 3-4: Fundamentals\n" +
+                           "Week 5-6: Advanced Concepts\n" +
+                           "Week 7-8: Project Development\n" +
+                           "Week 9-10: Testing and Optimization\n" +
+                           "Week 11: Presentations\n" +
+                           "Week 12: Final Exam\n\n" +
+                           "Grading:\n" +
+                           "- Assignments: 30%\n" +
+                           "- Midterm: 25%\n" +
+                           "- Final: 35%\n" +
+                           "- Participation: 10%");
+        syllabusArea.setLineWrap(true);
+        syllabusArea.setWrapStyleWord(true);
+        JScrollPane scrollPane = new JScrollPane(syllabusArea);
+        syllabusPanel.add(scrollPane, BorderLayout.CENTER);
+        
+        int result = JOptionPane.showConfirmDialog(this, syllabusPanel, "Upload/Modify Syllabus",
+                                                   JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        
+        if (result == JOptionPane.OK_OPTION) {
+            // In a real implementation, we would store this in CourseOffer or Course object
+            // For MVP, we just show success message
+            JOptionPane.showMessageDialog(this, "Syllabus updated successfully for " + courseName + "!",
                                         "Success", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_uploadSyllabusActionPerformed
