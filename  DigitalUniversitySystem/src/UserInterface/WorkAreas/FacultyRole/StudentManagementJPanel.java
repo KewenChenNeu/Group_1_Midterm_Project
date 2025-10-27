@@ -6,6 +6,7 @@ import info5100.university.example.Persona.Faculty.FacultyAssignment;
 import info5100.university.example.Persona.StudentProfile;
 import info5100.university.example.Persona.Person;
 import info5100.university.example.CourseSchedule.CourseOffer;
+import info5100.university.example.CourseSchedule.CourseSchedule;
 import info5100.university.example.CourseSchedule.SeatAssignment;
 import info5100.university.example.CourseSchedule.CourseLoad;
 import info5100.university.example.CourseSchedule.Seat;
@@ -270,12 +271,15 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
         if (department != null) {
             String[] semesters = {"Fall2025", "Spring2025"};
             for (String semester : semesters) {
-                var schedule = department.getCourseSchedule(semester);
+                CourseSchedule schedule = department.getCourseSchedule(semester);
                 if (schedule != null) {
-                    for (CourseOffer co : schedule.getScheduleOfClasses()) {
-                        if (co != null && co.getFacultyProfile() == facultyProfile) {
-                            String courseItem = co.getCourseNumber() + " - " + co.getCourseName();
-                            courseComboBox.addItem(courseItem);
+                    for (CourseOffer co : schedule.getAllCourseOffers()) {
+                        if (co != null) {
+                            FacultyProfile coFaculty = co.getFacultyProfile();
+                            if (coFaculty != null && coFaculty == facultyProfile) {
+                                String courseItem = co.getCourseNumber() + " - " + co.getCourseName();
+                                courseComboBox.addItem(courseItem);
+                            }
                         }
                     }
                 }
@@ -308,13 +312,15 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
             CourseOffer targetCourse = null;
             String[] semesters = {"Fall2025", "Spring2025"};
             for (String semester : semesters) {
-                var schedule = department.getCourseSchedule(semester);
+                CourseSchedule schedule = department.getCourseSchedule(semester);
                 if (schedule != null) {
-                    for (CourseOffer co : schedule.getScheduleOfClasses()) {
-                        if (co != null && co.getCourseNumber().equals(courseId) && 
-                            co.getFacultyProfile() == facultyProfile) {
-                            targetCourse = co;
-                            break;
+                    for (CourseOffer co : schedule.getAllCourseOffers()) {
+                        if (co != null && co.getCourseNumber().equals(courseId)) {
+                            FacultyProfile coFaculty = co.getFacultyProfile();
+                            if (coFaculty != null && coFaculty == facultyProfile) {
+                                targetCourse = co;
+                                break;
+                            }
                         }
                     }
                 }
@@ -325,7 +331,7 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
             if (targetCourse != null && targetCourse.getSeatList() != null) {
                 for (Seat seat : targetCourse.getSeatList()) {
                     if (seat.isOccupied()) {
-                        SeatAssignment sa = seat.getSeatAssignment();
+                        SeatAssignment sa = seat.getSeatassignment();
                         if (sa != null) {
                             // Find the student who owns this seat assignment
                             StudentProfile student = findStudentBySeatAssignment(sa);
@@ -390,6 +396,25 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
         // Convert grade point to percentage (4.0 = 100%)
         float percentage = (gradePoint / 4.0f) * 100;
         return String.format("%.1f%%", percentage);
+    }
+    
+    private StudentProfile findStudentBySeatAssignment(SeatAssignment sa) {
+        if (department != null && department.getStudentDirectory() != null) {
+            for (StudentProfile student : department.getStudentDirectory().getStudentList()) {
+                if (student != null && student.getTranscript() != null) {
+                    for (CourseLoad cl : student.getTranscript().getCourseloadlist()) {
+                        if (cl != null && cl.getSeatAssignments() != null) {
+                            for (SeatAssignment studentSA : cl.getSeatAssignments()) {
+                                if (studentSA == sa) {
+                                    return student;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
     
     private class StudentGradeInfo {
@@ -501,15 +526,15 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
                 if (department != null) {
                     String[] semesters = {"Fall2025", "Spring2025"};
                     for (String semester : semesters) {
-                        var schedule = department.getCourseSchedule(semester);
+                        CourseSchedule schedule = department.getCourseSchedule(semester);
                         if (schedule != null) {
-                            for (CourseOffer co : schedule.getScheduleOfClasses()) {
+                            for (CourseOffer co : schedule.getAllCourseOffers()) {
                                 if (co != null && co.getCourseNumber().equals(courseId)) {
                                     for (Seat seat : co.getSeatList()) {
                                         if (seat.isOccupied()) {
-                                            SeatAssignment sa = seat.getSeatAssignment();
-                                            if (sa != null && sa.getCourseLoad() != null) {
-                                                StudentProfile student = sa.getCourseLoad().getStudent();
+                                            SeatAssignment sa = seat.getSeatassignment();
+                                            if (sa != null) {
+                                                StudentProfile student = findStudentBySeatAssignment(sa);
                                                 if (student != null && student.getPerson() != null &&
                                                     student.getPerson().getPersonId().equals(studentId)) {
                                                     sa.setGrade(newGrade);

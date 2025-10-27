@@ -4,6 +4,7 @@ import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.Faculty.FacultyProfile;
 import info5100.university.example.Persona.Faculty.FacultyAssignment;
 import info5100.university.example.CourseSchedule.CourseOffer;
+import info5100.university.example.CourseSchedule.CourseSchedule;
 import info5100.university.example.CourseCatalog.Course;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -212,12 +213,14 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
             String[] semesters = {"Fall2025", "Spring2025"};
             
             for (String semester : semesters) {
-                var schedule = department.getCourseSchedule(semester);
-                if (schedule != null && schedule.getScheduleOfClasses() != null) {
-                    for (CourseOffer co : schedule.getScheduleOfClasses()) {
-                        if (co != null && co.getFacultyProfile() == facultyProfile) {
-                            Course course = co.getSubjectCourse();
-                            if (course != null) {
+                CourseSchedule schedule = department.getCourseSchedule(semester);
+                if (schedule != null && schedule.getAllCourseOffers() != null) {
+                    for (CourseOffer co : schedule.getAllCourseOffers()) {
+                        if (co != null) {
+                            FacultyProfile coFaculty = co.getFacultyProfile();
+                            if (coFaculty != null && coFaculty == facultyProfile) {
+                                Course course = co.getSubjectCourse();
+                                if (course != null) {
                                 String status = "Open"; // Default status
                                 int enrolled = co.getEnrolledCount();
                                 int capacity = co.getSeatList() != null ? co.getSeatList().size() : 0;
@@ -235,6 +238,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
                                 
                                 // Calculate tuition (assuming $1000 per credit)
                                 totalTuition += enrolled * course.getCredits() * 1000;
+                                }
                             }
                         }
                     }
@@ -293,16 +297,18 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
                 if (department != null) {
                     String[] semesters = {"Fall2025", "Spring2025"};
                     for (String semester : semesters) {
-                        var schedule = department.getCourseSchedule(semester);
+                        CourseSchedule schedule = department.getCourseSchedule(semester);
                         if (schedule != null) {
-                            for (CourseOffer co : schedule.getScheduleOfClasses()) {
-                                if (co != null && co.getCourseNumber().equals(courseId) && 
-                                    co.getFacultyProfile() == facultyProfile) {
+                            for (CourseOffer co : schedule.getAllCourseOffers()) {
+                                if (co != null && co.getCourseNumber().equals(courseId)) {
+                                    FacultyProfile coFaculty = co.getFacultyProfile();
+                                    if (coFaculty != null && coFaculty == facultyProfile) {
                                     // Update course details
                                     co.setSchedule(scheduleField.getText());
                                     co.setRoom("Updated Room");
                                     // Note: In real implementation, we'd update capacity if model supports it
                                     break;
+                                    }
                                 }
                             }
                         }
