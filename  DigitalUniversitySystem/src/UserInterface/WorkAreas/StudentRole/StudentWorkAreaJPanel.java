@@ -13,6 +13,11 @@ package UserInterface.WorkAreas.StudentRole;
 import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.StudentProfile;
 import javax.swing.JPanel;
+import UserInterface.WorkAreas.StudentRole.ProfileJPanel;
+import UserInterface.WorkAreas.StudentRole.FinancialJPanel;
+import UserInterface.WorkAreas.StudentRole.TranscriptJPanel;
+import java.awt.CardLayout;
+
 
 /**
  *
@@ -188,14 +193,17 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnManageProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageProfileActionPerformed
         // TODO add your handling code here:
+        ProfileJPanel profilePanel = new ProfileJPanel(CardSequencePanel, student);
+        CardSequencePanel.add("ProfileJPanel", profilePanel);
+        CardLayout layout = (CardLayout) CardSequencePanel.getLayout();
+        layout.next(CardSequencePanel);
         
-        
-
 
 }//GEN-LAST:event_btnManageProfileActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
+        
 
 
     }//GEN-LAST:event_jButton10ActionPerformed
@@ -216,6 +224,10 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnFinancialIdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinancialIdentifyResourceAssetsActionPerformed
         // TODO add your handling code here:
+        FinancialJPanel financialPanel = new FinancialJPanel(CardSequencePanel, student);
+        CardSequencePanel.add("FinancialJPanel", financialPanel);
+        CardLayout layout = (CardLayout) CardSequencePanel.getLayout();
+        layout.next(CardSequencePanel);
     }//GEN-LAST:event_btnFinancialIdentifyResourceAssetsActionPerformed
 
 

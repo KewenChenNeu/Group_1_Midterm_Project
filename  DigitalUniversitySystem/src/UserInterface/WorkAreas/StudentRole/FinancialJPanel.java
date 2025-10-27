@@ -20,6 +20,7 @@ public class FinancialJPanel extends javax.swing.JPanel {
     
     private JPanel workArea;
     private StudentProfile student;
+    
 
     /**
      * Creates new form FinancialJPanel
