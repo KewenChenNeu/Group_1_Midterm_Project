@@ -27,10 +27,12 @@ public class CourseSchedule {
 
     }
 
-    public CourseOffer newCourseOffer(String  n) {
+    public CourseOffer newCourseOffer(String n) {
 
         Course c = coursecatalog.getCourseByNumber(n);
-        if(c==null) return null;
+        if (c == null) {
+            return null;
+        }
         CourseOffer co;
         co = new CourseOffer(c);
         schedule.add(co);
@@ -47,6 +49,30 @@ public class CourseSchedule {
         }
         return null;
     }
+    
+    public ArrayList<CourseOffer> getCourseOfferByCourseName(String n){
+        ArrayList<CourseOffer> courseOffers = new ArrayList<CourseOffer>();
+        for (CourseOffer co : schedule) {
+
+            if (co.getCourseName().toLowerCase().contains(n.toLowerCase())) {
+                courseOffers.add(co);
+            }
+        }
+        
+        return courseOffers;
+    }
+    
+    public ArrayList<CourseOffer> getCourseOfferByTeacherName(String n){
+        ArrayList<CourseOffer> courseOffers = new ArrayList<CourseOffer>();
+        for (CourseOffer co : schedule) {
+
+            if (co.getTeacherName().toLowerCase().contains(n.toLowerCase())) {
+                courseOffers.add(co);
+            }
+        }
+        
+        return courseOffers;
+    }
 
     public int calculateTotalRevenues() {
         int sum = 0;
@@ -56,6 +82,10 @@ public class CourseSchedule {
 
         }
         return sum;
+    }
+
+    public java.util.List<CourseOffer> getAllCourseOffers() {
+        return schedule;
     }
 
 }

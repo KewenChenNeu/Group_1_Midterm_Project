@@ -2,8 +2,16 @@ package UserInterface.WorkAreas.FacultyRole;
 
 import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.Faculty.FacultyProfile;
+import info5100.university.example.CourseSchedule.CourseSchedule;
+import info5100.university.example.CourseSchedule.CourseOffer;
+import info5100.university.example.CourseSchedule.Seat;
+import info5100.university.example.CourseSchedule.SeatAssignment;
+import info5100.university.example.CourseCatalog.Course;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.CardLayout;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PerformanceReportsJPanel extends javax.swing.JPanel {
 
@@ -21,10 +29,147 @@ public class PerformanceReportsJPanel extends javax.swing.JPanel {
     }
 
     private void populateTable() {
-        // TODO: Implement report data population based on selected report type
-        // This is just a placeholder for now
         tableModel = (DefaultTableModel) reportTable.getModel();
         updateTableColumns();
+        
+        String reportType = (String) reportTypeComboBox.getSelectedItem();
+        String semester = (String) semesterComboBox.getSelectedItem();
+        
+        if (reportType != null && semester != null && department != null) {
+            CourseSchedule schedule = department.getCourseSchedule(semester);
+            if (schedule != null) {
+                if (reportType.equals("My Courses Performance")) {
+                    populateCoursesReport(schedule, semester);
+                } else if (reportType.equals("My Students Performance")) {
+                    populateStudentsReport(schedule, semester);
+                } else if (reportType.equals("Department Overview")) {
+                    populateDepartmentReport(schedule, semester);
+                }
+            }
+        }
+    }
+    
+    private void populateCoursesReport(CourseSchedule schedule, String semester) {
+        for (CourseOffer co : schedule.getAllCourseOffers()) {
+            if (co != null && co.getFacultyProfile() == facultyProfile) {
+                Course course = co.getSubjectCourse();
+                if (course != null) {
+                    String courseCode = co.getCourseNumber();
+                    String courseName = course.getName();
+                    int enrolled = co.getEnrolledCount();
+                    
+                    // Calculate average grade and pass rate
+                    double totalGrade = 0;
+                    int graded = 0;
+                    int passed = 0;
+                    
+                    if (co.getSeatList() != null) {
+                        for (Seat seat : co.getSeatList()) {
+                            if (seat.isOccupied()) {
+                                SeatAssignment sa = seat.getSeatassignment();
+                                if (sa != null) {
+                                    float gradePoint = sa.getGradePoint();
+                                    if (gradePoint > 0) {
+                                        totalGrade += gradePoint;
+                                        graded++;
+                                        if (gradePoint >= 2.0) { // C or better is passing
+                                            passed++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    String avgGrade = graded > 0 ? String.format("%.2f", totalGrade / graded) : "N/A";
+                    String passRate = graded > 0 ? String.format("%.0f%%", (passed * 100.0 / graded)) : "N/A";
+                    
+                    Object[] row = {courseCode, courseName, enrolled, avgGrade, passRate};
+                    tableModel.addRow(row);
+                }
+            }
+        }
+    }
+    
+    private void populateStudentsReport(CourseSchedule schedule, String semester) {
+        Map<String, StudentPerformance> studentMap = new HashMap<>();
+        
+        for (CourseOffer co : schedule.getAllCourseOffers()) {
+            if (co != null && co.getFacultyProfile() == facultyProfile) {
+                Course course = co.getSubjectCourse();
+                if (course != null && co.getSeatList() != null) {
+                    for (Seat seat : co.getSeatList()) {
+                        if (seat.isOccupied()) {
+                            SeatAssignment sa = seat.getSeatassignment();
+                            if (sa != null) {
+                                // For MVP, use seat number as student ID
+                                String studentId = "STU" + seat.getNumber();
+                                String studentName = "Student " + seat.getNumber();
+                                String grade = sa.getGrade();
+                                float gradePoint = sa.getGradePoint();
+                                
+                                Object[] row = {studentId, studentName, course.getCOurseNumber(), grade, 
+                                               String.format("%.2f", gradePoint)};
+                                tableModel.addRow(row);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private void populateDepartmentReport(CourseSchedule schedule, String semester) {
+        int totalCourses = 0;
+        int totalEnrollment = 0;
+        double totalGradePoints = 0;
+        int totalGraded = 0;
+        Map<String, Integer> gradeDistribution = new HashMap<>();
+        
+        for (CourseOffer co : schedule.getAllCourseOffers()) {
+            if (co != null && co.getFacultyProfile() == facultyProfile) {
+                totalCourses++;
+                totalEnrollment += co.getEnrolledCount();
+                
+                if (co.getSeatList() != null) {
+                    for (Seat seat : co.getSeatList()) {
+                        if (seat.isOccupied()) {
+                            SeatAssignment sa = seat.getSeatassignment();
+                            if (sa != null) {
+                                String grade = sa.getGrade();
+                                float gradePoint = sa.getGradePoint();
+                                if (gradePoint > 0) {
+                                    totalGradePoints += gradePoint;
+                                    totalGraded++;
+                                    gradeDistribution.put(grade, gradeDistribution.getOrDefault(grade, 0) + 1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Add summary rows
+        tableModel.addRow(new Object[]{"Total Courses Taught", String.valueOf(totalCourses), "", "", ""});
+        tableModel.addRow(new Object[]{"Total Students Enrolled", String.valueOf(totalEnrollment), "", "", ""});
+        tableModel.addRow(new Object[]{"Average GPA", totalGraded > 0 ? String.format("%.2f", totalGradePoints / totalGraded) : "N/A", "", "", ""});
+        
+        // Grade distribution
+        tableModel.addRow(new Object[]{"", "", "", "", ""});
+        tableModel.addRow(new Object[]{"Grade Distribution", "", "", "", ""});
+        for (String grade : new String[]{"A", "A-", "B+", "B", "B-", "C+", "C", "C-", "F"}) {
+            int count = gradeDistribution.getOrDefault(grade, 0);
+            if (count > 0) {
+                tableModel.addRow(new Object[]{"Grade " + grade, String.valueOf(count) + " students", "", "", ""});
+            }
+        }
+    }
+    
+    private class StudentPerformance {
+        String id, name;
+        double totalGrade;
+        int courseCount;
     }
 
     private void updateTableColumns() {
@@ -246,8 +391,10 @@ public class PerformanceReportsJPanel extends javax.swing.JPanel {
 
     private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
         // Navigate back to Faculty Work Area
-        CardSequencePanel.remove(this);
-        ((java.awt.CardLayout) CardSequencePanel.getLayout()).previous(CardSequencePanel);
+        CardSequencePanel.removeAll();
+        FacultyWorkAreaJPanel facultyPanel = new FacultyWorkAreaJPanel(department, facultyProfile, CardSequencePanel);
+        CardSequencePanel.add("FacultyWorkArea", facultyPanel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_backBtnActionPerformed
 
 

@@ -7,21 +7,28 @@ package info5100.university.example.CourseSchedule;
 
 import info5100.university.example.CourseCatalog.Course;
 
+
 /**
  *
  * @author kal bugrara
  */
 public class SeatAssignment {
-    float grade; //(Letter grade mappings: A=4.0, A-=3.7, B+=3.3, B=3.0, )
+    float grade;
+    private float gradePoint;//(Letter grade mappings: A=4.0, A-=3.7, B+=3.3, B=3.0, )
     Seat seat;
     boolean like; //true means like and false means not like
     CourseLoad courseload;
     String letterGrade = "F";
+    String assignmentStatus = "Pending";
     
-    // NEW - set letter grade and get the matched GPA
+    public SeatAssignment(CourseLoad cl, Seat s) {
+        this.courseload = cl;
+        this.seat = s;
+    }
+
     public void setGrade(String letter) {
         this.letterGrade = letter;
-        switch(letter) {
+        switch (letter) {
             case "A": this.grade = 4.0f; break;
             case "A-": this.grade = 3.7f; break;
             case "B+": this.grade = 3.3f; break;
@@ -33,43 +40,59 @@ public class SeatAssignment {
             default: this.grade = 0.0f; break;
         }
     }
-    
-    public String getLetterGrade() { return letterGrade; }
-    public float getGradePoint() { return grade; }
-    
-    public SeatAssignment(CourseLoad cl, Seat s){
-        seat = s;
-        courseload = cl;
+
+    public String getGrade() {
+        return letterGrade;
     }
-     
-    public boolean getLike(){
-        return like;
+
+    public float getGradePoint() {
+        return grade;
     }
-    public void assignSeatToStudent(CourseLoad cl){
-        courseload = cl;
-    }
-    
-    public int getCreditHours(){
-        return seat.getCourseCredits();
-       
-    }
-    public Seat getSeat(){
+
+    public Seat getSeat() {
         return seat;
     }
-    public CourseOffer getCourseOffer(){
-        
+
+    public CourseOffer getCourseOffer() {
         return seat.getCourseOffer();
     }
-    public Course getAssociatedCourse(){
-        
+
+    public Course getAssociatedCourse() {
         return getCourseOffer().getSubjectCourse();
     }
-    public float GetCourseStudentScore(){
-        return getCreditHours()*grade;
+
+    public boolean getLike() {
+        return like;
+    }
+
+    public void assignSeatToStudent(CourseLoad cl) {
+        this.courseload = cl;
+    }
+
+    public int getCreditHours() {
+        return seat.getCourseCredits();
+    }
+
+    public float GetCourseStudentScore() {
+        return getCreditHours() * grade;
+    }
+
+    public Object getCourseoffer() {
+        return seat.getCourseOffer();
+    }
+    
+    public String getAssignmentStatus() {
+        return assignmentStatus;
+    }
+
+    public void setAssignmentSubmit() {
+        this.assignmentStatus = "Submitted";
     }
     
     public CourseLoad getCourseLoad() {
         return courseload;
     }
-
+    
 }
+
+
