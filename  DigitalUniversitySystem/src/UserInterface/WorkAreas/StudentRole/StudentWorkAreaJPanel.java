@@ -12,6 +12,7 @@ package UserInterface.WorkAreas.StudentRole;
 
 import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.StudentProfile;
+import java.awt.CardLayout;
 import javax.swing.JPanel;
 
 /**
@@ -188,6 +189,10 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnManageProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageProfileActionPerformed
         // TODO add your handling code here:
+        ProfileJPanel profilePanel = new ProfileJPanel(CardSequencePanel, student);
+        CardSequencePanel.add("ProfileJPanel", profilePanel);
+        CardLayout layout = (CardLayout) CardSequencePanel.getLayout();
+        layout.next(CardSequencePanel);
         
         
 
@@ -196,8 +201,9 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
-
-
+        GraduationAuditPanel graduationAuditPanel = new GraduationAuditPanel (department, student, CardSequencePanel);
+        CardSequencePanel.add("GraduationAuditPanel", graduationAuditPanel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
@@ -216,6 +222,10 @@ public class StudentWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnFinancialIdentifyResourceAssetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinancialIdentifyResourceAssetsActionPerformed
         // TODO add your handling code here:
+        FinancialJPanel financialPanel = new FinancialJPanel(CardSequencePanel, student);
+        CardSequencePanel.add("FinancialJPanel", financialPanel);
+        CardLayout layout = (CardLayout) CardSequencePanel.getLayout();
+        layout.next(CardSequencePanel);
     }//GEN-LAST:event_btnFinancialIdentifyResourceAssetsActionPerformed
 
 

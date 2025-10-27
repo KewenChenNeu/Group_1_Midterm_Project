@@ -21,6 +21,7 @@ import UserInterface.WorkAreas.StudentRole.StudentWorkAreaJPanel;
 
 import javax.swing.*;
 
+
 /**
  *
  * @author kal bugrara
@@ -186,23 +187,19 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
         }
         else if ("Faculty".equals(role)) {
-//            Person person = useraccount.getPerson();
-//            info5100.university.example.Persona.Faculty.FacultyProfile fp =
-//                department.getFacultyDirectory().findFaculty(person.getPersonId());
-//
-//            FacultyWorkAreaJPanel facultyPanel = new FacultyWorkAreaJPanel(department, fp, CardSequencePanel);
-//            CardSequencePanel.removeAll();
-//            CardSequencePanel.add("Faculty", facultyPanel);
-//            ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
-        }
-        else if ("Registrar".equals(role)) {
             Person person = useraccount.getPerson();
             info5100.university.example.Persona.Faculty.FacultyProfile fp =
                 department.getFacultyDirectory().findTeachingFaculty(person.getPersonId());
 
-            FacultyWorkAreaJPanel registrarPanel = new FacultyWorkAreaJPanel(department, fp, CardSequencePanel);
+            FacultyWorkAreaJPanel facultyPanel = new FacultyWorkAreaJPanel(department, fp, CardSequencePanel);
             CardSequencePanel.removeAll();
-//            CardSequencePanel.add("Registrar", registrarPanel); UNCOMMENT!!!!!!!!!
+            CardSequencePanel.add("Faculty", facultyPanel);
+            ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+        }
+        else if ("Registrar".equals(role)) {
+            RegistrarWorkAreaJPanel regPanel = new RegistrarWorkAreaJPanel(department, useraccount, CardSequencePanel);
+            CardSequencePanel.removeAll();
+            CardSequencePanel.add("Registrar", regPanel);
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
         }
         

@@ -172,7 +172,15 @@ public class Department {
             return false;
         }
     }
+    
+    public Degree getDegree() {
+        return degree;
+    }
 
+    public void setDegree(Degree degree) {
+        this.degree = degree;
+    }
+    
     public RegistrarDirectory getRegistrarDirectory() {
         return registrardirectory;
     }
@@ -256,5 +264,9 @@ public class Department {
         if (financialAccount == null) {
             financialAccount = new FinancialAccount();
         }
+    }
+
+    public RegistrarDirectory getRegistrardirectory() {
+        return registrardirectory;
     }
 }

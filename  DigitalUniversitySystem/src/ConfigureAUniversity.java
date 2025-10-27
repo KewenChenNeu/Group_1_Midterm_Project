@@ -42,6 +42,11 @@ public class ConfigureAUniversity {
         CourseOffer co6250 = fall2025.newCourseOffer("INFO 6250");
         CourseOffer co7390 = fall2025.newCourseOffer("INFO 7390");
         
+        if(co5100 != null) co5100.generatSeats(30);
+        if(co5200 != null) co5200.generatSeats(30);
+        if(co6150 != null) co6150.generatSeats(30);
+        if(co6250 != null) co6250.generatSeats(30);
+        if(co7390 != null) co7390.generatSeats(30);
         
         if(co5100 != null) {
             co5100.generatSeats(30);
