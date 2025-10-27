@@ -230,4 +230,8 @@ public class CourseOffer {
             generatSeats(capacity - seatlist.size());
         }
     }
+
+    public String getCourseName() {
+        return course.getName();
+    }
 }
