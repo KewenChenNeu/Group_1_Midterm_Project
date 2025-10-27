@@ -4,11 +4,21 @@
  */
 package UserInterface.WorkAreas.StudentRole;
 
+import info5100.university.example.CourseCatalog.Course;
+import info5100.university.example.CourseSchedule.CourseLoad;
+import info5100.university.example.CourseSchedule.CourseOffer;
+import info5100.university.example.CourseSchedule.CourseSchedule;
+import info5100.university.example.CourseSchedule.SeatAssignment;
 import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.StudentProfile;
+import info5100.university.example.Persona.Transcript;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -27,6 +37,37 @@ public class CourseworkMgmtPanel extends javax.swing.JPanel {
         this.department = department;
         this.student = student;
         this.CardSequencePanel = CardSequencePanel;
+        populateComboBox();
+    }
+    
+    public void populateComboBox(){
+        cbSemester.removeAllItems();
+        HashMap<String, CourseSchedule> cHashMap = department.getMastercoursecatalog();
+        for (String term : cHashMap.keySet()) {
+            cbSemester.addItem(term);
+        }
+    }
+    
+    public void populateTable(){
+        DefaultTableModel model = (DefaultTableModel) tbCourse.getModel();
+        model.setRowCount(0);
+
+        String selectedSemester = (String) cbSemester.getSelectedItem();
+        Transcript transcript = student.getTranscript();
+        CourseLoad courseLoad = transcript.getCourseLoadBySemester(selectedSemester);
+
+        for (SeatAssignment sa : courseLoad.getSeatAssignments()) {
+            CourseOffer courseOffer = sa.getCourseOffer();
+            Course course = courseOffer.getCourse();
+
+            Object[] row = new Object[4];
+            row[0] = course.getCOurseNumber();  
+            row[1] = course.getName();          
+            row[2] = sa.getAssignmentStatus();
+            row[3] = sa.getGradePoint();      
+
+            model.addRow(row);
+        }
     }
 
     /**
@@ -38,44 +79,18 @@ public class CourseworkMgmtPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         btnSubmission = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tbBook = new javax.swing.JTable();
-        cbCourse = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
-        btnDeleteSubmission = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        lbGrade = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        lbSubmittedTime = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
-
-        jLabel1.setText("Select Course:");
+        cbSemester = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbCourse = new javax.swing.JTable();
 
         btnSubmission.setText("Submit Assignment");
         btnSubmission.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSubmissionActionPerformed(evt);
-            }
-        });
-
-        tbBook.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Task ID", "Assignment", "Due Date", "Status"
-            }
-        ));
-        jScrollPane2.setViewportView(tbBook);
-
-        cbCourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbCourse.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbCourseActionPerformed(evt);
             }
         });
 
@@ -89,22 +104,24 @@ public class CourseworkMgmtPanel extends javax.swing.JPanel {
             }
         });
 
-        btnDeleteSubmission.setText("Delete Submission");
-        btnDeleteSubmission.addActionListener(new java.awt.event.ActionListener() {
+        cbSemester.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbSemester.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteSubmissionActionPerformed(evt);
+                cbSemesterActionPerformed(evt);
             }
         });
 
-        jLabel3.setText("Prograss Overview");
+        jLabel1.setText("Select a Semester:");
 
-        jLabel4.setText("Current Course Grade:");
+        tbCourse.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        lbGrade.setText("0");
-
-        jLabel6.setText("Submitted:");
-
-        lbSubmittedTime.setText("0");
+            },
+            new String [] {
+                "Course ID", "Course Name", "Status", "Grade"
+            }
+        ));
+        jScrollPane2.setViewportView(tbCourse);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -114,31 +131,19 @@ public class CourseworkMgmtPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(858, 858, 858)
-                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnSubmission)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnDeleteSubmission))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbSubmittedTime, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1064, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1141, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(858, 858, 858)
+                                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnSubmission)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 72, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,59 +152,42 @@ public class CourseworkMgmtPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBack))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbCourse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSubmission)
-                    .addComponent(btnDeleteSubmission))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34)
-                        .addComponent(lbSubmittedTime, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12))))
+                .addComponent(btnSubmission)
+                .addGap(112, 112, 112))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSubmissionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmissionActionPerformed
-        //        // TODO add your handling code here:
-//        RentalRecordDirectory rentalRecordDirectory = librarySystem.getRentalRecordDirectory();
-//        String selectedBranchName = (String) cbCourse.getSelectedItem();
-//        Branch selectedBranch = librarySystem.getBranchDirectory().findBranchByName(selectedBranchName);
-//        Library library = selectedBranch.getLibrary();
-//        int selectedRow = tbBook.getSelectedRow();
-//        if (selectedRow >= 0) {
-//            Book selectedBook = (Book)tbBook.getValueAt(selectedRow, 0);
-//            rentalRecordDirectory.addRecord(selectedBook, customerProfile, library);
-//            populateTable();
-//            this.customerPanel.populateTabbedPane();
-//        } else {
-//            JOptionPane.showMessageDialog(null, "Please select a book from the list to rent.", "Warning", JOptionPane.WARNING_MESSAGE);
-//        }
+        int selectedRow = tbCourse.getSelectedRow();
+        if (selectedRow >= 0) {
+            String selectedCourseNumber = (String)tbCourse.getValueAt(selectedRow, 0);
+            System.out.print(selectedCourseNumber);
+            String selectedSemester = (String) cbSemester.getSelectedItem();
+            
+            Transcript transcript = student.getTranscript();
+            CourseLoad courseLoad = transcript.getCourseLoadBySemester(selectedSemester);
+            SeatAssignment s = null;
+            for (SeatAssignment sa : courseLoad.getSeatAssignments()) {
+                if (sa.getCourseOffer().getCourse().getCOurseNumber().equals(selectedCourseNumber)) {
+                    s = sa;
+                }
+            }
+            if (s != null){
+                s.setAssignmentSubmit();
+            }
+            populateTable();
+            // We want to open ViewJPanel here for the selected account
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select a Course from the list to Submit Assignment.", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnSubmissionActionPerformed
-
-    private void cbCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCourseActionPerformed
-        // TODO add your handling code here:
-//        if (cbCourse.getItemCount() > 0) {
-//            populateTable();
-//        }
-
-    }//GEN-LAST:event_cbCourseActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
@@ -208,25 +196,21 @@ public class CourseworkMgmtPanel extends javax.swing.JPanel {
         layout.previous(CardSequencePanel);
     }//GEN-LAST:event_btnBackActionPerformed
 
-    private void btnDeleteSubmissionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteSubmissionActionPerformed
+    private void cbSemesterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSemesterActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnDeleteSubmissionActionPerformed
+        if (cbSemester.getItemCount() > 0) {
+                populateTable();
+        }
+    }//GEN-LAST:event_cbSemesterActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
-    private javax.swing.JButton btnDeleteSubmission;
     private javax.swing.JButton btnSubmission;
-    private javax.swing.JComboBox<String> cbCourse;
+    private javax.swing.JComboBox<String> cbSemester;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JLabel lbGrade;
-    private javax.swing.JLabel lbSubmittedTime;
-    private javax.swing.JTable tbBook;
+    private javax.swing.JTable tbCourse;
     // End of variables declaration//GEN-END:variables
 }

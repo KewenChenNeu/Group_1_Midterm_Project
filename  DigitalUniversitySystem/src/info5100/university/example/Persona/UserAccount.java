@@ -11,6 +11,7 @@ package info5100.university.example.Persona;
  */
 
 import info5100.university.example.workareas.Workarea;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -23,14 +24,18 @@ public class UserAccount {
     private String role; // "Admin", "Faculty", "Student", "Registrar"
     private Workarea landingworkarea;
     private boolean isActive;
-    private String lastLoginTime;
+    private LocalDateTime lastLoginTime;
+    private LocalDateTime lastUpdatedTime;
     
     public UserAccount(Person p, String un, String pw, String r) {
-        person = p;
-        username = un;
-        password = pw;
-        role = r;
-        isActive = true;
+        this.person = p;
+        this.username = un;
+        this.password = pw;
+        this.role = r;
+        this.isActive = true;
+        this.lastLoginTime = null;
+        this.lastUpdatedTime = null;
+        
     }
     
     public boolean authenticate(String un, String pw) {
@@ -57,30 +62,51 @@ public class UserAccount {
         return isActive;
     }
     
-    public String getLastLoginTime() {
-        return lastLoginTime;
-    }
-    
-    // Setter
+   
     public void setPassword(String newPassword) {
         this.password = newPassword;
+        touchUpdatedTime();
     }
     
     public void setRole(String role) {
         this.role = role;
+        touchUpdatedTime();
     }
     
     public void setActive(boolean active) {
         this.isActive = active;
+        touchUpdatedTime();
     }
     
-    public void setLastLoginTime(String time) {
-        this.lastLoginTime = time;
-    }
     
     public boolean isMatch(String id) {
         return person.getPersonId().equals(id);
     }
+
+    public LocalDateTime getLastLoginTime() {
+        return lastLoginTime;
+    }
+    
+    public void markLoginNow() {
+        this.lastLoginTime = LocalDateTime.now();
+    }
+    
+    public void touchUpdatedTime() {
+        this.lastUpdatedTime = LocalDateTime.now();
+    }
+    
+    public void setLastLoginTime(LocalDateTime lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
+    public LocalDateTime getLastUpdatedTime() {
+        return lastUpdatedTime;
+    }
+
+    public void setLastUpdatedTime(LocalDateTime lastUpdatedTime) {
+        this.lastUpdatedTime = lastUpdatedTime;
+    }
+    
     
     @Override
     public String toString() {

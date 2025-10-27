@@ -109,7 +109,7 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
             }
         });
         jPanel1.add(btnSearchbyName);
-        btnSearchbyName.setBounds(60, 70, 150, 23);
+        btnSearchbyName.setBounds(220, 70, 150, 23);
 
         btnSearchbyDept.setText("Search by Dept");
         btnSearchbyDept.addActionListener(new java.awt.event.ActionListener() {
@@ -118,7 +118,7 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
             }
         });
         jPanel1.add(btnSearchbyDept);
-        btnSearchbyDept.setBounds(240, 70, 130, 23);
+        btnSearchbyDept.setBounds(390, 70, 130, 23);
 
         btnSearchbyID.setText("Search by ID");
         btnSearchbyID.addActionListener(new java.awt.event.ActionListener() {
@@ -127,7 +127,7 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
             }
         });
         jPanel1.add(btnSearchbyID);
-        btnSearchbyID.setBounds(400, 70, 120, 23);
+        btnSearchbyID.setBounds(70, 70, 120, 23);
 
         btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -462,7 +462,8 @@ public class ManageFacultyJPanel extends javax.swing.JPanel {
             Person p = fp.getPerson();
 
             String pid = (p != null ? p.getPersonId() : "");
-            String name = fp.getFacultyName();
+            String name = fp.getPerson().getName();
+            //String name = p.getName(); this one works but need to prepopulate data first 
             String dept = fp.getDepartment();
             String title = fp.getTitle();
             String email = (p != null ? p.getEmail() : "");

@@ -8,6 +8,7 @@ import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.Person;
 import info5100.university.example.Persona.StudentDirectory;
 import info5100.university.example.Persona.StudentProfile;
+
 import java.awt.CardLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -108,7 +109,7 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
             }
         });
         jPanel1.add(btnSearchbyName);
-        btnSearchbyName.setBounds(60, 70, 150, 23);
+        btnSearchbyName.setBounds(210, 70, 150, 23);
 
         btnSearchbyDept.setText("Search by Dept");
         btnSearchbyDept.addActionListener(new java.awt.event.ActionListener() {
@@ -117,7 +118,7 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
             }
         });
         jPanel1.add(btnSearchbyDept);
-        btnSearchbyDept.setBounds(240, 70, 130, 23);
+        btnSearchbyDept.setBounds(400, 70, 130, 23);
 
         btnSearchbyID.setText("Search by ID");
         btnSearchbyID.addActionListener(new java.awt.event.ActionListener() {
@@ -126,7 +127,7 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
             }
         });
         jPanel1.add(btnSearchbyID);
-        btnSearchbyID.setBounds(400, 70, 120, 23);
+        btnSearchbyID.setBounds(70, 70, 120, 23);
 
         btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -144,7 +145,7 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
             }
         });
         jPanel1.add(btnEdit);
-        btnEdit.setBounds(170, 460, 78, 23);
+        btnEdit.setBounds(190, 460, 78, 23);
 
         lblID.setText("ID");
         jPanel1.add(lblID);
@@ -192,21 +193,11 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 638, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 565, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -328,6 +319,9 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, "Student updated.");
         refreshTable(sd.getStudentList());
         selectedStudent = null;
+        
+        
+       
 
     }//GEN-LAST:event_btnEditActionPerformed
 
@@ -393,7 +387,7 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         for (StudentProfile sp : studentList) {
             Person p = sp.getPerson();
             String pid = (p != null ? p.getPersonId() : "");
-            String name = sp.getStudentName();
+            String name = p.getName();
             String dept = sp.getDepartment();
             String status = sp.getAcademicStatus();
             String email = (p != null ? p.getEmail() : "");
