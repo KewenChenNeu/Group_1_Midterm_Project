@@ -44,5 +44,5 @@ Based on the provided architecture, we integrated a role-based authentication & 
 ### 2. Clone the Repository
 
 ```bash
-git clone https://github.com/your-repo-url/digital-university-system.git
+git clone https://github.com/KewenChenNeu/Group_1_Midterm_Project.git
 cd digital-university-system
