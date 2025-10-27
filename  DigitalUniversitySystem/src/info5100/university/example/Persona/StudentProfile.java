@@ -76,9 +76,7 @@ public class StudentProfile {
         return transcript;
     }
 
-    public CourseLoad getCourseLoadBySemester(String semester) {
-        return transcript.getCourseLoadBySemester(semester);
-    }
+    
 
     public CourseLoad getCurrentCourseLoad() {
         return transcript.getCurrentCourseLoad();
@@ -95,4 +93,16 @@ public class StudentProfile {
     public EmploymentHistroy getEmploymenthistory() {
         return employmenthistory;
     }
+    
+    public CourseLoad getCourseLoadBySemester(String semester) {
+    if (transcript == null) return null;
+
+    for (CourseLoad cl : transcript.getCourseloadlist()) {
+        if (cl.getSemester().equalsIgnoreCase(semester)) {
+            return cl;
+        }
+    }
+    return null;
+}
+    
 }
