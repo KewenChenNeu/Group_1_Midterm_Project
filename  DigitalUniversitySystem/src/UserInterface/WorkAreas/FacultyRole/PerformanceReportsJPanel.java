@@ -4,6 +4,7 @@ import info5100.university.example.Department.Department;
 import info5100.university.example.Persona.Faculty.FacultyProfile;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.CardLayout;
 
 public class PerformanceReportsJPanel extends javax.swing.JPanel {
 
@@ -246,8 +247,10 @@ public class PerformanceReportsJPanel extends javax.swing.JPanel {
 
     private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
         // Navigate back to Faculty Work Area
-        CardSequencePanel.remove(this);
-        ((java.awt.CardLayout) CardSequencePanel.getLayout()).previous(CardSequencePanel);
+        CardSequencePanel.removeAll();
+        FacultyWorkAreaJPanel facultyPanel = new FacultyWorkAreaJPanel(department, facultyProfile, CardSequencePanel);
+        CardSequencePanel.add("FacultyWorkArea", facultyPanel);
+        ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
     }//GEN-LAST:event_backBtnActionPerformed
 
 
