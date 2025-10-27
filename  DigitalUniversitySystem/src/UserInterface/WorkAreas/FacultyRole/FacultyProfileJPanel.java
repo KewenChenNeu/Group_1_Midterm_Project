@@ -280,10 +280,11 @@ public class FacultyProfileJPanel extends javax.swing.JPanel {
             departmentField.setText(department.getName());
         }
 
-        positionField.setText("Professor");
-        bioArea.setText("Experienced faculty member with expertise in software engineering, " +
-                       "application development, and computer science education. " +
-                       "Passionate about mentoring students and advancing research in the field.");
+        // Set position - default to Faculty
+        positionField.setText("Faculty");
+        
+        // Leave bio empty for faculty to fill
+        bioArea.setText("");
     }
 
     private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
