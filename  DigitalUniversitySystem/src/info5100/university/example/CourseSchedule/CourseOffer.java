@@ -39,7 +39,7 @@ public class CourseOffer {
 
     public String getCourseNumber() {
         return course.getCOurseNumber();
-    }
+}
 
     public void generatSeats(int n) {
 
@@ -152,7 +152,7 @@ public class CourseOffer {
             if (seat.isOccupied()) {
                 // Check if this seat belongs to the student
                 if (seat.seatassignment != null && 
-                    seat.seatassignment.courseload != null) {
+                    seat.seatassignment.getCourseLoad() != null) {
                     
                     // Need to check if this courseload belongs to the student
                     // This requires going through the student's course loads
@@ -164,7 +164,7 @@ public class CourseOffer {
                             seat.seatassignment = null;
                             
                             // Also remove from student's course load
-                            sa.courseload.getSeatAssignments().remove(sa);
+                            sa.getCourseLoad().getSeatAssignments().remove(sa);
                             
                             return true;
                         }

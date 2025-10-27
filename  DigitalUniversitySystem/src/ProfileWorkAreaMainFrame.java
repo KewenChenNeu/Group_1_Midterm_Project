@@ -21,6 +21,7 @@ import info5100.university.example.ConfigureAUniversity;
 
 import javax.swing.*;
 
+
 /**
  *
  * @author kal bugrara
@@ -177,14 +178,11 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
 //            ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
         }
         else if ("Registrar".equals(role)) {
-            Person person = useraccount.getPerson();
-            info5100.university.example.Persona.Faculty.FacultyProfile fp =
-                department.getFacultyDirectory().findTeachingFaculty(person.getPersonId());
-
-            FacultyWorkAreaJPanel facultyPanel = new FacultyWorkAreaJPanel(department, fp, CardSequencePanel);
-            CardSequencePanel.removeAll();
-            CardSequencePanel.add("Registrar", registrarPanel);
-            ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+                RegistrarWorkAreaJPanel registrarPanel = new RegistrarWorkAreaJPanel(department, CardSequencePanel);
+                CardSequencePanel.removeAll();
+                CardSequencePanel.add("Registrar", registrarPanel);
+                ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+                                    
         }
         
 

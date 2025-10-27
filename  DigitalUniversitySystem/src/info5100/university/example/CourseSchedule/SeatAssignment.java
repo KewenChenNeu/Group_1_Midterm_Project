@@ -83,5 +83,7 @@ public class SeatAssignment {
     public CourseLoad getCourseLoad() {
         return courseload;
     }
-
+    
 }
+
+
