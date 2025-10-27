@@ -9,7 +9,9 @@ import info5100.university.example.CourseCatalog.Course;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class CourseManagementJPanel extends javax.swing.JPanel {
 
@@ -209,7 +211,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
         
         // Get current semester courses
         if (department != null) {
-            // Try Fall2025 first, then Spring2025
+            // Get semesters - use default for now
             String[] semesters = {"Fall2025", "Spring2025"};
             
             for (String semester : semesters) {
@@ -236,8 +238,9 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
                                 };
                                 courseTableModel.addRow(row);
                                 
-                                // Calculate tuition (assuming $1000 per credit)
-                                totalTuition += enrolled * course.getCredits() * 1000;
+                                // Calculate tuition based on department rate or default
+                                double tuitionRate = 1000.0; // Default rate per credit
+                                totalTuition += enrolled * course.getCredits() * tuitionRate;
                                 }
                             }
                         }
@@ -276,7 +279,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
         
         editPanel.add(new JLabel("Description:"));
         JTextArea descriptionArea = new JTextArea(2, 20);
-        descriptionArea.setText("Advanced software engineering concepts and practices");
+        descriptionArea.setText(""); // Let faculty enter description
         descriptionArea.setLineWrap(true);
         descriptionArea.setWrapStyleWord(true);
         JScrollPane descScroll = new JScrollPane(descriptionArea);
@@ -292,7 +295,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
         
         editPanel.add(new JLabel("Syllabus:"));
         JTextArea syllabusArea = new JTextArea(3, 20);
-        syllabusArea.setText("Week 1-2: Introduction\nWeek 3-5: Core Concepts\nWeek 6-8: Advanced Topics\nWeek 9-10: Project Work\nWeek 11-12: Reviews and Exams");
+        syllabusArea.setText(""); // Let faculty enter syllabus
         syllabusArea.setLineWrap(true);
         syllabusArea.setWrapStyleWord(true);
         JScrollPane syllabusScroll = new JScrollPane(syllabusArea);
@@ -304,6 +307,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
             try {
                 // Find and update the CourseOffer
                 if (department != null) {
+                    // Get semesters - use default for now
                     String[] semesters = {"Fall2025", "Spring2025"};
                     for (String semester : semesters) {
                         CourseSchedule schedule = department.getCourseSchedule(semester);
@@ -350,23 +354,7 @@ public class CourseManagementJPanel extends javax.swing.JPanel {
         
         JTextArea syllabusArea = new JTextArea(15, 40);
         syllabusArea.setText("Course: " + courseName + "\n\n" +
-                           "Objectives:\n" +
-                           "- Understand core concepts\n" +
-                           "- Apply practical skills\n" +
-                           "- Complete hands-on projects\n\n" +
-                           "Weekly Schedule:\n" +
-                           "Week 1-2: Introduction and Setup\n" +
-                           "Week 3-4: Fundamentals\n" +
-                           "Week 5-6: Advanced Concepts\n" +
-                           "Week 7-8: Project Development\n" +
-                           "Week 9-10: Testing and Optimization\n" +
-                           "Week 11: Presentations\n" +
-                           "Week 12: Final Exam\n\n" +
-                           "Grading:\n" +
-                           "- Assignments: 30%\n" +
-                           "- Midterm: 25%\n" +
-                           "- Final: 35%\n" +
-                           "- Participation: 10%");
+                           "Please enter syllabus content...");
         syllabusArea.setLineWrap(true);
         syllabusArea.setWrapStyleWord(true);
         JScrollPane scrollPane = new JScrollPane(syllabusArea);

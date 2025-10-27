@@ -13,8 +13,11 @@ import info5100.university.example.CourseSchedule.Seat;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class StudentManagementJPanel extends javax.swing.JPanel {
 
@@ -269,6 +272,8 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
         courseComboBox.addItem("-- Select Course --");
         
         if (department != null) {
+            // Get all semesters from department - use default for now
+            // In future, could iterate through all possible semesters
             String[] semesters = {"Fall2025", "Spring2025"};
             for (String semester : semesters) {
                 CourseSchedule schedule = department.getCourseSchedule(semester);
@@ -310,6 +315,7 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
         if (department != null) {
             // Find the course offer
             CourseOffer targetCourse = null;
+            // Get semesters - use default for now
             String[] semesters = {"Fall2025", "Spring2025"};
             for (String semester : semesters) {
                 CourseSchedule schedule = department.getCourseSchedule(semester);
@@ -417,6 +423,20 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
         return null;
     }
     
+    private StudentProfile findStudentById(String studentId) {
+        if (department != null && department.getStudentDirectory() != null) {
+            for (StudentProfile student : department.getStudentDirectory().getStudentList()) {
+                if (student != null && student.getPerson() != null) {
+                    Person person = student.getPerson();
+                    if (person.getPersonId() != null && person.getPersonId().equals(studentId)) {
+                        return student;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
     private class StudentGradeInfo {
         String studentId, studentName, email, gradePoints, letterGrade, percentage;
         
@@ -450,10 +470,7 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
         progressArea.append("Percentage: " + studentTableModel.getValueAt(selectedRow, 5) + "\n");
         progressArea.append("Class Rank: " + studentTableModel.getValueAt(selectedRow, 6) + "\n\n");
         progressArea.append("Assignments:\n");
-        progressArea.append("- Assignment 1: 90/100\n");
-        progressArea.append("- Assignment 2: 85/100\n");
-        progressArea.append("- Midterm Exam: 88/100\n");
-        progressArea.append("- Project: 92/100\n");
+        progressArea.append("- No assignment details available\n");
         progressArea.setEditable(false);
 
         JScrollPane scrollPane = new JScrollPane(progressArea);
@@ -473,14 +490,17 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
         JTextArea transcriptArea = new JTextArea(15, 50);
         transcriptArea.setText("Transcript Summary for " + studentName + " (" + studentId + ")\n");
         transcriptArea.append("=" .repeat(60) + "\n\n");
-        transcriptArea.append("Fall 2025 Semester:\n");
-        transcriptArea.append("-" .repeat(30) + "\n");
-        transcriptArea.append("INFO 5100 - Application Engineering: A-\n");
-        transcriptArea.append("INFO 5200 - Data Structures: B+\n");
-        transcriptArea.append("INFO 6150 - Web Design: A\n");
-        transcriptArea.append("\nSemester GPA: 3.67\n");
-        transcriptArea.append("Cumulative GPA: 3.50\n");
-        transcriptArea.append("Total Credits: 12\n");
+        // Get actual transcript data for the student
+        StudentProfile student = findStudentById(studentId);
+        if (student != null && student.getTranscript() != null) {
+            transcriptArea.append("Transcript details:\n");
+            transcriptArea.append("-" .repeat(30) + "\n");
+            // Display available student info
+            transcriptArea.append("Student ID: " + studentId + "\n");
+            transcriptArea.append("Total Credits Earned: Available in transcript\n");
+        } else {
+            transcriptArea.append("No transcript data available\n");
+        }
         transcriptArea.setEditable(false);
 
         JScrollPane scrollPane = new JScrollPane(transcriptArea);
@@ -504,23 +524,23 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
         gradePanel.add(new JLabel(studentName));
         
         gradePanel.add(new JLabel("Assignment 1 (0-100):"));
-        JTextField assign1Field = new JTextField("85");
+        JTextField assign1Field = new JTextField();
         gradePanel.add(assign1Field);
         
         gradePanel.add(new JLabel("Assignment 2 (0-100):"));
-        JTextField assign2Field = new JTextField("90");
+        JTextField assign2Field = new JTextField();
         gradePanel.add(assign2Field);
         
         gradePanel.add(new JLabel("Midterm Exam (0-100):"));
-        JTextField midtermField = new JTextField("88");
+        JTextField midtermField = new JTextField();
         gradePanel.add(midtermField);
         
         gradePanel.add(new JLabel("Final Exam (0-100):"));
-        JTextField finalField = new JTextField("92");
+        JTextField finalField = new JTextField();
         gradePanel.add(finalField);
         
         gradePanel.add(new JLabel("Participation (0-100):"));
-        JTextField participationField = new JTextField("95");
+        JTextField participationField = new JTextField();
         gradePanel.add(participationField);
         
         gradePanel.add(new JLabel("Current Grade:"));
@@ -531,12 +551,22 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
         
         if (result == JOptionPane.OK_OPTION) {
             try {
-                // Calculate weighted average
+                // Calculate weighted average with input validation
                 double assign1 = Double.parseDouble(assign1Field.getText());
                 double assign2 = Double.parseDouble(assign2Field.getText());
                 double midterm = Double.parseDouble(midtermField.getText());
                 double finalExam = Double.parseDouble(finalField.getText());
                 double participation = Double.parseDouble(participationField.getText());
+                
+                // Validate that all scores are between 0 and 100
+                if (assign1 < 0 || assign1 > 100 || assign2 < 0 || assign2 > 100 ||
+                    midterm < 0 || midterm > 100 || finalExam < 0 || finalExam > 100 ||
+                    participation < 0 || participation > 100) {
+                    JOptionPane.showMessageDialog(this, 
+                        "All scores must be between 0 and 100!", 
+                        "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 
                 // Weights: Assignments 30%, Midterm 25%, Final 35%, Participation 10%
                 double totalScore = (assign1 * 0.15 + assign2 * 0.15 + midterm * 0.25 + 
@@ -622,19 +652,19 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
         inputPanel.add(new JLabel(studentName));
         
         inputPanel.add(new JLabel("Assignments Average (0-100):"));
-        JTextField assignField = new JTextField("88");
+        JTextField assignField = new JTextField();
         inputPanel.add(assignField);
         
         inputPanel.add(new JLabel("Midterm Score (0-100):"));
-        JTextField midtermField = new JTextField("85");
+        JTextField midtermField = new JTextField();
         inputPanel.add(midtermField);
         
         inputPanel.add(new JLabel("Final Exam Score (0-100):"));
-        JTextField finalField = new JTextField("90");
+        JTextField finalField = new JTextField();
         inputPanel.add(finalField);
         
         inputPanel.add(new JLabel("Participation (0-100):"));
-        JTextField participationField = new JTextField("95");
+        JTextField participationField = new JTextField();
         inputPanel.add(participationField);
         
         inputPanel.add(new JLabel("Weights:"));
@@ -649,6 +679,15 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
                 double midterm = Double.parseDouble(midtermField.getText());
                 double finalExam = Double.parseDouble(finalField.getText());
                 double participation = Double.parseDouble(participationField.getText());
+                
+                // Validate that all scores are between 0 and 100
+                if (assignments < 0 || assignments > 100 || midterm < 0 || midterm > 100 ||
+                    finalExam < 0 || finalExam > 100 || participation < 0 || participation > 100) {
+                    JOptionPane.showMessageDialog(this, 
+                        "All scores must be between 0 and 100!", 
+                        "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 
                 // Calculate weighted average
                 double finalScore = (assignments * 0.30 + midterm * 0.25 + 
