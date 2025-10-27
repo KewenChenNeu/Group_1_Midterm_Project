@@ -187,7 +187,7 @@ public class ManageStudentsJPanel extends javax.swing.JPanel {
         }
 
         jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(22, 250, 570, 180);
+        jScrollPane1.setBounds(2, 250, 620, 180);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
