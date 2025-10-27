@@ -13,7 +13,8 @@ import info5100.university.example.CourseCatalog.Course;
  * @author kal bugrara
  */
 public class SeatAssignment {
-    float grade; //(Letter grade mappings: A=4.0, A-=3.7, B+=3.3, B=3.0, )
+    float grade;
+    private float gradePoint;//(Letter grade mappings: A=4.0, A-=3.7, B+=3.3, B=3.0, )
     Seat seat;
     boolean like; //true means like and false means not like
     CourseLoad courseload;
@@ -86,6 +87,8 @@ public class SeatAssignment {
 
     public void setAssignmentSubmit() {
         this.assignmentStatus = "Submitted";
+    }
+    
     public CourseLoad getCourseLoad() {
         return courseload;
     }

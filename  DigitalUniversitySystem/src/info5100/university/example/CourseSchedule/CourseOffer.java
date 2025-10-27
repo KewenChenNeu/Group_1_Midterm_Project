@@ -101,10 +101,7 @@ public class CourseOffer {
         return course;
     }
     
-    public String getCourseName() {
-        return course.getName();
-    } 
-    
+
     public Course getSubjectCourse(){
         return course;
     }
