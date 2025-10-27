@@ -498,52 +498,102 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
         String studentName = (String) studentTableModel.getValueAt(selectedRow, 1);
         String currentGrade = (String) studentTableModel.getValueAt(selectedRow, 4);
         
-        // Create grade dialog
-        String[] grades = {"A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F"};
-        JComboBox<String> gradeCombo = new JComboBox<>(grades);
-        gradeCombo.setSelectedItem(currentGrade);
-        
-        JPanel gradePanel = new JPanel(new GridLayout(3, 2, 10, 10));
-        gradePanel.add(new JLabel("Student ID:"));
-        gradePanel.add(new JLabel(studentId));
-        gradePanel.add(new JLabel("Student Name:"));
+        // Create grade input panel with multiple assignments
+        JPanel gradePanel = new JPanel(new GridLayout(7, 2, 10, 10));
+        gradePanel.add(new JLabel("Student:"));
         gradePanel.add(new JLabel(studentName));
-        gradePanel.add(new JLabel("Grade:"));
-        gradePanel.add(gradeCombo);
         
-        int result = JOptionPane.showConfirmDialog(this, gradePanel, "Assign Grade",
+        gradePanel.add(new JLabel("Assignment 1 (0-100):"));
+        JTextField assign1Field = new JTextField("85");
+        gradePanel.add(assign1Field);
+        
+        gradePanel.add(new JLabel("Assignment 2 (0-100):"));
+        JTextField assign2Field = new JTextField("90");
+        gradePanel.add(assign2Field);
+        
+        gradePanel.add(new JLabel("Midterm Exam (0-100):"));
+        JTextField midtermField = new JTextField("88");
+        gradePanel.add(midtermField);
+        
+        gradePanel.add(new JLabel("Final Exam (0-100):"));
+        JTextField finalField = new JTextField("92");
+        gradePanel.add(finalField);
+        
+        gradePanel.add(new JLabel("Participation (0-100):"));
+        JTextField participationField = new JTextField("95");
+        gradePanel.add(participationField);
+        
+        gradePanel.add(new JLabel("Current Grade:"));
+        gradePanel.add(new JLabel(currentGrade != null ? currentGrade : "Not Graded"));
+        
+        int result = JOptionPane.showConfirmDialog(this, gradePanel, "Grade Assignments",
                                                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         
         if (result == JOptionPane.OK_OPTION) {
-            String newGrade = (String) gradeCombo.getSelectedItem();
-            
-            // Update the grade in the model
-            String selectedCourse = (String) courseComboBox.getSelectedItem();
-            if (selectedCourse != null && !selectedCourse.equals("-- Select Course --")) {
-                String courseId = selectedCourse.split(" - ")[0];
+            try {
+                // Calculate weighted average
+                double assign1 = Double.parseDouble(assign1Field.getText());
+                double assign2 = Double.parseDouble(assign2Field.getText());
+                double midterm = Double.parseDouble(midtermField.getText());
+                double finalExam = Double.parseDouble(finalField.getText());
+                double participation = Double.parseDouble(participationField.getText());
                 
-                // Find and update the seat assignment
-                if (department != null) {
-                    String[] semesters = {"Fall2025", "Spring2025"};
-                    for (String semester : semesters) {
-                        CourseSchedule schedule = department.getCourseSchedule(semester);
-                        if (schedule != null) {
-                            for (CourseOffer co : schedule.getAllCourseOffers()) {
-                                if (co != null && co.getCourseNumber().equals(courseId)) {
+                // Weights: Assignments 30%, Midterm 25%, Final 35%, Participation 10%
+                double totalScore = (assign1 * 0.15 + assign2 * 0.15 + midterm * 0.25 + 
+                                   finalExam * 0.35 + participation * 0.10);
+                
+                // Convert to letter grade
+                String letterGrade = calculateLetterGrade(totalScore);
+                
+                // Update the grade in the seat assignment
+                updateStudentGrade(studentId, letterGrade);
+                
+                JOptionPane.showMessageDialog(this, 
+                    "Grade calculated: " + String.format("%.1f", totalScore) + " (" + letterGrade + ")\nGrade updated successfully!", 
+                    "Success", JOptionPane.INFORMATION_MESSAGE);
+                    
+                populateStudentTable();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Please enter valid numbers for all scores!", 
+                                            "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_gradeAssignmentActionPerformed
+    
+    private String calculateLetterGrade(double score) {
+        if (score >= 93) return "A";
+        else if (score >= 90) return "A-";
+        else if (score >= 87) return "B+";
+        else if (score >= 83) return "B";
+        else if (score >= 80) return "B-";
+        else if (score >= 77) return "C+";
+        else if (score >= 73) return "C";
+        else if (score >= 70) return "C-";
+        else if (score >= 60) return "D";
+        else return "F";
+    }
+    
+    private void updateStudentGrade(String studentId, String newGrade) {
+        String selectedCourse = (String) courseComboBox.getSelectedItem();
+        if (selectedCourse != null && !selectedCourse.equals("-- Select Course --")) {
+            String courseId = selectedCourse.split(" - ")[0];
+            
+            if (department != null) {
+                String[] semesters = {"Fall2025", "Spring2025"};
+                for (String semester : semesters) {
+                    CourseSchedule schedule = department.getCourseSchedule(semester);
+                    if (schedule != null) {
+                        for (CourseOffer co : schedule.getAllCourseOffers()) {
+                            if (co != null && co.getCourseNumber().equals(courseId) && 
+                                co.getFacultyProfile() == facultyProfile) {
+                                if (co.getSeatList() != null) {
+                                    // For MVP, match by seat number in student ID
                                     for (Seat seat : co.getSeatList()) {
-                                        if (seat.isOccupied()) {
+                                        if (seat.isOccupied() && studentId.endsWith(String.valueOf(seat.getNumber()))) {
                                             SeatAssignment sa = seat.getSeatassignment();
                                             if (sa != null) {
-                                                StudentProfile student = findStudentBySeatAssignment(sa);
-                                                if (student != null && student.getPerson() != null &&
-                                                    student.getPerson().getPersonId().equals(studentId)) {
-                                                    sa.setGrade(newGrade);
-                                                    JOptionPane.showMessageDialog(this, 
-                                                        "Grade updated successfully!", 
-                                                        "Success", JOptionPane.INFORMATION_MESSAGE);
-                                                    populateStudentTable();
-                                                    return;
-                                                }
+                                                sa.setGrade(newGrade);
+                                                return;
                                             }
                                         }
                                     }
@@ -563,23 +613,77 @@ public class StudentManagementJPanel extends javax.swing.JPanel {
             return;
         }
 
+        String studentId = (String) studentTableModel.getValueAt(selectedRow, 0);
         String studentName = (String) studentTableModel.getValueAt(selectedRow, 1);
 
-        JPanel gradePanel = new JPanel(new GridLayout(6, 2, 10, 10));
-        gradePanel.add(new JLabel("Student:"));
-        gradePanel.add(new JLabel(studentName));
-        gradePanel.add(new JLabel("Assignments (30%):"));
-        gradePanel.add(new JLabel("88.5"));
-        gradePanel.add(new JLabel("Midterm (30%):"));
-        gradePanel.add(new JLabel("85.0"));
-        gradePanel.add(new JLabel("Final (30%):"));
-        gradePanel.add(new JLabel("90.0"));
-        gradePanel.add(new JLabel("Participation (10%):"));
-        gradePanel.add(new JLabel("95.0"));
-        gradePanel.add(new JLabel("Final Grade:"));
-        gradePanel.add(new JLabel("88.55 (B+)"));
-
-        JOptionPane.showMessageDialog(this, gradePanel, "Final Grade Calculation", JOptionPane.INFORMATION_MESSAGE);
+        // Input panel for scores
+        JPanel inputPanel = new JPanel(new GridLayout(6, 2, 10, 10));
+        inputPanel.add(new JLabel("Student:"));
+        inputPanel.add(new JLabel(studentName));
+        
+        inputPanel.add(new JLabel("Assignments Average (0-100):"));
+        JTextField assignField = new JTextField("88");
+        inputPanel.add(assignField);
+        
+        inputPanel.add(new JLabel("Midterm Score (0-100):"));
+        JTextField midtermField = new JTextField("85");
+        inputPanel.add(midtermField);
+        
+        inputPanel.add(new JLabel("Final Exam Score (0-100):"));
+        JTextField finalField = new JTextField("90");
+        inputPanel.add(finalField);
+        
+        inputPanel.add(new JLabel("Participation (0-100):"));
+        JTextField participationField = new JTextField("95");
+        inputPanel.add(participationField);
+        
+        inputPanel.add(new JLabel("Weights:"));
+        inputPanel.add(new JLabel("Assign:30%, Mid:25%, Final:35%, Part:10%"));
+        
+        int result = JOptionPane.showConfirmDialog(this, inputPanel, "Compute Final Grade",
+                                                   JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        
+        if (result == JOptionPane.OK_OPTION) {
+            try {
+                double assignments = Double.parseDouble(assignField.getText());
+                double midterm = Double.parseDouble(midtermField.getText());
+                double finalExam = Double.parseDouble(finalField.getText());
+                double participation = Double.parseDouble(participationField.getText());
+                
+                // Calculate weighted average
+                double finalScore = (assignments * 0.30 + midterm * 0.25 + 
+                                   finalExam * 0.35 + participation * 0.10);
+                
+                String letterGrade = calculateLetterGrade(finalScore);
+                
+                // Update the grade
+                updateStudentGrade(studentId, letterGrade);
+                
+                // Show result
+                JPanel resultPanel = new JPanel(new GridLayout(7, 2, 10, 10));
+                resultPanel.add(new JLabel("Student:"));
+                resultPanel.add(new JLabel(studentName));
+                resultPanel.add(new JLabel("Assignments (30%):"));
+                resultPanel.add(new JLabel(String.format("%.1f", assignments)));
+                resultPanel.add(new JLabel("Midterm (25%):"));
+                resultPanel.add(new JLabel(String.format("%.1f", midterm)));
+                resultPanel.add(new JLabel("Final Exam (35%):"));
+                resultPanel.add(new JLabel(String.format("%.1f", finalExam)));
+                resultPanel.add(new JLabel("Participation (10%):"));
+                resultPanel.add(new JLabel(String.format("%.1f", participation)));
+                resultPanel.add(new JLabel("Final Score:"));
+                resultPanel.add(new JLabel(String.format("%.2f", finalScore)));
+                resultPanel.add(new JLabel("Final Grade:"));
+                resultPanel.add(new JLabel(letterGrade));
+                
+                JOptionPane.showMessageDialog(this, resultPanel, "Final Grade Computed", JOptionPane.INFORMATION_MESSAGE);
+                populateStudentTable();
+                
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Please enter valid numbers for all scores!", 
+                                            "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_computeFinalGradeActionPerformed
 
     private void rankStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rankStudentsActionPerformed
