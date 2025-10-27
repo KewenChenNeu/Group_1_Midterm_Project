@@ -173,7 +173,7 @@ public class Department {
         }
     }
 
-    public RegistrarDirectory getRegistrardirectory() {
+    public RegistrarDirectory getRegistrarDirectory() {
         return registrardirectory;
     }
 
@@ -251,4 +251,10 @@ public class Department {
         return total;
     }
 
+    
+    public void initializeFinancialAccount() {
+        if (financialAccount == null) {
+            financialAccount = new FinancialAccount();
+        }
+    }
 }

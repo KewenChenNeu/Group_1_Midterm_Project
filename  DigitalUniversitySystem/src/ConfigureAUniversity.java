@@ -9,6 +9,9 @@ import info5100.university.example.Persona.*;
 import info5100.university.example.Persona.Faculty.FacultyProfile;
 import info5100.university.example.Persona.Faculty.FacultyDirectory;
 
+import info5100.university.example.Persona.RegistrarProfile;
+import info5100.university.example.Persona.RegistrarDirectory;
+
 public class ConfigureAUniversity {
 
     public static Department setupTestData() {
@@ -38,29 +41,41 @@ public class ConfigureAUniversity {
         CourseOffer co6150 = fall2025.newCourseOffer("INFO 6150");
         CourseOffer co6250 = fall2025.newCourseOffer("INFO 6250");
         CourseOffer co7390 = fall2025.newCourseOffer("INFO 7390");
-
-        if (co5100 != null) {
+        
+        
+        if(co5100 != null) {
             co5100.generatSeats(30);
+            co5100.setRoom("Room 101");
+            co5100.setSchedule("Mon/Wed 10:00-11:30");
         }
-        if (co5200 != null) {
+        if(co5200 != null) {
             co5200.generatSeats(30);
+            co5200.setRoom("Room 102");
+            co5200.setSchedule("Tue/Thu 14:00-15:30");
         }
-        if (co6150 != null) {
+        if(co6150 != null) {
             co6150.generatSeats(30);
+            co6150.setRoom("Room 201");
+            co6150.setSchedule("Mon/Wed 14:00-15:30");
         }
-        if (co6250 != null) {
+        if(co6250 != null) {
             co6250.generatSeats(30);
+            co6250.setRoom("Room 202");
+            co6250.setSchedule("Tue/Thu 10:00-11:30");
         }
-        if (co7390 != null) {
+        if(co7390 != null) {
             co7390.generatSeats(30);
+            co7390.setRoom("Room 301");
+            co7390.setSchedule("Fri 9:00-12:00");
         }
+        
 
         PersonDirectory personDirectory = department.getPersonDirectory();
         StudentDirectory studentDirectory = department.getStudentDirectory();
         FacultyDirectory facultyDirectory = department.getFacultyDirectory();
         UserAccountDirectory userAccountDirectory = department.getUserAccountDirectory();
-        RegistrarDirectory registrarDirectory = department.getRegistrardirectory();
-
+        RegistrarDirectory registrarDirectory = department.getRegistrarDirectory();
+        
         System.out.println("Creating admin...");
 
         Person adminPerson = personDirectory.newPerson("ADMIN001");
@@ -242,57 +257,76 @@ public class ConfigureAUniversity {
             registrarPerson.setEmail("registrar@university.edu");
             registrarPerson.setPhone("617-555-0002");
         }
-
+        
+        // Create RegistrarProfile
+        RegistrarProfile registrarProfile = registrarDirectory.newRegistrarProfile(registrarPerson);
+        if(registrarProfile != null) {
+            registrarProfile.setOfficeLocation("Admin Building, Room 105");
+            registrarProfile.setOfficeHours("Mon-Fri 9:00 AM - 5:00 PM");
+            registrarProfile.setDepartment("Registrar's Office");
+        }
+        
         userAccountDirectory.newUserAccount(
                 registrarPerson,
                 "registrar", "reg123", "Registrar"
         );
 
-        System.out.println(
-                "Creating additional persons to meet 30 person requirement...");
-
-        for (int i = 11;
-                i <= 30; i++) {
-            Person person = personDirectory.newPerson("PER00" + i);
-            if (person != null) {
-                person.setEmail("person" + i + "@university.edu");
-                person.setPhone("617-555-30" + String.format("%02d", i));
+        // Create some past semesters for testing reports
+        System.out.println("Creating previous semester data for testing...");
+        
+        // Spring 2025 semester
+        CourseSchedule spring2025 = department.newCourseSchedule("Spring2025");
+        CourseOffer sp5100 = spring2025.newCourseOffer("INFO 5100");
+        CourseOffer sp5200 = spring2025.newCourseOffer("INFO 5200");
+        
+        if(sp5100 != null) {
+            sp5100.generatSeats(25);
+            sp5100.setRoom("Room 101");
+            sp5100.setSchedule("Mon/Wed 10:00-11:30");
+        }
+        if(sp5200 != null) {
+            sp5200.generatSeats(25);
+            sp5200.setRoom("Room 102");
+            sp5200.setSchedule("Tue/Thu 14:00-15:30");
+        }
+        
+        // Register some students in Spring 2025 for historical data
+        for(int i = 1; i <= 5; i++) {
+            StudentProfile student = studentDirectory.findStudent("STU00" + i);
+            if(student != null) {
+                CourseLoad springLoad = student.newCourseLoad("Spring2025");
+                if(sp5100 != null) {
+                    SeatAssignment sa = springLoad.newSeatAssignment(sp5100);
+                    if(sa != null) {
+                        sa.setGrade("B+");
+                    }
+                }
             }
         }
 
-        System.out.println(
-                "\n========== Configuration Summary ==========");
-        System.out.println(
-                "Department: " + department.getName());
-        System.out.println(
-                "Total Persons: 30+");
-        System.out.println(
-                "Total Students: 10");
-        System.out.println(
-                "Total Faculty: 10");
-        System.out.println(
-                "Admin: 1");
-        System.out.println(
-                "Registrar: 1");
-        System.out.println(
-                "Courses Offered: 5");
-        System.out.println(
-                "Semester: Fall2025");
-        System.out.println(
-                "\n========== Login Credentials ==========");
-        System.out.println(
-                "Admin: username='admin', password='admin123'");
-        System.out.println(
-                "Student 1: username='student1', password='pass1'");
-        System.out.println(
-                "Student 2: username='student2', password='pass2'");
-        System.out.println(
-                "Faculty 1: username='faculty1', password='pass1'");
-        System.out.println(
-                "Registrar: username='registrar', password='reg123'");
-        System.out.println(
-                "=========================================\n");
+        // Initialize Financial Account for the department
+        System.out.println("Initializing financial tracking...");
+        department.initializeFinancialAccount();
+        
 
+        System.out.println("\n========== Configuration Summary ==========");
+        System.out.println("Department: " + department.getName());
+        System.out.println("Total Persons: 30+");
+        System.out.println("Total Students: 10");
+        System.out.println("Total Faculty: 10");
+        System.out.println("Admin: 1");
+        System.out.println("Registrar: 1 (with profile)");
+        System.out.println("Courses Offered: 5 (with rooms and schedules)");
+        System.out.println("Semesters: Fall2025, Spring2025");
+        System.out.println("Financial Tracking: Initialized");
+        System.out.println("\n========== Login Credentials ==========");
+        System.out.println("Admin: username='admin', password='admin123'");
+        System.out.println("Student 1: username='student1', password='pass1'");
+        System.out.println("Student 2: username='student2', password='pass2'");
+        System.out.println("Faculty 1: username='faculty1', password='pass1'");
+        System.out.println("Registrar: username='registrar', password='reg123'");
+        System.out.println("=========================================\n");
+        
         return department;
     }
 
