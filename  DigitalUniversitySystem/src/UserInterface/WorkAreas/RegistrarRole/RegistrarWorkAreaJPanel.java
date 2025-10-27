@@ -189,7 +189,7 @@ public class RegistrarWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfileActionPerformed
         // TODO add your handling code here:
-        RegistrarProfileJPanel profilePanel = new RegistrarProfileJPanel(department, CardSequencePanel);
+        RegistrarProfileJPanel profilePanel = new RegistrarProfileJPanel(department, useraccount, CardSequencePanel);
         CardSequencePanel.add("RegistrarProfileJPanel", profilePanel);
         CardLayout layout = (CardLayout) CardSequencePanel.getLayout();
         layout.next(CardSequencePanel);
