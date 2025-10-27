@@ -199,7 +199,7 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
         else if ("Registrar".equals(role)) {
             RegistrarWorkAreaJPanel regPanel = new RegistrarWorkAreaJPanel(department, useraccount, CardSequencePanel);
             CardSequencePanel.removeAll();
-            CardSequencePanel.add("Registrar", registrarPanel);
+            CardSequencePanel.add("Registrar", regPanel);
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
         }
         
