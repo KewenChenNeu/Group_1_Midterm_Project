@@ -197,13 +197,9 @@ public class ProfileWorkAreaMainFrame extends javax.swing.JFrame {
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
         }
         else if ("Registrar".equals(role)) {
-            Person person = useraccount.getPerson();
-            info5100.university.example.Persona.Faculty.FacultyProfile fp =
-                department.getFacultyDirectory().findTeachingFaculty(person.getPersonId());
-
-            FacultyWorkAreaJPanel registrarPanel = new FacultyWorkAreaJPanel(department, fp, CardSequencePanel);
+            RegistrarWorkAreaJPanel regPanel = new RegistrarWorkAreaJPanel(department, useraccount, CardSequencePanel);
             CardSequencePanel.removeAll();
-//            CardSequencePanel.add("Registrar", registrarPanel); UNCOMMENT!!!!!!!!!
+            CardSequencePanel.add("Registrar", registrarPanel);
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
         }
         

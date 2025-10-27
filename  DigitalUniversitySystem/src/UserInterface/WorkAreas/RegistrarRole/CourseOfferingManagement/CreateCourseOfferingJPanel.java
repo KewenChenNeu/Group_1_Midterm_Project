@@ -4,19 +4,50 @@
  */
 package UserInterface.WorkAreas.RegistrarRole.CourseOfferingManagement;
 
+import info5100.university.example.CourseCatalog.Course;
+import info5100.university.example.CourseCatalog.CourseCatalog;
+import info5100.university.example.CourseSchedule.CourseOffer;
+import info5100.university.example.CourseSchedule.CourseSchedule;
+import info5100.university.example.Department.Department;
+import info5100.university.example.Persona.Faculty.FacultyDirectory;
+import info5100.university.example.Persona.Faculty.FacultyProfile;
+import javax.swing.*;
+import java.awt.*;
+
 /**
  *
  * @author chris
  */
 public class CreateCourseOfferingJPanel extends javax.swing.JPanel {
+    
+    private JPanel CardSequencePanel;
+    private Department department;
+    private String semester;
 
     /**
      * Creates new form CreateCourseOfferingJPanel
      */
-    public CreateCourseOfferingJPanel() {
+    public CreateCourseOfferingJPanel(Department dept, JPanel jpanel, String sem) {
+        this.CardSequencePanel = jpanel;
+        this.department = dept;
+        this.semester = sem;
         initComponents();
+        populateDropdowns();
     }
-
+    
+    private void populateDropdowns() {
+        // Populate semester field
+        fieldSemester.setText(semester);
+        fieldSemester.setEditable(false);
+        
+        // Set default capacity
+        fieldEnrollement.setText("30");
+        
+        // Add placeholder text
+        fieldCourse.setText("INFO 5100");
+        fieldFaculity.setText("FAC001");
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,51 +58,35 @@ public class CreateCourseOfferingJPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         btnCreate = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        Back3 = new javax.swing.JButton();
+        fieldFaculity = new javax.swing.JTextField();
+        fieldCourse = new javax.swing.JTextField();
+        fieldEnrollement = new javax.swing.JTextField();
+        fieldSemester = new javax.swing.JTextField();
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel1.setText("Create Course Offering");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel2.setText("Semester");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel3.setText("Faculty Assignment");
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel4.setText("Course");
 
         jLabel5.setText("Enrollment Capacity");
 
-        jLabel6.setText("Room Number");
-
-        jLabel7.setText("Schedule Day");
-
-        jLabel8.setText("Start Time");
-
-        jLabel9.setText("End Time");
-
         btnCreate.setText("Create");
+        btnCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateActionPerformed(evt);
+            }
+        });
 
         btnCancel.setText("Cancel");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -80,108 +95,269 @@ public class CreateCourseOfferingJPanel extends javax.swing.JPanel {
             }
         });
 
+        Back3.setText("<< Back");
+        Back3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Back3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
+                        .addGap(78, 78, 78)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9)
-                            .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(btnCancel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox3, javax.swing.GroupLayout.Alignment.LEADING, 0, 136, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, 136, Short.MAX_VALUE)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.LEADING, 0, 136, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.LEADING))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel5)
+                                .addComponent(btnCreate, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                                .addComponent(Back3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fieldSemester, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fieldCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fieldFaculity, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fieldEnrollement, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(755, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(21, 21, 21)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fieldSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fieldCourse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fieldFaculity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(fieldEnrollement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(164, 164, 164)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCreate)
                     .addComponent(btnCancel))
-                .addContainerGap(164, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(Back3)
+                .addContainerGap(117, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
+        int result = JOptionPane.showConfirmDialog(this,
+            "Are you sure you want to cancel?\nAny entered data will be lost.",
+            "Confirm Cancel",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE);
+        
+        if (result == JOptionPane.YES_OPTION) {
+            navigateBack();
+        }
     }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void Back3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Back3ActionPerformed
+        // TODO add your handling code here:
+        navigateBack();
+    }//GEN-LAST:event_Back3ActionPerformed
+
+    private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
+        // TODO add your handling code here:
+        // Validate inputs
+        if (!validateInputs()) {
+            return;
+        }
+        
+        try {
+            String courseId = fieldCourse.getText().trim().toUpperCase();
+            String facultyId = fieldFaculity.getText().trim();
+            int capacity = Integer.parseInt(fieldEnrollement.getText().trim());
+            
+            // Get or create course schedule for the semester
+            CourseSchedule courseSchedule = department.getCourseSchedule(semester);
+            if (courseSchedule == null) {
+                courseSchedule = department.newCourseSchedule(semester);
+            }
+            
+            // Check if course already exists in this semester
+            CourseOffer existingOffer = courseSchedule.getCourseOfferByNumber(courseId);
+            if (existingOffer != null) {
+                JOptionPane.showMessageDialog(this,
+                    "Course " + courseId + " is already offered in " + semester,
+                    "Course Already Exists",
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            // Check if course exists in catalog
+            CourseCatalog catalog = department.getCourseCatalog();
+            Course course = catalog.getCourseByNumber(courseId);
+            if (course == null) {
+                // If course doesn't exist in catalog, show warning but allow creation
+                int result = JOptionPane.showConfirmDialog(this,
+                    "Course " + courseId + " not found in course catalog.\n" +
+                    "Do you want to create the course offering anyway?",
+                    "Course Not in Catalog",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE);
+                
+                if (result != JOptionPane.YES_OPTION) {
+                    return;
+                }
+            }
+            
+            // Create new course offering
+            CourseOffer newOffer = courseSchedule.newCourseOffer(courseId);
+            if (newOffer == null) {
+                JOptionPane.showMessageDialog(this,
+                    "Failed to create course offering.\nPlease ensure the course exists in the catalog.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            // Generate seats
+            newOffer.generatSeats(capacity);
+            
+            // Assign faculty if provided
+            if (!facultyId.isEmpty()) {
+                FacultyDirectory facultyDir = department.getFacultyDirectory();
+                if (facultyDir != null) {
+                    FacultyProfile faculty = facultyDir.findTeachingFaculty(facultyId);
+                    if (faculty != null) {
+                        newOffer.AssignAsTeacher(faculty);
+                    } else {
+                        // Create a message but continue
+                        System.out.println("Faculty " + facultyId + " not found in directory");
+                    }
+                }
+            }
+            
+            // Show success message
+            JOptionPane.showMessageDialog(this,
+                "Course offering created successfully!\n" +
+                "Course: " + courseId + "\n" +
+                "Semester: " + semester + "\n" +
+                "Capacity: " + capacity + "\n" +
+                (facultyId.isEmpty() ? "Faculty: Not Assigned" : "Faculty: " + facultyId),
+                "Success",
+                JOptionPane.INFORMATION_MESSAGE);
+            
+            // Clear fields for next entry
+            fieldCourse.setText("");
+            fieldFaculity.setText("");
+            fieldEnrollement.setText("30");
+            
+            // Navigate back to manage panel
+            navigateBack();
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                "Please enter a valid number for enrollment capacity.",
+                "Invalid Input",
+                JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                "Error creating course offering: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnCreateActionPerformed
+
+    private boolean validateInputs() {
+        // Validate course ID
+        String courseId = fieldCourse.getText().trim();
+        if (courseId.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Please enter a Course ID.",
+                "Missing Information",
+                JOptionPane.WARNING_MESSAGE);
+            fieldCourse.requestFocus();
+            return false;
+        }
+        
+        // Validate enrollment capacity
+        String capacityStr = fieldEnrollement.getText().trim();
+        if (capacityStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Please enter enrollment capacity.",
+                "Missing Information",
+                JOptionPane.WARNING_MESSAGE);
+            fieldEnrollement.requestFocus();
+            return false;
+        }
+        
+        try {
+            int capacity = Integer.parseInt(capacityStr);
+            if (capacity <= 0) {
+                JOptionPane.showMessageDialog(this,
+                    "Enrollment capacity must be greater than 0.",
+                    "Invalid Capacity",
+                    JOptionPane.WARNING_MESSAGE);
+                fieldEnrollement.requestFocus();
+                return false;
+            }
+            if (capacity > 500) {
+                JOptionPane.showMessageDialog(this,
+                    "Enrollment capacity cannot exceed 500.",
+                    "Invalid Capacity",
+                    JOptionPane.WARNING_MESSAGE);
+                fieldEnrollement.requestFocus();
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                "Please enter a valid number for enrollment capacity.",
+                "Invalid Input",
+                JOptionPane.WARNING_MESSAGE);
+            fieldEnrollement.requestFocus();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private void navigateBack() {
+        CardSequencePanel.removeAll();
+        ManageCourseOfferingsJPanel managePanel = new ManageCourseOfferingsJPanel(department, CardSequencePanel);
+        CardSequencePanel.add("ManageCourseOfferings", managePanel);
+        ((CardLayout) CardSequencePanel.getLayout()).next(CardSequencePanel);
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Back3;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnCreate;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JTextField fieldCourse;
+    private javax.swing.JTextField fieldEnrollement;
+    private javax.swing.JTextField fieldFaculity;
+    private javax.swing.JTextField fieldSemester;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
+
+    
 }
