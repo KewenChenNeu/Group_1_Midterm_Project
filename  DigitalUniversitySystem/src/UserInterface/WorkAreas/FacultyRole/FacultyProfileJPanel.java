@@ -220,6 +220,7 @@ public class FacultyProfileJPanel extends javax.swing.JPanel {
                 saveActionPerformed(evt);
             }
         });
+        saveBtn.setVisible(false);  // Hide by default
         buttonPanel.add(saveBtn);
 
         cancelBtn.setBackground(new java.awt.Color(102, 153, 255));
@@ -233,6 +234,7 @@ public class FacultyProfileJPanel extends javax.swing.JPanel {
                 cancelActionPerformed(evt);
             }
         });
+        cancelBtn.setVisible(false);  // Hide by default
         buttonPanel.add(cancelBtn);
 
         backBtn.setBackground(new java.awt.Color(102, 153, 255));
