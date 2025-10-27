@@ -5,6 +5,7 @@
 package UserInterface.WorkAreas.StudentRole;
 import info5100.university.example.Persona.StudentProfile;
 import info5100.university.example.Persona.Person;
+import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 
 /**
@@ -250,8 +251,9 @@ public class ProfileJPanel extends javax.swing.JPanel {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);         // hide profile panel
-        workArea.setVisible(true);
+        workArea.remove(this);
+        CardLayout layout = (CardLayout) workArea.getLayout();
+        layout.previous(workArea);
     }//GEN-LAST:event_btnBackActionPerformed
 
 
