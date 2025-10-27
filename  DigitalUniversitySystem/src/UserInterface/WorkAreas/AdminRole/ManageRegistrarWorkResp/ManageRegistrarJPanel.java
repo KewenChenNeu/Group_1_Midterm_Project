@@ -55,8 +55,8 @@ public class ManageRegistrarJPanel extends javax.swing.JPanel {
         tblRegistrar.getColumnModel().getColumn(0).setMinWidth(0);
         tblRegistrar.getColumnModel().getColumn(0).setMaxWidth(0);
         tblRegistrar.getColumnModel().getColumn(0).setWidth(0);
-        
-        //refreshTable(department.getRegistrardirectory().getRegistrarList());
+
+        refreshTable(department.getRegistrarDirectory().getRegistrarList());
     }
 
     /**
@@ -245,22 +245,22 @@ public class ManageRegistrarJPanel extends javax.swing.JPanel {
 
     private void btnSearchbyIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchbyIDActionPerformed
         // TODO add your handling code here:
-//        String id = txtFieldID.getText().trim();
-//        RegistrarDirectory rd = department.getRegistrardirectory();
-//
-//        List<RegistrarProfile> results;
-//        if (id.isEmpty()) {
-//            results = rd.getRegistrarList();
-//        } else {
-//            RegistrarProfile rp = rd.findRegistrar(id);
-//            results = new ArrayList<>();
-//            if (rp != null) {
-//                results.add(rp);
-//            }
-//        }
-//
-//        refreshTable(results);
-//        selectedRegistrar = null;
+        String id = txtFieldID.getText().trim();
+        RegistrarDirectory rd = department.getRegistrarDirectory();
+
+        List<RegistrarProfile> results;
+        if (id.isEmpty()) {
+            results = rd.getRegistrarList();
+        } else {
+            RegistrarProfile rp = rd.findRegistrar(id);
+            results = new ArrayList<>();
+            if (rp != null) {
+                results.add(rp);
+            }
+        }
+
+        refreshTable(results);
+        selectedRegistrar = null;
     }//GEN-LAST:event_btnSearchbyIDActionPerformed
 
     private void btnSearchbyNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchbyNameActionPerformed
@@ -270,119 +270,119 @@ public class ManageRegistrarJPanel extends javax.swing.JPanel {
     private void btnSearchbyDeptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchbyDeptActionPerformed
         // TODO add your handling code here:
         String dep = txtFieldDept.getText().trim();
-//    RegistrarDirectory rd = department.getRegistrardirectory();
-//
-//    java.util.List<RegistrarProfile> results = new java.util.ArrayList<>();
-//    if (dep.isEmpty()) {
-//        results = rd.getRegistrarList();
-//    } else {
-//        for (RegistrarProfile rp : rd.getRegistrarList()) {
-//            String rdep = rp.getDepartment();
-//            if (rdep != null && rdep.equalsIgnoreCase(dep)) {
-//                results.add(rp);
-//            }
-//        }
-//    }
-//
-//    refreshTable(results);
-//    selectedRegistrar = null;
+    RegistrarDirectory rd = department.getRegistrarDirectory();
+
+    java.util.List<RegistrarProfile> results = new java.util.ArrayList<>();
+    if (dep.isEmpty()) {
+        results = rd.getRegistrarList();
+    } else {
+        for (RegistrarProfile rp : rd.getRegistrarList()) {
+            String rdep = rp.getDepartment();
+            if (rdep != null && rdep.equalsIgnoreCase(dep)) {
+                results.add(rp);
+            }
+        }
+    }
+
+    refreshTable(results);
+    selectedRegistrar = null;
         
     }//GEN-LAST:event_btnSearchbyDeptActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-//        // TODO add your handling code here:
-//        if (selectedRegistrar == null) {
-//            JOptionPane.showMessageDialog(this, "Select a registrar first.");
-//            return;
-//        }
-//
-//        Person p = selectedRegistrar.getPerson();
-//        String personId = (p != null ? p.getPersonId() : "(unknown)");
-//
-//        int confirm = JOptionPane.showConfirmDialog(
-//                this,
-//                "Delete this registrar (" + personId + ")?",
-//                "Confirm Delete",
-//                JOptionPane.YES_NO_OPTION
-//        );
-//        if (confirm != JOptionPane.YES_OPTION) return;
-//
-//        RegistrarDirectory rd = department.getRegistrardirectory();
-//        rd.getRegistrarList().remove(selectedRegistrar);
-//
-//        JOptionPane.showMessageDialog(this, "Registrar deleted.");
-//        refreshTable(rd.getRegistrarList());
-//        selectedRegistrar = null;
+        // TODO add your handling code here:
+        if (selectedRegistrar == null) {
+            JOptionPane.showMessageDialog(this, "Select a registrar first.");
+            return;
+        }
+
+        Person p = selectedRegistrar.getPerson();
+        String personId = (p != null ? p.getPersonId() : "(unknown)");
+
+        int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Delete this registrar (" + personId + ")?",
+                "Confirm Delete",
+                JOptionPane.YES_NO_OPTION
+        );
+        if (confirm != JOptionPane.YES_OPTION) return;
+
+        RegistrarDirectory rd = department.getRegistrarDirectory();
+        rd.getRegistrarList().remove(selectedRegistrar);
+
+        JOptionPane.showMessageDialog(this, "Registrar deleted.");
+        refreshTable(rd.getRegistrarList());
+        selectedRegistrar = null;
         
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
-//        if (selectedRegistrar == null) {
-//            JOptionPane.showMessageDialog(this, "Select a registrar first.");
-//            return;
-//        }
-//
-//        Person p = selectedRegistrar.getPerson();
-//        if (p == null) {
-//            JOptionPane.showMessageDialog(this, "Missing Person record.");
-//            return;
-//        }
-//
-//        String newDept = JOptionPane.showInputDialog(
-//                this,
-//                "New Department:",
-//                selectedRegistrar.getDepartment()
-//        );
-//        if (newDept == null) return;
-//
-//        String newOffice = JOptionPane.showInputDialog(
-//                this,
-//                "New Office Location:",
-//                selectedRegistrar.getOfficeLocation()
-//        );
-//        if (newOffice == null) return;
-//
-//        String newHours = JOptionPane.showInputDialog(
-//                this,
-//                "New Office Hours:",
-//                selectedRegistrar.getOfficeHours()
-//        );
-//        if (newHours == null) return;
-//
-//        String newEmail = JOptionPane.showInputDialog(
-//                this,
-//                "New Email:",
-//                p.getEmail()
-//        );
-//        if (newEmail == null) return;
-//
-//        String newPhone = JOptionPane.showInputDialog(
-//                this,
-//                "New Phone:",
-//                p.getPhone()
-//        );
-//        if (newPhone == null) return;
-//
-//        
-//        newEmail = newEmail.trim();
-//        if (!newEmail.equalsIgnoreCase(p.getEmail())) {
-//            boolean taken = department.getPersonDirectory().emailExists(newEmail);
-//            if (taken) {
-//                JOptionPane.showMessageDialog(this, "Email already in use.");
-//                return;
-//            }
-//        }
-//
-//        selectedRegistrar.setDepartment(newDept.trim());
-//        selectedRegistrar.setOfficeLocation(newOffice.trim());
-//        selectedRegistrar.setOfficeHours(newHours.trim());
-//        p.setEmail(newEmail.trim());
-//        p.setPhone(newPhone.trim());
-//
-//        JOptionPane.showMessageDialog(this, "Registrar updated.");
-//        refreshTable(department.getRegistrardirectory().getRegistrarList());
-//        selectedRegistrar = null;
+        if (selectedRegistrar == null) {
+            JOptionPane.showMessageDialog(this, "Select a registrar first.");
+            return;
+        }
+
+        Person p = selectedRegistrar.getPerson();
+        if (p == null) {
+            JOptionPane.showMessageDialog(this, "Missing Person record.");
+            return;
+        }
+
+        String newDept = JOptionPane.showInputDialog(
+                this,
+                "New Department:",
+                selectedRegistrar.getDepartment()
+        );
+        if (newDept == null) return;
+
+        String newOffice = JOptionPane.showInputDialog(
+                this,
+                "New Office Location:",
+                selectedRegistrar.getOfficeLocation()
+        );
+        if (newOffice == null) return;
+
+        String newHours = JOptionPane.showInputDialog(
+                this,
+                "New Office Hours:",
+                selectedRegistrar.getOfficeHours()
+        );
+        if (newHours == null) return;
+
+        String newEmail = JOptionPane.showInputDialog(
+                this,
+                "New Email:",
+                p.getEmail()
+        );
+        if (newEmail == null) return;
+
+        String newPhone = JOptionPane.showInputDialog(
+                this,
+                "New Phone:",
+                p.getPhone()
+        );
+        if (newPhone == null) return;
+
+        
+        newEmail = newEmail.trim();
+        if (!newEmail.equalsIgnoreCase(p.getEmail())) {
+            boolean taken = department.getPersonDirectory().emailExists(newEmail);
+            if (taken) {
+                JOptionPane.showMessageDialog(this, "Email already in use.");
+                return;
+            }
+        }
+
+        selectedRegistrar.setDepartment(newDept.trim());
+        selectedRegistrar.setOfficeLocation(newOffice.trim());
+        selectedRegistrar.setOfficeHours(newHours.trim());
+        p.setEmail(newEmail.trim());
+        p.setPhone(newPhone.trim());
+
+        JOptionPane.showMessageDialog(this, "Registrar updated.");
+        refreshTable(department.getRegistrarDirectory().getRegistrarList());
+        selectedRegistrar = null;
     }//GEN-LAST:event_btnEditActionPerformed
 
 
@@ -414,10 +414,7 @@ public class ManageRegistrarJPanel extends javax.swing.JPanel {
             Person p = rp.getPerson();
             String id    = (p != null ? p.getPersonId()     : "");
             String name  = (p != null ? p.getPersonId()     : ""); 
-            // you don't yet store "name" in RegistrarProfile, so for now
-            // we just reuse ID or leave blank. If you want a name,
-            // add a `String registrarName` field to RegistrarProfile.
-
+            
             String dept  = rp.getDepartment();
             String office= rp.getOfficeLocation();
             String hours = rp.getOfficeHours();
