@@ -30,26 +30,24 @@ public class PerformanceReportsJPanel extends javax.swing.JPanel {
 
     private void populateTable() {
         tableModel = (DefaultTableModel) reportTable.getModel();
-        updateTableColumns();
+        tableModel.setRowCount(0);
         
-        String reportType = (String) reportTypeComboBox.getSelectedItem();
+        // Set fixed columns for course performance report
+        tableModel.setColumnIdentifiers(new String[]{
+            "Course Code", "Course Name", "Enrolled", "Avg Grade", "Grade Distribution"
+        });
+        
         String semester = (String) semesterComboBox.getSelectedItem();
         
-        if (reportType != null && semester != null && department != null) {
+        if (semester != null && department != null) {
             CourseSchedule schedule = department.getCourseSchedule(semester);
             if (schedule != null) {
-                if (reportType.equals("My Courses Performance")) {
-                    populateCoursesReport(schedule, semester);
-                } else if (reportType.equals("My Students Performance")) {
-                    populateStudentsReport(schedule, semester);
-                } else if (reportType.equals("Department Overview")) {
-                    populateDepartmentReport(schedule, semester);
-                }
+                populateCoursePerformanceReport(schedule);
             }
         }
     }
     
-    private void populateCoursesReport(CourseSchedule schedule, String semester) {
+    private void populateCoursePerformanceReport(CourseSchedule schedule) {
         for (CourseOffer co : schedule.getAllCourseOffers()) {
             if (co != null && co.getFacultyProfile() == facultyProfile) {
                 Course course = co.getSubjectCourse();
@@ -58,22 +56,23 @@ public class PerformanceReportsJPanel extends javax.swing.JPanel {
                     String courseName = course.getName();
                     int enrolled = co.getEnrolledCount();
                     
-                    // Calculate average grade and pass rate
+                    // Calculate average grade and grade distribution
                     double totalGrade = 0;
                     int graded = 0;
-                    int passed = 0;
+                    Map<String, Integer> gradeDistribution = new HashMap<>();
                     
                     if (co.getSeatList() != null) {
                         for (Seat seat : co.getSeatList()) {
                             if (seat.isOccupied()) {
                                 SeatAssignment sa = seat.getSeatassignment();
                                 if (sa != null) {
+                                    String grade = sa.getGrade();
                                     float gradePoint = sa.getGradePoint();
                                     if (gradePoint > 0) {
                                         totalGrade += gradePoint;
                                         graded++;
-                                        if (gradePoint >= 2.0) { // C or better is passing
-                                            passed++;
+                                        if (grade != null && !grade.isEmpty()) {
+                                            gradeDistribution.put(grade, gradeDistribution.getOrDefault(grade, 0) + 1);
                                         }
                                     }
                                 }
@@ -82,114 +81,22 @@ public class PerformanceReportsJPanel extends javax.swing.JPanel {
                     }
                     
                     String avgGrade = graded > 0 ? String.format("%.2f", totalGrade / graded) : "N/A";
-                    String passRate = graded > 0 ? String.format("%.0f%%", (passed * 100.0 / graded)) : "N/A";
                     
-                    Object[] row = {courseCode, courseName, enrolled, avgGrade, passRate};
+                    // Format grade distribution as string
+                    StringBuilder distribution = new StringBuilder();
+                    for (String grade : new String[]{"A", "A-", "B+", "B", "B-", "C+", "C", "C-", "F"}) {
+                        int count = gradeDistribution.getOrDefault(grade, 0);
+                        if (count > 0) {
+                            if (distribution.length() > 0) distribution.append(", ");
+                            distribution.append(grade).append(":").append(count);
+                        }
+                    }
+                    String distString = distribution.length() > 0 ? distribution.toString() : "No grades";
+                    
+                    Object[] row = {courseCode, courseName, enrolled, avgGrade, distString};
                     tableModel.addRow(row);
                 }
             }
-        }
-    }
-    
-    private void populateStudentsReport(CourseSchedule schedule, String semester) {
-        Map<String, StudentPerformance> studentMap = new HashMap<>();
-        
-        for (CourseOffer co : schedule.getAllCourseOffers()) {
-            if (co != null && co.getFacultyProfile() == facultyProfile) {
-                Course course = co.getSubjectCourse();
-                if (course != null && co.getSeatList() != null) {
-                    for (Seat seat : co.getSeatList()) {
-                        if (seat.isOccupied()) {
-                            SeatAssignment sa = seat.getSeatassignment();
-                            if (sa != null) {
-                                // For MVP, use seat number as student ID
-                                String studentId = "STU" + seat.getNumber();
-                                String studentName = "Student " + seat.getNumber();
-                                String grade = sa.getGrade();
-                                float gradePoint = sa.getGradePoint();
-                                
-                                Object[] row = {studentId, studentName, course.getCOurseNumber(), grade, 
-                                               String.format("%.2f", gradePoint)};
-                                tableModel.addRow(row);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    private void populateDepartmentReport(CourseSchedule schedule, String semester) {
-        int totalCourses = 0;
-        int totalEnrollment = 0;
-        double totalGradePoints = 0;
-        int totalGraded = 0;
-        Map<String, Integer> gradeDistribution = new HashMap<>();
-        
-        for (CourseOffer co : schedule.getAllCourseOffers()) {
-            if (co != null && co.getFacultyProfile() == facultyProfile) {
-                totalCourses++;
-                totalEnrollment += co.getEnrolledCount();
-                
-                if (co.getSeatList() != null) {
-                    for (Seat seat : co.getSeatList()) {
-                        if (seat.isOccupied()) {
-                            SeatAssignment sa = seat.getSeatassignment();
-                            if (sa != null) {
-                                String grade = sa.getGrade();
-                                float gradePoint = sa.getGradePoint();
-                                if (gradePoint > 0) {
-                                    totalGradePoints += gradePoint;
-                                    totalGraded++;
-                                    gradeDistribution.put(grade, gradeDistribution.getOrDefault(grade, 0) + 1);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        // Add summary rows
-        tableModel.addRow(new Object[]{"Total Courses Taught", String.valueOf(totalCourses), "", "", ""});
-        tableModel.addRow(new Object[]{"Total Students Enrolled", String.valueOf(totalEnrollment), "", "", ""});
-        tableModel.addRow(new Object[]{"Average GPA", totalGraded > 0 ? String.format("%.2f", totalGradePoints / totalGraded) : "N/A", "", "", ""});
-        
-        // Grade distribution
-        tableModel.addRow(new Object[]{"", "", "", "", ""});
-        tableModel.addRow(new Object[]{"Grade Distribution", "", "", "", ""});
-        for (String grade : new String[]{"A", "A-", "B+", "B", "B-", "C+", "C", "C-", "F"}) {
-            int count = gradeDistribution.getOrDefault(grade, 0);
-            if (count > 0) {
-                tableModel.addRow(new Object[]{"Grade " + grade, String.valueOf(count) + " students", "", "", ""});
-            }
-        }
-    }
-    
-    private class StudentPerformance {
-        String id, name;
-        double totalGrade;
-        int courseCount;
-    }
-
-    private void updateTableColumns() {
-        tableModel = (DefaultTableModel) reportTable.getModel();
-        tableModel.setRowCount(0);
-
-        String reportType = (String) reportTypeComboBox.getSelectedItem();
-
-        if (reportType.equals("My Students Performance")) {
-            tableModel.setColumnIdentifiers(new String[]{
-                "Student ID", "Student Name", "Course", "Grade", "GPA"
-            });
-        } else if (reportType.equals("My Courses Performance")) {
-            tableModel.setColumnIdentifiers(new String[]{
-                "Course Code", "Course Name", "Enrolled", "Average Grade", "Pass Rate"
-            });
-        } else if (reportType.equals("Department Overview")) {
-            tableModel.setColumnIdentifiers(new String[]{
-                "Metric", "Value", "", "", ""
-            });
         }
     }
 
@@ -203,8 +110,6 @@ public class PerformanceReportsJPanel extends javax.swing.JPanel {
         controlPanel = new javax.swing.JPanel();
         semesterLabel = new javax.swing.JLabel();
         semesterComboBox = new javax.swing.JComboBox();
-        reportTypeLabel = new javax.swing.JLabel();
-        reportTypeComboBox = new javax.swing.JComboBox();
         refreshBtn = new javax.swing.JButton();
         scrollPane = new javax.swing.JScrollPane();
         reportTable = new javax.swing.JTable();
@@ -251,16 +156,6 @@ public class PerformanceReportsJPanel extends javax.swing.JPanel {
             }
         });
 
-        reportTypeLabel.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        reportTypeLabel.setText("Report Type:");
-
-        reportTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "My Students Performance", "My Courses Performance", "Department Overview" }));
-        reportTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reportTypeComboBoxActionPerformed(evt);
-            }
-        });
-
         refreshBtn.setBackground(new java.awt.Color(102, 153, 255));
         refreshBtn.setForeground(new java.awt.Color(255, 255, 255));
         refreshBtn.setText("Refresh");
@@ -280,20 +175,14 @@ public class PerformanceReportsJPanel extends javax.swing.JPanel {
                 .addComponent(semesterLabel)
                 .addGap(18, 18, 18)
                 .addComponent(semesterComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addComponent(reportTypeLabel)
-                .addGap(18, 18, 18)
-                .addComponent(reportTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
+                .addGap(30, 30, 30)
                 .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(268, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         controlPanelLayout.setVerticalGroup(
             controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
             .addComponent(semesterLabel)
             .addComponent(semesterComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(reportTypeLabel)
-            .addComponent(reportTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
@@ -374,18 +263,10 @@ public class PerformanceReportsJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void semesterComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semesterComboBoxActionPerformed
-        // TODO: Update table based on semester selection
         populateTable();
     }//GEN-LAST:event_semesterComboBoxActionPerformed
 
-    private void reportTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportTypeComboBoxActionPerformed
-        // TODO: Update table columns and data based on report type
-        updateTableColumns();
-        populateTable();
-    }//GEN-LAST:event_reportTypeComboBoxActionPerformed
-
     private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
-        // TODO: Refresh the report data
         populateTable();
     }//GEN-LAST:event_refreshBtnActionPerformed
 
@@ -405,8 +286,6 @@ public class PerformanceReportsJPanel extends javax.swing.JPanel {
     private javax.swing.JPanel mainPanel;
     private javax.swing.JButton refreshBtn;
     private javax.swing.JTable reportTable;
-    private javax.swing.JComboBox reportTypeComboBox;
-    private javax.swing.JLabel reportTypeLabel;
     private javax.swing.JScrollPane scrollPane;
     private javax.swing.JComboBox semesterComboBox;
     private javax.swing.JLabel semesterLabel;
