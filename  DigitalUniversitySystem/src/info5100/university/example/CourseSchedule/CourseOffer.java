@@ -42,9 +42,6 @@ public class CourseOffer {
         return course.getCOurseNumber();
     }
     
-    public String getCourseName() {
-        return course.getName();
-    }
     
     public String getTeacherName() {
         return course.getTeacherName();
