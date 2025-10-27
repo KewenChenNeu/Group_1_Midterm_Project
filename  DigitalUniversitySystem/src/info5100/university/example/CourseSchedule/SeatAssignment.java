@@ -28,15 +28,15 @@ public class SeatAssignment {
     public void setGrade(String letter) {
         this.letterGrade = letter;
         switch (letter) {
-            case "A": this.gradePoint = 4.0f; break;
-            case "A-": this.gradePoint = 3.7f; break;
-            case "B+": this.gradePoint = 3.3f; break;
-            case "B": this.gradePoint = 3.0f; break;
-            case "B-": this.gradePoint = 2.7f; break;
-            case "C+": this.gradePoint = 2.3f; break;
-            case "C": this.gradePoint = 2.0f; break;
-            case "C-": this.gradePoint = 1.7f; break;
-            default: this.gradePoint = 0.0f; break;
+            case "A": this.grade = 4.0f; break;
+            case "A-": this.grade = 3.7f; break;
+            case "B+": this.grade = 3.3f; break;
+            case "B": this.grade = 3.0f; break;
+            case "B-": this.grade = 2.7f; break;
+            case "C+": this.grade = 2.3f; break;
+            case "C": this.grade = 2.0f; break;
+            case "C-": this.grade = 1.7f; break;
+            default: this.grade = 0.0f; break;
         }
     }
 
@@ -45,7 +45,7 @@ public class SeatAssignment {
     }
 
     public float getGradePoint() {
-        return gradePoint;
+        return grade;
     }
 
     public Seat getSeat() {
@@ -73,7 +73,7 @@ public class SeatAssignment {
     }
 
     public float GetCourseStudentScore() {
-        return getCreditHours() * gradePoint;
+        return getCreditHours() * grade;
     }
 
     public Object getCourseoffer() {
