@@ -5,10 +5,10 @@
 | Name          | Role / Use Case Responsibility                                          | NUID        |
 |---------------|-------------------------------------------------------------------------|-------------|
 | Noor Andre    | Administrator Use Case                                                  | 002594734      |
-| Zhifei        | Faculty Use Case                                                        | ？      |
+| Zhifei Ye     | Faculty Use Case                                                        | 003156944      |
 | Jinkun Zhao   | Student Use Case – Coursework Management, Course Registration, Graduation Audit; System Configuration/Sturcture Design; README/Main Maintenance | 002502631      |
-| Kara Payne    | Student Use Case – Transcript Review, Profile Management, Financial Management | ？ |
-| Kewen Chen    | Registrar Use Case; ystem Configuration/Sturcture Design                               | ？     |
+| Kara Payne    | Student Use Case – Transcript Review, Profile Management, Financial Management | 000540472 |
+| Kewen Chen    | Registrar Use Case; ystem Configuration/Sturcture Design                               | 002593051     |
 
 ---
 
