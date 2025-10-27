@@ -88,4 +88,13 @@ public class CourseSchedule {
         return schedule;
     }
 
+    public ArrayList<CourseOffer> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(ArrayList<CourseOffer> schedule) {
+        this.schedule = schedule;
+    }
+
+    
 }
