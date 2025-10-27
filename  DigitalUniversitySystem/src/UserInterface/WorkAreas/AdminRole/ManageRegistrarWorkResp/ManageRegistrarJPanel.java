@@ -56,7 +56,7 @@ public class ManageRegistrarJPanel extends javax.swing.JPanel {
         tblRegistrar.getColumnModel().getColumn(0).setMaxWidth(0);
         tblRegistrar.getColumnModel().getColumn(0).setWidth(0);
 
-        refreshTable(department.getRegistrardirectory().getRegistrarList());
+        refreshTable(department.getRegistrarDirectory().getRegistrarList());
     }
 
     /**
@@ -246,7 +246,7 @@ public class ManageRegistrarJPanel extends javax.swing.JPanel {
     private void btnSearchbyIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchbyIDActionPerformed
         // TODO add your handling code here:
         String id = txtFieldID.getText().trim();
-        RegistrarDirectory rd = department.getRegistrardirectory();
+        RegistrarDirectory rd = department.getRegistrarDirectory();
 
         List<RegistrarProfile> results;
         if (id.isEmpty()) {
@@ -270,7 +270,7 @@ public class ManageRegistrarJPanel extends javax.swing.JPanel {
     private void btnSearchbyDeptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchbyDeptActionPerformed
         // TODO add your handling code here:
         String dep = txtFieldDept.getText().trim();
-    RegistrarDirectory rd = department.getRegistrardirectory();
+    RegistrarDirectory rd = department.getRegistrarDirectory();
 
     java.util.List<RegistrarProfile> results = new java.util.ArrayList<>();
     if (dep.isEmpty()) {
@@ -307,7 +307,7 @@ public class ManageRegistrarJPanel extends javax.swing.JPanel {
         );
         if (confirm != JOptionPane.YES_OPTION) return;
 
-        RegistrarDirectory rd = department.getRegistrardirectory();
+        RegistrarDirectory rd = department.getRegistrarDirectory();
         rd.getRegistrarList().remove(selectedRegistrar);
 
         JOptionPane.showMessageDialog(this, "Registrar deleted.");
@@ -381,7 +381,7 @@ public class ManageRegistrarJPanel extends javax.swing.JPanel {
         p.setPhone(newPhone.trim());
 
         JOptionPane.showMessageDialog(this, "Registrar updated.");
-        refreshTable(department.getRegistrardirectory().getRegistrarList());
+        refreshTable(department.getRegistrarDirectory().getRegistrarList());
         selectedRegistrar = null;
     }//GEN-LAST:event_btnEditActionPerformed
 
@@ -414,10 +414,7 @@ public class ManageRegistrarJPanel extends javax.swing.JPanel {
             Person p = rp.getPerson();
             String id    = (p != null ? p.getPersonId()     : "");
             String name  = (p != null ? p.getPersonId()     : ""); 
-            // you don't yet store "name" in RegistrarProfile, so for now
-            // we just reuse ID or leave blank. If you want a name,
-            // add a `String registrarName` field to RegistrarProfile.
-
+            
             String dept  = rp.getDepartment();
             String office= rp.getOfficeLocation();
             String hours = rp.getOfficeHours();
