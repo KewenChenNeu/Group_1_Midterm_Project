@@ -13,12 +13,12 @@ import info5100.university.example.CourseCatalog.Course;
  * @author kal bugrara
  */
 public class SeatAssignment {
-    private float gradePoint; 
-    private Seat seat;
-    private boolean like; 
-    private CourseLoad courseload;
-    private String letterGrade = "F";
-
+    float grade; //(Letter grade mappings: A=4.0, A-=3.7, B+=3.3, B=3.0, )
+    Seat seat;
+    boolean like; //true means like and false means not like
+    CourseLoad courseload;
+    String letterGrade = "F";
+    String assignmentStatus = "Pending";
     
     public SeatAssignment(CourseLoad cl, Seat s) {
         this.courseload = cl;
@@ -80,6 +80,12 @@ public class SeatAssignment {
         return seat.getCourseOffer();
     }
     
+    public String getAssignmentStatus() {
+        return assignmentStatus;
+    }
+
+    public void setAssignmentSubmit() {
+        this.assignmentStatus = "Submitted";
     public CourseLoad getCourseLoad() {
         return courseload;
     }

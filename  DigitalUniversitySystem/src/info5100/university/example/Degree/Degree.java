@@ -6,8 +6,11 @@
 package info5100.university.example.Degree;
 
 import info5100.university.example.CourseCatalog.Course;
+import info5100.university.example.CourseSchedule.CourseLoad;
+import info5100.university.example.CourseSchedule.CourseOffer;
 import info5100.university.example.CourseSchedule.SeatAssignment;
 import info5100.university.example.Persona.StudentProfile;
+import info5100.university.example.Persona.Transcript;
 import java.util.ArrayList;
 
 /**
@@ -47,13 +50,27 @@ public class Degree {
 
         if (validateCoreClasses(sas) == false) {
             return false;
-        }//core classes satisfied
+        }
+        //core classes satisfied
 
         //Do the electives check in case some taken classes are not part of the electives
       
         //Check for the total number of credit hours that it is above 32
+        Transcript transcript = sp.getTranscript();
+        int totalCredits = 0;
 
-        else return true; //student has at least 32 credit hours per NEU requirements
+        for (SeatAssignment sa : transcript.getCourseList()) {
+            CourseOffer courseOffer = sa.getCourseOffer();
+            Course course = courseOffer.getCourse();
+            totalCredits += course.getCredits();
+        }
+        
+        if (totalCredits < 32){
+            return false;
+        }
+        
+        
+        return true; //student has at least 32 credit hours per NEU requirements
 
     }
 

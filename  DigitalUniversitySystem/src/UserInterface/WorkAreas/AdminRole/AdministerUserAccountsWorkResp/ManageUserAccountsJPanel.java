@@ -46,11 +46,10 @@ public class ManageUserAccountsJPanel extends javax.swing.JPanel {
             Object[] row = new Object[4];
             row[0] = ua.getUsername();
             row[1] = ua.getRole();
-            row[2] = ""; // placeholder for "Last Activity"
-            row[3] = ""; // placeholder for "Last Updated"
+            row[2] = ua.getLastLoginTime(); 
+            row[3] = ua.getLastUpdatedTime(); 
             model.addRow(row);
         }
-
     }
 
     /**
